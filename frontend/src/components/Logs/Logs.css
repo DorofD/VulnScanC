@@ -1,0 +1,34 @@
+div.logs {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+div.logsHeader{
+    align-items: center;
+    margin: 18px;
+}
+
+div.logsFilterContainer {
+    text-align: center;
+}
+
+div.filterLogo {
+    display: inline;
+}
+
+img.filterLogo {
+    width: 30px;
+    vertical-align: middle;
+}
+
+input.logsFilter {
+    font-family: Arial;
+    font-size: large;
+    width: 200px;
+    padding: 4px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+}

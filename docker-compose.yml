@@ -1,0 +1,17 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.backend
+    volumes:
+      - ./binary:/binary
+      - ./data:/app/data
+    ports:
+      - 5000:5000
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.frontend
+    ports:
+      - 80:80

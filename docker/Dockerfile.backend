@@ -1,0 +1,14 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY ./backend .
+
+RUN apt-get update && \
+    apt-get install -y binutils tcl tk tzdata && \
+    ln -fs /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:create_app()"]

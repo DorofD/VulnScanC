@@ -1,0 +1,96 @@
+div.baseSidebar {
+    background-color: #f1f1f1;
+    float: left;
+    display: inline-flex;
+    align-items: stretch;
+    height: 95%;
+    width: 12%;
+}
+@media (width < 1670px){
+    div.sidebar {
+        width: 15%;
+    }
+}
+@media (width < 1370px){
+    div.sidebar {
+        width: 23%;
+    }
+}
+@media (width < 1000px){
+    div.sidebar {
+        width: 24%;
+    }
+}
+
+div.baseContent {
+    display: flex;
+    height: 95%;
+    padding-left: 1px;
+}
+
+nav.baseSidebar {
+    width: 100%;
+}
+
+ul.base {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+}
+
+.baseHref {
+    display: inline-block;
+    padding-top: 8%;
+    color: #000;
+    padding-bottom: 8%;
+    padding-left: 10%;
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+    user-select: none; 
+}
+.baseHref:hover {
+    background-color: #6e8399e3;
+    color: white;
+}
+
+.activeBaseHref {
+    background-color: #2190ffe3;
+    display: inline-block;
+    padding-top: 8%;
+    color: white;
+    padding-bottom: 8%;
+    padding-left: 10%;
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+    user-select: none; 
+}
+
+.activeBaseHref:hover {
+    background-color: #6e8399e3;
+    color: white;
+}
+
+
+div.baseHeader {
+    background-color: #f1f1f1;
+    display: flex;
+    width: 100%;
+    height: 5%;
+    float: right;
+    align-items: center;
+    justify-content: right;
+}
+
+span.baseHeader {
+    margin-right: 1%;
+    font-size: large;
+}
+
+.active {
+    background-color: #2190ffe3;
+    color: white;
+}

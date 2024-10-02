@@ -1,0 +1,53 @@
+.userCard {
+    vertical-align: middle;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+    margin: 20px;
+    height: 50px;
+}
+
+.userCardPicked {
+    vertical-align: middle;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    border: solid 3px rgb(34, 34, 34);
+    border-radius: 10px;
+    margin: 20px;
+    height: 50px;
+    background-color: #e4e4e4;
+}
+
+.userCard:hover {
+    background-color: #f1f1f1;
+    border: solid 3px #474747;
+}
+
+.userCardPicked:hover {
+    background-color: #f1f1f1;
+    border: solid 3px #474747;
+}
+
+
+p.userName {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 0px;
+    text-align: left;
+    padding-bottom: 8px;
+}
+
+div.componentStatus {
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+
+p.componentStatusFaded {
+    display: inline;
+    color: rgba(0, 0, 0, 0.61);
+}

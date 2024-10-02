@@ -1,0 +1,43 @@
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; } /* Начало и конец анимации - элемент полностью прозрачен */
+    10% { opacity: 1; } /* Конец процесса появления */
+    90% { opacity: 1; } /* Начало процесса исчезновения */
+  }
+
+div.notification {
+    position: fixed;
+    top: 90%;
+    right: 5%;
+    padding: 10px;
+    animation-name: fadeInOut;
+    animation-duration: 3s; /* Общая продолжительность анимации теперь составляет 3 секунды */
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards; /*Это гарантирует, что элемент останется в конечном состоянии анимации*/
+    border-radius: 10px;
+    z-index: 1001;
+}
+
+div.notification.long {
+    animation-duration: 10s;
+}
+
+
+@media (width < 1000px){
+  div.notification {
+      right: 1%;
+  }
+}
+
+div.notification.success {
+    background-color: #90ee90;
+}
+
+div.notification.error {
+    color: #000000;
+    background-color: #ee9090;
+}
+
+div.notification.info {
+    color: #000000;
+    background-color: #eed590;
+}

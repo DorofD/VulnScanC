@@ -1,0 +1,53 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.3",
+  "serialNumber": "urn:uuid:123e4567-e89b-12d3-a456-426614174000",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2023-10-01T12:34:56Z",
+    "tools": [
+      {
+        "vendor": "Example Vendor",
+        "name": "Example Tool",
+        "version": "1.0.0"
+      }
+    ],
+    "component": {
+      "type": "application",
+      "name": "Example Application",
+      "version": "1.0.0"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "certifi",
+      "version": "2024.2.2",
+      "purl": "pkg:pypi/certifi@2024.2.2"
+    },
+    {
+      "type": "library",
+      "name": "chardet",
+      "version": "5.1.0",
+      "purl": "pkg:pypi/chardet@5.2.0"
+    },
+    {
+      "type": "library",
+      "name": "charset-normalizer",
+      "version": "3.3.2",
+      "purl": "pkg:pypi/charset-normalizer@3.3.2"
+    },
+    {
+      "type": "library",
+      "name": "cvss",
+      "version": "3.1",
+      "purl": "pkg:pypi/cvss@3.1"
+    },
+    {
+      "type": "library",
+      "name": "bluez",
+      "version": "5.15",
+      "purl": "https://github.com/bluez/bluez"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+.snapshotCard {
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+    margin: 20px;
+    height: 20px;
+}
+
+.snapshotCardPicked {
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    border: solid 3px #222222;
+    border-radius: 10px;
+    margin: 20px;
+    height: 20px;
+}
+
+.snapshotCard:hover {
+    /* padding: 10px; */
+    background-color: #f1f1f1;
+    border: solid 3px #474747;
+}
+
+.snapshotCardPicked:hover {
+    /* padding: 10px; */
+    background-color: #f1f1f1;
+    border: solid 3px #474747;
+}
+
+
+p.snapshotDatetime {
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 0px;
+}

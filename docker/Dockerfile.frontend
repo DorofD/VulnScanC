@@ -1,0 +1,18 @@
+FROM node:20 AS node_build
+
+WORKDIR /app
+COPY ./frontend .
+RUN npm install
+RUN npm run build
+
+FROM nginx
+
+RUN apt-get update && \
+    apt-get install -y tzdata && \
+    ln -fs /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY --from=node_build /app/dist /www/dist
+COPY ./docker/sec_dev_service.conf /etc/nginx/conf.d/default.conf

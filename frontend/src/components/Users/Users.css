@@ -1,0 +1,116 @@
+div.users {
+    height: 100%;
+    width: 70%;
+    overflow: auto;
+}
+
+div.usersHeader {
+    align-items: left;
+    margin: 20px;
+}
+
+div.users::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+}
+
+div.users::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+}
+
+@media (width < 980px){
+    div.users {
+        margin: 1%;
+    }
+}
+
+div.addModalUsers {
+    padding: 5px;
+    width: 350px;
+    height: 350px;
+    text-align: center;
+    
+}
+
+div.addModalUsersParams{
+    display: inline-block;
+    margin-bottom: 10px;
+    word-break: break-word;
+}
+
+div.addModalUsersParamsValues{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+div.addModalUsersHeader {
+    text-align: center;
+    margin: 10px;
+}
+
+input.addModalUsers {
+    height: 20px;
+    margin: 8px;
+    font-family: Arial;
+    font-size: large;
+    width: 300px;
+    padding: 4px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+}
+input.addModalUsers:disabled {
+    background-color: #f1f1f1;
+}
+
+select.addModalUsers {
+    height: 35px;
+    margin: 8px;
+    font-family: Arial;
+    font-size: large;
+    width: 180px;
+    padding: 4px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+}
+
+select.addModalUsers:focus {
+    border: solid 3px #646464;
+}
+
+select.addModalUsers:hover {
+    border: solid 3px #646464;
+    cursor: pointer;
+}
+
+div.addModalUsersButtons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+div.usersFilterContainer {
+    text-align: center;
+}
+
+div.filterLogo {
+    display: inline;
+}
+
+img.filterLogo {
+    width: 30px;
+    vertical-align: middle;
+}
+
+input.usersFilter {
+    font-family: Arial;
+    font-size: large;
+    width: 130px;
+    padding: 4px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+}

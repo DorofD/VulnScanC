@@ -1,0 +1,112 @@
+div.mainProjects {
+    height: 100%;
+    width: 30%;
+    overflow: auto;
+}
+
+div.mainProjectDescription {
+    height: 100%;
+    width: 35%;
+    text-align: center;
+}
+
+
+textarea.mainProjects {
+    font-family: Arial;
+    font-size: 18px;
+    width: 95%;
+    height: 70%;
+    resize: none;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: solid 4px #afafaf;
+    border-radius: 10px;
+    color: black;
+}
+
+textarea.mainProjects::-webkit-scrollbar, div.mainProjects::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+textarea.mainProjects::-webkit-scrollbar-thumb, div.mainProjects::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+}
+
+
+textarea.projects {
+    font-family: Arial;
+    font-size: 20px;
+    width: 90%;
+    height: 30px;
+    resize: none;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+
+}
+
+textarea.projects:focus {
+    border: solid 3px #646464;
+}
+
+textarea.projects:disabled {
+    background-color: #f1f1f1;
+}
+
+div.changeModalProjects {
+    padding: 5px;
+    width: 350px;
+    height: 80px;
+    
+}
+
+div.changeModalProjectsName{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+div.changeModalProjectsButtons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.acceptModalProjects {
+    padding: 5px;
+    width: 350px;
+    height: 80px;
+    
+}
+
+div.acceptModalProjectsName{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+div.acceptModalProjectsButtons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.acceptModalProjectsButtons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.acceptModalProjectsText{
+    font-family: Arial;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
