@@ -5,6 +5,7 @@ import Button from "../Button/Button";
 import Notification from "../Notification/Notification";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import Loader from "../Loader/Loader";
 
 const NavLink = React.forwardRef((props, ref) => { 
     return ( 

@@ -13,11 +13,12 @@ import { useNotificationContext } from "../../hooks/useNotificationContext";
 import Modal from "../Modal/Modal";
 import AcceptModal from "../AcceptModal/AcceptModal";
 import filterLogo from './filter.png'
+import Loader from "../Loader/Loader";
 
 export default function Components() {
 
     const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
-
+    const [ loaderActive, setLoaderActive ] = useState(false)
     
     const [loadingProjects, setLoadingProjects] = useState('loading')
     const [projects, setProjects] = useState([])
@@ -141,18 +142,22 @@ export default function Components() {
         console.log(pickedProject.id)
         setNotificationData({message:'Выполняется поиск лицензий', type: 'success'})
         toggleNotificationFunc()
+        setLoaderActive(true)
 
         try {
             const response = await apiCheckLicenses(pickedProject.id)
             if (response.status == 200) {
+                setLoaderActive(false)
                 getProjectComponents(pickedProject.id)
                 setNotificationData({message:'Поиск завершен', type: 'success'})
                 toggleNotificationFunc()
             } else {
+                setLoaderActive(false)
                 setNotificationData({message:'Не удалось выполнить поиск лицензий', type: 'error'})
                 toggleNotificationFunc()
             }
         } catch (error) {
+            setLoaderActive(false)
             setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
             toggleNotificationFunc()
         }
@@ -180,9 +185,10 @@ export default function Components() {
 
     return (
         <>
+            {loaderActive && <Loader />}
             <div className="componentsProjects">
                 <p>Проекты</p>
-                {loadingProjects === 'loading' && <p> Loading ...</p>}
+                {loadingProjects === 'loading' && <Loader />}
                 {loadingProjects === 'error' && <p> бекенд отвалился</p>}
                 {loadingProjects === 'loaded' && <>
                         {projects.map(project =>
