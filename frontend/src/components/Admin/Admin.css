@@ -1,0 +1,79 @@
+div.admin-sidebar {
+    background-color: #f1f1f1;
+    float: left;
+    display: inline-flex;
+    align-items: stretch;
+    height: 100%;
+    width: 15%;
+}
+
+@media (width < 1280px){
+    div.admin-sidebar {
+        width: 20%;
+    }
+}
+
+@media (width < 980px){
+    div.admin-sidebar {
+        width: 30%;
+    }
+}
+
+div.admin-content {
+    display: flex;
+    height: 100%;
+    width: 60%;
+}
+
+@media (width < 980px){
+    div.admin-content {
+        width: 100%;
+    }
+}
+
+nav.admin-sidebar {
+    width: 100%;
+}
+
+
+ul.admin {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+}
+
+.adminHref {
+    display: inline-block;
+    padding-top: 8%;
+    color: #000;
+    padding-bottom: 8%;
+    padding-left: 10%;
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+    user-select: none; 
+}
+.adminHref:hover {
+    background-color: #6e8399e3;
+    color: white;
+}
+
+.activeAdminHref {
+    background-color: #2190ffe3;
+    display: inline-block;
+    padding-top: 8%;
+    color: white;
+    padding-bottom: 8%;
+    padding-left: 10%;
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+    user-select: none; 
+}
+
+.activeAdminHref:hover {
+    background-color: #6e8399e3;
+    color: white;
+}

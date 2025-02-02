@@ -1,0 +1,14 @@
+div.aboutMain {
+    overflow: auto;
+}
+
+div.aboutMain::-webkit-scrollbar, div.mainProjects::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+div.aboutMain::-webkit-scrollbar-thumb, div.mainProjects::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+}

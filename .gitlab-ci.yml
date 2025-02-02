@@ -1,0 +1,58 @@
+stages:
+  - build
+  - deploy
+
+build_backend:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+  script:
+    - cp $ENV_BACKEND ./backend/.env
+    - docker build . -f ./docker/Dockerfile.backend -t vsc-backend:latest
+    - docker tag vsc-backend:latest $REGISTRY_URL/$GITLAB_PROJECT_PATH/backend:latest
+    - echo $REGISTRY_TOKEN | docker login $REGISTRY_URL -u $REGISTRY_USER --password-stdin
+    - docker image push $REGISTRY_URL/$GITLAB_PROJECT_PATH/backend
+  tags:
+    - vsc-build
+  rules:
+    - changes:
+      - backend/**/*
+      - docker/**/*
+
+build_frontend:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+  script:
+    - cp $ENV_FRONTEND ./frontend/.env
+    - docker build . -f ./docker/Dockerfile.frontend -t vsc-frontend:latest
+    - docker tag vsc-frontend:latest $REGISTRY_URL/$GITLAB_PROJECT_PATH/frontend:latest
+    - echo $REGISTRY_TOKEN | docker login $REGISTRY_URL -u $REGISTRY_USER --password-stdin
+    - docker image push $REGISTRY_URL/$GITLAB_PROJECT_PATH/frontend
+  tags:
+    - vsc-build
+  rules:
+    - changes:
+      - frontend/**/*
+      - docker/**/*
+
+deploy:
+  stage: deploy
+  script:
+    - cd /www
+    - echo $REGISTRY_TOKEN | docker login $REGISTRY_URL -u $REGISTRY_USER --password-stdin
+    - docker compose pull
+    - docker compose up -d
+  tags:
+    - vsc-deploy
+  rules:
+    - changes:
+        - backend/**/*
+        - frontend/**/*
+        - docker/**/*

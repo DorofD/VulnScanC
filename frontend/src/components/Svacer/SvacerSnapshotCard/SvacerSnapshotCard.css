@@ -1,0 +1,47 @@
+.svacerSnapshotCard {
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+    margin: 20px;
+    height: 20px;
+}
+
+.svacerSnapshotCardPicked {
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    border: solid 3px #222222;
+    border-radius: 10px;
+    margin: 20px;
+    height: 20px;
+}
+
+.svacerSnapshotCard:hover {
+    background-color: #f1f1f1;
+    border: solid 3px #474747;
+}
+
+.svacerSnapshotCardPicked:hover {
+    background-color: #f1f1f1;
+    border: solid 3px #474747;
+}
+
+p.svacerSnapshotCardName {
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 0px;
+    display: inline;
+}
+
+div.downloadLogo {
+    display: inline;
+}
+
+img.downloadLogo {
+    margin-left: 30px;
+    width: 25px;
+    vertical-align: middle;
+}

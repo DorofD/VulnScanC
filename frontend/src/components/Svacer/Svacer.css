@@ -1,0 +1,54 @@
+div.svacerProjects {
+    height: 100%;
+    width: 30%;
+    overflow: auto;
+}
+div.svacerSnapshots {
+    height: 100%;
+    width: 35%;
+    overflow: auto;
+}
+
+div.svacerLabel{
+    padding-top: 20px;
+    text-align: center;
+}
+
+div.snapshotsComponents {
+    height: 100%;
+    width: 35%;
+    text-align: center;
+    overflow: auto;
+}
+
+div.svacerProjects::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+div.svacerProjects::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+    border-radius: 10px;
+}
+
+div.filterLogo {
+    display: inline;
+}
+
+img.filterLogo {
+    width: 30px;
+    vertical-align: middle;
+}
+
+.svacerFilter {
+    font-family: Arial;
+    font-size: large;
+    width: 300px;
+    padding: 4px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+}

@@ -1,0 +1,31 @@
+div.MarkdownMain {
+    overflow: auto;
+    overflow-wrap: break-word;
+    width: 90%;
+    padding: 10px;
+}
+
+.MarkdownMain a {
+    display: inline-block;
+    color: #011aff;
+    padding: 3px;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+  
+.MarkdownMain a:hover {
+    background-color: #6e8399e3;
+    color: white;
+    text-decoration: none;
+}
+
+div.MarkdownMain::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+div.MarkdownMain::-webkit-scrollbar-thumb{
+    background-color: #afafaf;
+}
