@@ -6,10 +6,12 @@ import { useNotificationContext } from "../../hooks/useNotificationContext";
 import LogCard from "./LogCard/LogCard";
 import "./Logs.css"
 import filterLogo from './filter.png'
+import Loader from "../Loader/Loader";
 
 export default function Logs() {
 
     const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
+    const [ loaderActive, setLoaderActive ] = useState(false)
 
     const [loadingLogs, setLoadingLogs] = useState('loading')
     const [logs, setLogs] = useState([])
@@ -70,7 +72,7 @@ export default function Logs() {
                     <input type="text" className="logsFilter" placeholder="Текст записи" onChange={e => setFilterLogs({...filterLogs, note: e.target.value})} value={filterLogs.note}/>
                     <button onClick={() => setFilterLogs({ datetime: '', status: '', note: '' })} className="clearFilter">Очистить</button>
             </div>
-            {loadingLogs === 'loading' && <p> Loading ...</p>}
+            {loadingLogs === 'loading' && <Loader />}
             {loadingLogs === 'error' && <p> бекенд отвалился</p>}
             {loadingLogs === 'loaded' && <>
                     {filteredLogs.map(log =>

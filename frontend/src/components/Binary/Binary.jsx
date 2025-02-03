@@ -5,10 +5,12 @@ import Button from "../Button/Button";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
 import BinaryCard from "./BinaryCard/BinaryCard";
 import "./Binary.css"
+import Loader from "../Loader/Loader";
 
 export default function Binary() {
 
     const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
+    const [ loaderActive, setLoaderActive ] = useState(false)
 
     const [loading, setLoading] = useState('loading')
     const [binaryInfo, setBinaryInfo] = useState([])
@@ -69,9 +71,9 @@ export default function Binary() {
             <div className="logsHeader">
                 <Button style={"buildBinary"} onClick={() => buildBinary()}> Собрать исполняемый модуль </Button>
                 <Button style={"buildBinary"} onClick={() => getBinaryFile()}> Загрузить исполняемый модуль </Button>
-            {buildInProcess && <p>Выполняется сборка исполняемого модуля...</p>}
+            {buildInProcess && <><p>Выполняется сборка исполняемого модуля...</p> <Loader /></>}
             </div>
-            {loading === 'loading' && <p> Loading ...</p>}
+            {loading === 'loading' && <Loader />}
             {loading === 'error' && <p> бекенд отвалился</p>}
             {loading === 'loaded' && <>
 

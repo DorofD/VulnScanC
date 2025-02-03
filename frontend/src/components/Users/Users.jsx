@@ -8,9 +8,11 @@ import { useNotificationContext } from "../../hooks/useNotificationContext";
 import Modal from "../Modal/Modal";
 import AcceptModal from "../AcceptModal/AcceptModal";
 import filterLogo from './filter.png'
+import Loader from "../Loader/Loader";
 
 export default function Users() {
     const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
+    const [ loaderActive, setLoaderActive ] = useState(false)
 
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState('loading')
@@ -173,7 +175,7 @@ export default function Users() {
                     <button onClick={() => setFilterUsers({ login: '', role: '', auth_type: '' })} className="clearFilter">Очистить</button>
                 </div>
 
-                {loading === 'loading' && <p> Loading ...</p>}
+                {loading === 'loading' && <Loader />}
                 {loading === 'error' && <p> бекенд отвалился</p>}
                 {loading === 'loaded' && <>
                     {filteredUsers.map(user => 

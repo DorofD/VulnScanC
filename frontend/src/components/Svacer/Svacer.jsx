@@ -8,11 +8,12 @@ import SvacerBranchCard from "./SvacerBranchCard/SvacerBranchCard";
 import SvacerSnapshotCard from "./SvacerSnapshotCard/SvacerSnapshotCard";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
 import filterLogo from './filter.png'
+import Loader from "../Loader/Loader";
 
 export default function Svacer() {
 
     const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
-
+    const [ loaderActive, setLoaderActive ] = useState(false)
     
     const [loadingProjects, setLoadingProjects] = useState('loading')
     const [projects, setProjects] = useState([])
@@ -74,7 +75,7 @@ export default function Svacer() {
         <>
             <div className="svacerProjects">
                 <div className="svacerLabel">Проекты Svacer</div>
-                {loadingProjects === 'loading' && <p> Loading ...</p>}
+                {loadingProjects === 'loading' && <Loader />}
                 {loadingProjects === 'error' && <p> бекенд отвалился или сервер Svacer недоступен</p>}
                 {loadingProjects === 'loaded' && <>
                         {projects.map(project =>
@@ -113,9 +114,9 @@ export default function Svacer() {
                     <button onClick={() => setFilter({ name: '' })} className="clearFilter">Очистить</button>
                 </div>
 
-                {pickedBranch.id !== '' && pickedProject.project.id === '' && loadingSnapshots === 'loading' && <p> Loading snapshots...</p>}
-                {pickedBranch.id && pickedProject.project.id !== '' && loadingSnapshots === 'loading' && <p> Loading snapshots...</p>}
-                {loadingSnapshots === 'error' && <p> бекенд отвалился или сервер Svacer недоступен</p>}
+                {pickedBranch.id !== '' && pickedProject.project.id === '' && loadingSnapshots === 'loading' && <Loader /> }
+                {pickedBranch.id && pickedProject.project.id !== '' && loadingSnapshots === 'loading' && <Loader />}
+                {loadingSnapshots === 'error' && <p> бекенд отвалился</p>}
                 {loadingSnapshots === 'loaded' && <>
                 {snapshots.length === 0 && loadingSnapshots === 'loaded' && <p> Снапшоты не найдены</p>}
                         {filteredSnapshots.map(snapshot =>

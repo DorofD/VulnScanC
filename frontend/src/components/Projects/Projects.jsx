@@ -7,11 +7,12 @@ import ProjectCard from "./ProjectCard/ProjectCard";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
 import Modal from "../Modal/Modal";
 import AcceptModal from "../AcceptModal/AcceptModal";
+import Loader from "../Loader/Loader";
 
 export default function Projects() {
 
     const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
-
+    const [ loaderActive, setLoaderActive ] = useState(false)
     
     const [loadingProjects, setLoadingProjects] = useState('loading')
     const [projects, setProjects] = useState([])
@@ -142,7 +143,7 @@ export default function Projects() {
                             picked={pickedProject.id === 0 && true || false}
                             onClick={() => {setPickedProject({id: 0, name: ''}); setIsAddModalOpen(true)}}>
                 </ProjectCard>
-                {loadingProjects === 'loading' && <p> Loading ...</p>}
+                {loadingProjects === 'loading' && <Loader />}
                 {loadingProjects === 'error' && <p> бекенд отвалился</p>}
                 {loadingProjects === 'loaded' && <>
                         {projects.map(project =>

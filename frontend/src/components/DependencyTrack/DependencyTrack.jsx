@@ -10,11 +10,12 @@ import VulnerabilityCard from "./VulnerabilityCard/VulnerabilityCard";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
 import Modal from "../Modal/Modal";
 import filterLogo from './filter.png'
+import Loader from "../Loader/Loader";
 
 export default function Components() {
 
     const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
-
+    const [ loaderActive, setLoaderActive ] = useState(false)
     
     const [loadingProjects, setLoadingProjects] = useState('loading')
     const [projects, setProjects] = useState([])
@@ -109,7 +110,7 @@ export default function Components() {
         <>
             <div className="componentsProjects">
                 <p>Проекты</p>
-                {loadingProjects === 'loading' && <p> Loading ...</p>}
+                {loadingProjects === 'loading' && <Loader />}
                 {loadingProjects === 'error' && <p> бекенд отвалился или сервер Dependency-Track недоступен</p>}
                 {loadingProjects === 'loaded' && <>
                         {projects.map(project =>
@@ -131,7 +132,7 @@ export default function Components() {
                 </div>
 
                 {pickedProject.id === '' && <p> Выберете проект</p>}
-                {pickedProject.id !== '' && loadingComponents === 'loading' && <p> Loading components...</p>}
+                {pickedProject.id !== '' && loadingComponents === 'loading' && <Loader />}
                 {loadingComponents === 'error' && <p> бекенд отвалился</p>}
                 {loadingComponents === 'loaded' && <>
                     <Button style={"componentVulnerabilities"} onClick={() => getDependencyTrackReport() }> Создать отчет </Button>

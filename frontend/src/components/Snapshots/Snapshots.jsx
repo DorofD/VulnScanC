@@ -11,11 +11,12 @@ import { useNotificationContext } from "../../hooks/useNotificationContext";
 import Modal from "../Modal/Modal";
 import AcceptModal from "../AcceptModal/AcceptModal";
 import filterLogo from './filter.png'
+import Loader from "../Loader/Loader";
 
 export default function Snapshots() {
 
     const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
-
+    const [ loaderActive, setLoaderActive ] = useState(false)
     
     const [loadingProjects, setLoadingProjects] = useState('loading')
     const [projects, setProjects] = useState([])
@@ -148,7 +149,7 @@ export default function Snapshots() {
         <>
             <div className="snapshotsProjects">
                 <p>Проекты</p>
-                {loadingProjects === 'loading' && <p> Loading ...</p>}
+                {loadingProjects === 'loading' && <Loader />}
                 {loadingProjects === 'error' && <p> бекенд отвалился</p>}
                 {loadingProjects === 'loaded' && <>
                         {projects.map(project =>
@@ -168,7 +169,7 @@ export default function Snapshots() {
                     <button onClick={() => setFilterSnapshots({ datetime: '' })} className="clearFilter">Очистить</button>
                 </div>
                 {pickedProject.id === '' && <p> Выберете проект</p>}
-                {pickedProject.id !== '' && loadingSnapshots === 'loading' && <p> Loading snapshots...</p>}
+                {pickedProject.id !== '' && loadingSnapshots === 'loading' && <Loader />}
                 {loadingSnapshots === 'error' && <p> бекенд отвалился</p>}
                 {loadingSnapshots === 'loaded' && <>
                 {snapshots.length === 0 && loadingSnapshots === 'loaded' && <p> Снапшоты не найдены</p>}
