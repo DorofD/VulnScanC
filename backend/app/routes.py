@@ -13,7 +13,7 @@ from app.services.api_services.svacer import get_projects as get_svacer_projects
 from app.services.api_services.dependency_track import get_projects as get_dt_projects, get_components as get_dt_components
 from app.services.api_services.logs import get_logs
 from app.services.api_services.binary import get_binary_info, build_executable_module
-from app.services.api_services.licenses import check_licenses
+from app.services.api_services.licenses import check_licenses, add_license, delete_license
 
 main = Blueprint('main', __name__)
 
@@ -169,6 +169,11 @@ def licenses():
     data = request.json
     if data['action'] == 'check_licenses':
         check_licenses(data['project_id'])
+    if data['action'] == 'add':
+        add_license(data['component_id'], data['key'],
+                    data['name'], data['spdx_id'], data['url'])
+    if data['action'] == 'delete':
+        delete_license(data['license_id'])
     return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
 
 

@@ -5,7 +5,7 @@ import Button from "../Button/Button";
 import { apiGetProjects } from "../../services/apiProjects";
 import { apiGetProjectComponents, apiChangeComponentStatus } from "../../services/apiComponents";
 import { apiGetComponentVulnerabilities } from "../../services/apiVulnerabilities";
-import { apiCheckLicenses, apiDeleteLicense } from "../../services/apiLicenses";
+import { apiCheckLicenses, apiAddLicense, apiDeleteLicense } from "../../services/apiLicenses";
 import ProjectCard from "../Projects/ProjectCard/ProjectCard";
 import ComponentCard from "./ComponentCard/ComponentCard";
 import VulnerabilityCard from "./VulnerabilityCard/VulnerabilityCard";
@@ -28,6 +28,7 @@ export default function Components() {
     const [components, setComponents] = useState([{address:''}])
     const [pickedComponent, setPickedComponent] = useState({id: ''})
     const [newComponentStatus, setNewComponentStatus] = useState('')
+    const [newLicense, setNewLicense] = useState({component_id:'', key:'', name:'', spdx_id:'', url:''})
     const [componentVulnerabilities, setcomponentVulnerabilities] = useState([])
     const [pickedVulnerability, setPickedVulnerability] = useState('')
 
@@ -51,16 +52,19 @@ export default function Components() {
 
     function closeChangeModal(){
         setIsChangeModalOpen(false);
+        setNewLicense({component_id:'', key:'', name:'', spdx_id:'', url:''})
     } 
 
     function closeAcceptModal(){
         setPickedVulnerability('')
         setIsAcceptModalOpen(false);
+        setNewLicense({component_id:'', key:'', name:'', spdx_id:'', url:''})
     } 
 
     function closeVulnerabilityModal(){
         setPickedVulnerability('')
         setIsVulnerabilityModalOpen(false);
+        setNewLicense({component_id:'', key:'', name:'', spdx_id:'', url:''})
     } 
     
     const handleSelectStatus = (event) => {
@@ -139,7 +143,6 @@ export default function Components() {
     }
     
     async function checkLicenses() {
-        console.log(pickedProject.id)
         setNotificationData({message:'Выполняется поиск лицензий', type: 'success'})
         toggleNotificationFunc()
         setLoaderActive(true)
@@ -160,6 +163,51 @@ export default function Components() {
             setLoaderActive(false)
             setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
             toggleNotificationFunc()
+        }
+    }
+
+    async function deleteLicense(license_id) {
+        try {
+            const response = await apiDeleteLicense(license_id)
+            if (response.status == 200) {
+                setLoaderActive(false)
+                getProjectComponents(pickedProject.id)
+                closeChangeModal()
+                setNotificationData({message:'Лицензия удалена', type: 'success'})
+                toggleNotificationFunc()
+            } else {
+                setLoaderActive(false)
+                setNotificationData({message:'Не удалось удалить лицензию', type: 'error'})
+                toggleNotificationFunc()
+            }
+        } catch (error) {
+            setLoaderActive(false)
+            setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
+            toggleNotificationFunc()
+        }
+    }
+
+    async function addLicense() {
+        try {
+            const response = await apiAddLicense(pickedComponent.id, newLicense.key, newLicense.name, newLicense.spdx_id, newLicense.url)
+            if (response.status == 200) {
+                setLoaderActive(false)
+                getProjectComponents(pickedProject.id)
+                closeChangeModal()
+                setNotificationData({message:'Лицензия добавлена', type: 'success'})
+                toggleNotificationFunc()
+                setNewLicense({component_id:'', key:'', name:'', spdx_id:'', url:''})
+            } else {
+                setLoaderActive(false)
+                setNotificationData({message:'Не удалось добавить лицензию', type: 'error'})
+                toggleNotificationFunc()
+                setNewLicense({component_id:'', key:'', name:'', spdx_id:'', url:''})
+            }
+        } catch (error) {
+            setLoaderActive(false)
+            setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
+            toggleNotificationFunc()
+            setNewLicense({component_id:'', key:'', name:'', spdx_id:'', url:''})
         }
     }
 
@@ -240,19 +288,55 @@ export default function Components() {
                             <div>
                             Лицензии: 
                             {pickedComponent.licenses && pickedComponent.licenses.length > 0 ? (
-                                <ul>
+                                <ul className="license">
                                     {pickedComponent.licenses.map((license) => (
-                                        <li key={license.id}>
+                                        <li className="license" key={license.id}>
                                             <p>Название: {license.name}</p>
                                             <p>Ключ: {license.key}</p>
                                             <p>SPDX ID: {license.spdx_id}</p>
                                             <p>URL: {license.url !== "None" ? <a href={license.url} target="_blank" rel="noopener noreferrer">{license.url}</a> : "Нет ссылки"}</p>
+                                            <p><Button style={"projectReject"} onClick={() => openAcceptModalWithAction(() => deleteLicense(license.id))}> Удалить </Button></p>
                                         </li>
+                                        
                                     ))}
                                 </ul>
                             ) : (
                                 <> Лицензий не найдено</>
                             )}
+                            <p>Добавить лицензию</p>
+                        <textarea name="newLicense"
+                            id={pickedComponent.id}
+                            placeholder='Название'
+                            className="license"
+                            value={newLicense.name}
+                            onChange={e => setNewLicense({...newLicense, name: e.target.value})}
+                            > 
+                        </textarea>
+                        <textarea name="newLicense"
+                            id={pickedComponent.id}
+                            placeholder='Ключ'
+                            className="license"
+                            value={newLicense.key}
+                            onChange={e => setNewLicense({...newLicense, key: e.target.value})}
+                            > 
+                        </textarea>
+                        <textarea name="newLicense"
+                            id={pickedComponent.id}
+                            placeholder='SPDX ID'
+                            className="license"
+                            value={newLicense.spdx_id}
+                            onChange={e => setNewLicense({...newLicense, spdx_id: e.target.value})}
+                            > 
+                        </textarea>
+                        <textarea name="newLicense"
+                            id={pickedComponent.id}
+                            placeholder='URL'
+                            className="license"
+                            value={newLicense.url}
+                            onChange={e => setNewLicense({...newLicense, url: e.target.value})}
+                            > 
+                        </textarea>
+                        <p><Button style={"projectAccept"} onClick={() => addLicense()}> Добавить </Button></p>
                         </div>
                     </div>
                     <div className="changeModalComponentVulnerabilitiesButton">
