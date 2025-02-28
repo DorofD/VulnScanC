@@ -1,6 +1,15 @@
 from app.repository.queries.base_query import execute_db_query
 
 
+def get_vulnerabilities_ids():
+    """ Возвращает osv_id и component_id уязвимостей """
+    query = f"""
+        SELECT osv_id, component_id
+        FROM vulnerabilities;
+        """
+    return execute_db_query(query)
+
+
 def get_vulnerabilities_by_components(id_list: list):
     """ Возвращает список уязвимостей в компонентах """
     ids = ', '.join(map(str, id_list))

@@ -84,3 +84,19 @@ def create_db():
             """
     cursor = conn.cursor()
     cursor.execute(query)
+
+    query = """
+            CREATE TABLE IF NOT EXISTS "bdu_vulnerabilities" (
+                "id"	INTEGER NOT NULL UNIQUE,
+                "component_id"	INTEGER NOT NULL,
+                "bdu_id"	TEXT NOT NULL,
+                "cve_id"	TEXT NOT NULL,
+                "name"	TEXT,
+                "description"	TEXT,
+                "status"	TEXT,
+                FOREIGN KEY("component_id") REFERENCES "components"("id"),
+                PRIMARY KEY("id" AUTOINCREMENT)
+            );
+            """
+    cursor = conn.cursor()
+    cursor.execute(query)
