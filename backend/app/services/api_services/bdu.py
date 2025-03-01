@@ -1,6 +1,6 @@
 from app.services.fstec.bdu_fstec import FSTEC
 from app.repository.queries.vulnerabilities import get_vulnerabilities_ids
-from app.repository.queries.bdu_vulnerabilities import add_bdu_vulnerabilities, get_bdu_vulnerabilities, get_bdu_vulnerabilities_count
+from app.repository.queries.bdu_vulnerabilities import add_bdu_vulnerabilities, get_bdu_vulnerabilities, get_bdu_vulnerabilities_count, get_bdu_vulnerabilities_by_component
 
 
 def update_bdu():
@@ -40,3 +40,7 @@ def get_bdu_info():
     result['last_update'] = fstec.get_bdu_update_time()
     result['vuln_count'] = get_bdu_vulnerabilities_count()
     return result
+
+
+def get_component_dbu_vulns(component_id: int):
+    return get_bdu_vulnerabilities_by_component(component_id)
