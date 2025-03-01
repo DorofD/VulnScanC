@@ -2,6 +2,7 @@ import requests
 import zipfile
 import os
 import xml.etree.ElementTree as ET
+import time
 
 
 class FSTEC:
@@ -73,3 +74,9 @@ class FSTEC:
             print(f"BDU not found")
         except ET.ParseError as e:
             print(f"Error when parse BDU")
+
+    def get_bdu_update_time(self):
+        file_stats = os.stat(self.bdu_file)
+        creation_time = file_stats.st_ctime
+        readable_time = time.ctime(creation_time)
+        return readable_time

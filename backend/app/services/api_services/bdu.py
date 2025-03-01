@@ -1,6 +1,6 @@
 from app.services.fstec.bdu_fstec import FSTEC
 from app.repository.queries.vulnerabilities import get_vulnerabilities_ids
-from app.repository.queries.bdu_vulnerabilities import add_bdu_vulnerabilities, get_bdu_vulnerabilities
+from app.repository.queries.bdu_vulnerabilities import add_bdu_vulnerabilities, get_bdu_vulnerabilities, get_bdu_vulnerabilities_count
 
 
 def update_bdu():
@@ -9,7 +9,7 @@ def update_bdu():
     return True
 
 
-def compare_vulns_by_cve_id():
+def update_vulns_by_cve_id():
     fstec = FSTEC()
     vulns = get_vulnerabilities_ids()
     bdu_vulns = fstec.find_vulns_by_cve_id(vulns)
@@ -31,6 +31,12 @@ def compare_vulns_by_cve_id():
                                  ))
     if vulns_to_add:
         add_bdu_vulnerabilities(vulns_to_add)
+    return True
 
 
-compare_vulns_by_cve_id()
+def get_bdu_info():
+    result = {}
+    fstec = FSTEC()
+    result['last_update'] = fstec.get_bdu_update_time()
+    result['vuln_count'] = get_bdu_vulnerabilities_count()
+    return result

@@ -14,6 +14,7 @@ from app.services.api_services.dependency_track import get_projects as get_dt_pr
 from app.services.api_services.logs import get_logs
 from app.services.api_services.binary import get_binary_info, build_executable_module
 from app.services.api_services.licenses import check_licenses, add_license, delete_license
+from app.services.api_services.bdu import get_bdu_info, update_bdu, update_vulns_by_cve_id
 
 main = Blueprint('main', __name__)
 
@@ -183,6 +184,21 @@ def vulnerabilities():
     id = request.args.get('component_id')
     result = get_vulnerabilities_by_component(id)
     return jsonify(result)
+
+
+@main.route('/bdu', methods=(['GET', 'POST']))
+@cross_origin()
+def bdu():
+    if request.method == 'GET':
+        result = get_bdu_info()
+        return jsonify(result)
+    if request.method == 'POST':
+        data = request.json
+        if data['action'] == 'update_bdu':
+            update_bdu()
+        if data['action'] == 'update_vulns':
+            update_vulns_by_cve_id()
+        return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
 
 
 @main.route('/snapshots', methods=(['GET', 'POST']))

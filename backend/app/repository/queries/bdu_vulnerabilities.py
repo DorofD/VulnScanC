@@ -31,6 +31,15 @@ def get_bdu_vulnerabilities_by_component(id: int):
     return execute_db_query(query)
 
 
+def get_bdu_vulnerabilities_count():
+    """ Возвращает список уязвимостей в компонентах """
+    query = f"""
+        SELECT COUNT(*) FROM bdu_vulnerabilities
+        """
+    count = execute_db_query(query)[0]['COUNT(*)']
+    return count
+
+
 def add_bdu_vulnerabilities(data_list: list):
     """в data_list ожидаемся список значений в формате [{component_id: .., bdu_id: .., cve_id: .., name: .., description: .., status: ..}]"""
     query = f"""
