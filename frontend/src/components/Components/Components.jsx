@@ -5,10 +5,12 @@ import Button from "../Button/Button";
 import { apiGetProjects } from "../../services/apiProjects";
 import { apiGetProjectComponents, apiChangeComponentStatus } from "../../services/apiComponents";
 import { apiGetComponentVulnerabilities } from "../../services/apiVulnerabilities";
+import { apiGetBduComponentVulns } from "../../services/apiBduFstec";
 import { apiCheckLicenses, apiAddLicense, apiDeleteLicense } from "../../services/apiLicenses";
 import ProjectCard from "../Projects/ProjectCard/ProjectCard";
 import ComponentCard from "./ComponentCard/ComponentCard";
 import VulnerabilityCard from "./VulnerabilityCard/VulnerabilityCard";
+import VulnerabilityCardBdu from "./VulnerabilityCardBdu/VulnerabilityCardBdu";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
 import Modal from "../Modal/Modal";
 import AcceptModal from "../AcceptModal/AcceptModal";
@@ -24,6 +26,7 @@ export default function Components() {
     const [projects, setProjects] = useState([])
     const [pickedProject, setPickedProject] = useState({id: '', name: ''})
     
+    
     const [loadingComponents, setLoadingComponents] = useState('loading')
     const [components, setComponents] = useState([{address:''}])
     const [pickedComponent, setPickedComponent] = useState({id: ''})
@@ -31,6 +34,7 @@ export default function Components() {
     const [newLicense, setNewLicense] = useState({component_id:'', key:'', name:'', spdx_id:'', url:''})
     const [componentVulnerabilities, setcomponentVulnerabilities] = useState([])
     const [pickedVulnerability, setPickedVulnerability] = useState('')
+    const [showedVunls, setShowedVunls] = useState(false)
 
 
     const [isChangeModalOpen, setIsChangeModalOpen] = useState(false);
@@ -102,6 +106,30 @@ export default function Components() {
     async function showComponentVulnerabilities() {
         try {
             const vulnerabilities = await apiGetComponentVulnerabilities(pickedComponent.id)
+            setcomponentVulnerabilities(vulnerabilities)
+        } catch (err) {
+            setcomponentVulnerabilities([])
+            setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
+            toggleNotificationFunc()
+        }
+        closeChangeModal()
+    }
+
+    async function showComponentVulnerabilities() {
+        try {
+            const vulnerabilities = await apiGetComponentVulnerabilities(pickedComponent.id)
+            setcomponentVulnerabilities(vulnerabilities)
+        } catch (err) {
+            setcomponentVulnerabilities([])
+            setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
+            toggleNotificationFunc()
+        }
+        closeChangeModal()
+    }
+
+    async function showComponentVulnerabilitiesBdu() {
+        try {
+            const vulnerabilities = await apiGetBduComponentVulns(pickedComponent.id)
             setcomponentVulnerabilities(vulnerabilities)
         } catch (err) {
             setcomponentVulnerabilities([])
@@ -340,7 +368,10 @@ export default function Components() {
                         </div>
                     </div>
                     <div className="changeModalComponentVulnerabilitiesButton">
-                        <Button style={"componentVulnerabilities"} onClick={() => showComponentVulnerabilities() }> Показать уязвимости </Button>
+                        <Button style={"componentVulnerabilities"} onClick={() => {setShowedVunls('osv'); showComponentVulnerabilities()} }> Показать уязвимости OSV </Button>
+                    </div>
+                    <div className="changeModalComponentVulnerabilitiesButton">
+                        <Button style={"componentVulnerabilities"} onClick={() => {setShowedVunls('bdu'); showComponentVulnerabilitiesBdu()} }> Показать уязвимости БДУ </Button>
                     </div>
                     <div className="changeModalProjectsButtons">
                         
@@ -373,12 +404,13 @@ export default function Components() {
 
                     <p>Уязвимости</p>
 
+                    {pickedProject.id !== '' && pickedComponent.id !== '' && componentVulnerabilities.length === 0 && <p> Уязвимости не найдены</p>}
+                    {showedVunls == 'osv' && <>
                     <div >
                         <img src={filterLogo} alt="" className="filterLogo"/>
                         <input type="text" className="vulnerabilityFilter" placeholder="OSV id" onChange={e => setFilterVulnerabilities({...filterVulnerabilities, osv_id: e.target.value})} value={filterVulnerabilities.osv_id}/>
                         <button onClick={() => setFilterVulnerabilities({ osv_id: '' })} className="clearFilter">Очистить</button>
                     </div>
-                    {pickedProject.id !== '' && pickedComponent.id !== '' && componentVulnerabilities.length === 0 && <p> Уязвимости не найдены</p>}
                     {filteredVulnerabilities.map(vuln =>
                             <VulnerabilityCard id={vuln.id} 
                             name={vuln.osv_id}
@@ -390,9 +422,25 @@ export default function Components() {
                                  vuln.full_data.severity[0].calculated_severities.temporal_severity] || []}
                             >
                             </VulnerabilityCard>)}
+                            </>}
+                    {showedVunls == 'bdu' && <>
+                    {/* <div >
+                        <img src={filterLogo} alt="" className="filterLogo"/>
+                        <input type="text" className="vulnerabilityFilter" placeholder="OSV id" onChange={e => setFilterVulnerabilities({...filterVulnerabilities, osv_id: e.target.value})} value={filterVulnerabilities.osv_id}/>
+                        <button onClick={() => setFilterVulnerabilities({ osv_id: '' })} className="clearFilter">Очистить</button>
+                    </div> */}
+                    {filteredVulnerabilities.map(vuln =>
+                            <VulnerabilityCardBdu id={vuln.id} 
+                            name={vuln.bdu_id}
+                            onClick={() => {setPickedVulnerability(vuln); setIsVulnerabilityModalOpen(true)}}
+                            picked={pickedVulnerability.id === vuln.id && true || false}
+                            cve_id={vuln.cve_id}
+                            >
+                            </VulnerabilityCardBdu>)}
+                            </>}
             </div>
             <Modal isOpen={isVulnerabilityModalOpen} onClose={closeVulnerabilityModal}> 
-                {pickedVulnerability && <div className="vulnerabilityModal">
+                {pickedVulnerability && showedVunls == 'osv' && <div className="vulnerabilityModal">
                     <div className="vulnerabilityModalInfo">
                         <p> <b>OSV id: </b>{pickedVulnerability.full_data.id}</p>
                         <p> <b>Описание: </b>{pickedVulnerability.full_data.details}</p>
@@ -413,6 +461,18 @@ export default function Components() {
                     </div>
                     <div className="changeModalProjectsButtons">
                         
+                        <Button style={"projectClose"} onClick={closeVulnerabilityModal}> Закрыть </Button>
+                    </div>
+                </div>}
+                {pickedVulnerability && showedVunls == 'bdu' && <div className="vulnerabilityModal">
+                    <div className="vulnerabilityModalInfo">
+                        <p> <b>BDU id: </b>{pickedVulnerability.bdu_id}</p>
+                        <p> <b>CVE id: </b>{pickedVulnerability.cve_id}</p>
+                        <p> <b>Название: </b>{pickedVulnerability.name}</p>
+                        <p> <b>Описание: </b>{pickedVulnerability.description}</p>
+                        <p> <b>Статус: </b>{pickedVulnerability.status}</p>
+                    </div>
+                    <div className="changeModalProjectsButtons">
                         <Button style={"projectClose"} onClick={closeVulnerabilityModal}> Закрыть </Button>
                     </div>
                 </div>}

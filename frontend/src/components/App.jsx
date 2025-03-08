@@ -4,6 +4,7 @@ import Base from "./Base/Base"
 import Projects from "./Projects/Projects"
 import Components from "./Components/Components";
 import Snapshots from "./Snapshots/Snapshots";
+import BduFstec from "./BduFstec/BduFstec";
 import Svacer from "./Svacer/Svacer";
 import DependencyTrack from "./DependencyTrack/DependencyTrack";
 import Admin from "./Admin/Admin"   
@@ -26,6 +27,7 @@ export default function App() {
                         <Route path="/" element={<Base />}>
                             <Route index element={<Projects />}/>
                             <Route path="/components" element={<Components />}/>
+                            <Route path="/bdu_fstec" element={<BduFstec />}/>
                             <Route path="/snapshots" element={<Snapshots />}/>
                             <Route path="/svacer" element={<Svacer />}/>
                             <Route path="/dependencyTrack" element={<DependencyTrack />}/>

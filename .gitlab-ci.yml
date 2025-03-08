@@ -11,7 +11,7 @@ build_backend:
     DOCKER_DRIVER: overlay2
   script:
     - cp $ENV_BACKEND ./backend/.env
-    - docker build . -f ./docker/Dockerfile.backend -t vsc-backend:latest
+    - docker build . -f ./docker/Dockerfile.backend -t vsc-backend:latest --network=host
     - docker tag vsc-backend:latest $REGISTRY_URL/$GITLAB_PROJECT_PATH/backend:latest
     - echo $REGISTRY_TOKEN | docker login $REGISTRY_URL -u $REGISTRY_USER --password-stdin
     - docker image push $REGISTRY_URL/$GITLAB_PROJECT_PATH/backend
@@ -31,7 +31,7 @@ build_frontend:
     DOCKER_DRIVER: overlay2
   script:
     - cp $ENV_FRONTEND ./frontend/.env
-    - docker build . -f ./docker/Dockerfile.frontend -t vsc-frontend:latest
+    - docker build . -f ./docker/Dockerfile.frontend -t vsc-frontend:latest --network=host
     - docker tag vsc-frontend:latest $REGISTRY_URL/$GITLAB_PROJECT_PATH/frontend:latest
     - echo $REGISTRY_TOKEN | docker login $REGISTRY_URL -u $REGISTRY_USER --password-stdin
     - docker image push $REGISTRY_URL/$GITLAB_PROJECT_PATH/frontend

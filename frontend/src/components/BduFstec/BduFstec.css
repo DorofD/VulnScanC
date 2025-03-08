@@ -1,10 +1,15 @@
-div.componentsProjects {
+div.main-bdu {
     height: 100%;
-    width: 30%;
+    width: 50%;
     overflow: auto;
     text-align: center;
 }
 
+div.bduInfo{
+    margin-top: 50px;
+    margin-left: 50px;
+    text-align: left;
+}
 div.componentsComponents {
     height: 100%;
     width: 35%;
@@ -74,38 +79,6 @@ textarea.projects:focus {
 
 textarea.projects:disabled {
     background-color: #f1f1f1;
-}
-
-div.changeModalComponents {
-    padding: 5px;
-    width: 600px;
-    height: 530px;
-    
-}
-
-div.changeModalComponentsParams{
-    margin-bottom: 10px;
-    height: 360px;
-    overflow: auto;
-    word-break: break-word;
-    margin: 5px;
-    margin-bottom: 12px;
-    padding: 10px;
-    padding-right: 20px;
-    border: solid 3px #afafaf;
-    border-radius: 10px;
-}
-
-div.changeModalComponentsParams::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-div.changeModalComponentsParams::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-    border-radius: 10px;
 }
 
 div.changeModalProjectsButtons{

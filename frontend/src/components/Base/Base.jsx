@@ -48,6 +48,11 @@ export default function Base() {
                             </NavLink>
                         </li> 
                         <li> 
+                            <NavLink to="/bdu_fstec" className={({ isActive }) => isActive ? 'activeBaseHref' : 'baseHref'}>
+                                БДУ ФСТЭК
+                            </NavLink>
+                        </li> 
+                        <li> 
                             <NavLink to="/svacer" className={({ isActive }) => isActive ? 'activeBaseHref' : 'baseHref'}>
                                 Svacer
                             </NavLink>

@@ -77,6 +77,6 @@ class FSTEC:
 
     def get_bdu_update_time(self):
         file_stats = os.stat(self.bdu_file)
-        creation_time = file_stats.st_ctime
+        creation_time = file_stats.st_mtime
         readable_time = time.ctime(creation_time)
         return readable_time

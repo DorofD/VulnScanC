@@ -177,6 +177,22 @@ button.componentVulnerabilities {
     margin: 0 auto;
     text-transform: uppercase;
     background: #c0c0c0;
+    width: 240px;
+    height: 30px;
+    border: 0;
+    color: #000000;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+button.componentVulnerabilities-disabled {
+    user-select: none;
+    font-family: Arial;
+    font-size: 15px;
+    display: block;
+    margin: 0 auto;
+    text-transform: uppercase;
+    background: #707070;
     width: 220px;
     height: 30px;
     border: 0;
