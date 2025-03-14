@@ -71,11 +71,27 @@ def get_all_snapshot_data(id):
     """
 
     vulnerabilities = execute_db_query(query)
+
+    query = f"""
+        SELECT *
+        FROM bdu_vulnerabilities
+        JOIN components ON bdu_vulnerabilities.component_id = components.id
+        WHERE components.id IN ({components_str});
+    """
+
+    bdu_vulnerabilities = execute_db_query(query)
+
     for component in components:
         for vuln in vulnerabilities:
             if vuln['component_id'] == component['id']:
                 if 'vulnerabilities' not in component:
                     component['vulnerabilities'] = []
                 component['vulnerabilities'].append(vuln['full_data'])
+        for vuln in bdu_vulnerabilities:
+            if vuln['component_id'] == component['id']:
+                if 'bdu_vulnerabilities' not in component:
+                    component['bdu_vulnerabilities'] = []
+                component['bdu_vulnerabilities'].append(vuln)
+
     result['components'] = components
     return result

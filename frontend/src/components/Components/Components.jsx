@@ -47,6 +47,7 @@ export default function Components() {
   
     const [filterComponents, setFilterComponents] = useState({ address: '', status:'' });
     const [filterVulnerabilities, setFilterVulnerabilities] = useState({ osv_id: '' });
+    const [filterVulnerabilitiesBdu, setFilterVulnerabilitiesBdu] = useState({ bdu_id: '' });
 
 
     const openAcceptModalWithAction = (action) => {
@@ -248,9 +249,16 @@ export default function Components() {
     )
 
     const filteredVulnerabilities = componentVulnerabilities.filter(item => {
-        return (
-          (filterVulnerabilities.osv_id === '' || item.osv_id.includes(filterVulnerabilities.osv_id))
-        );
+        if (showedVunls == 'osv') {
+            return (
+              (filterVulnerabilities.osv_id === '' || item.osv_id.includes(filterVulnerabilities.osv_id))
+            );
+        }
+        if (showedVunls == 'bdu'){
+            return (
+              (filterVulnerabilitiesBdu.bdu_id === '' || item.bdu_id.includes(filterVulnerabilitiesBdu.bdu_id))
+            );
+        }
       }
     )
 
@@ -424,17 +432,17 @@ export default function Components() {
                             </VulnerabilityCard>)}
                             </>}
                     {showedVunls == 'bdu' && <>
-                    {/* <div >
+                    <div >
                         <img src={filterLogo} alt="" className="filterLogo"/>
-                        <input type="text" className="vulnerabilityFilter" placeholder="OSV id" onChange={e => setFilterVulnerabilities({...filterVulnerabilities, osv_id: e.target.value})} value={filterVulnerabilities.osv_id}/>
-                        <button onClick={() => setFilterVulnerabilities({ osv_id: '' })} className="clearFilter">Очистить</button>
-                    </div> */}
+                        <input type="text" className="vulnerabilityFilter" placeholder="BDU id" onChange={e => setFilterVulnerabilitiesBdu({...filterVulnerabilities, bdu_id: e.target.value})} value={filterVulnerabilitiesBdu.bdu_id}/>
+                        <button onClick={() => setFilterVulnerabilitiesBdu({ bdu_id: '' })} className="clearFilter">Очистить</button>
+                    </div>
                     {filteredVulnerabilities.map(vuln =>
                             <VulnerabilityCardBdu id={vuln.id} 
                             name={vuln.bdu_id}
                             onClick={() => {setPickedVulnerability(vuln); setIsVulnerabilityModalOpen(true)}}
                             picked={pickedVulnerability.id === vuln.id && true || false}
-                            cve_id={vuln.cve_id}
+                            severity={vuln.severity}
                             >
                             </VulnerabilityCardBdu>)}
                             </>}
@@ -471,6 +479,7 @@ export default function Components() {
                         <p> <b>Название: </b>{pickedVulnerability.name}</p>
                         <p> <b>Описание: </b>{pickedVulnerability.description}</p>
                         <p> <b>Статус: </b>{pickedVulnerability.status}</p>
+                        <p> <b>Severity: </b>{pickedVulnerability.bdu_severity}</p>
                     </div>
                     <div className="changeModalProjectsButtons">
                         <Button style={"projectClose"} onClick={closeVulnerabilityModal}> Закрыть </Button>

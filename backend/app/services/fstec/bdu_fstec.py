@@ -54,12 +54,31 @@ class FSTEC:
                             for cve in cve_list:
                                 if cve['osv_id'] == identifier.text:
                                     try:
+                                        try:
+                                            bdu_severity = vuln.find(
+                                                'severity').text
+                                            if 'Критический' in bdu_severity:
+                                                severity = "Critical"
+                                            elif 'Высокий' in bdu_severity:
+                                                severity = "High"
+                                            elif 'Средний' in bdu_severity:
+                                                severity = "Medium"
+                                            elif 'Низкий' in bdu_severity:
+                                                severity = "Low"
+                                            else:
+                                                severity = "not found"
+                                        except:
+                                            severity = 'not found'
+                                            bdu_severity = "Не найдено"
                                         result.append({'component_id': cve['component_id'],
                                                        'bdu_id': vuln.find('identifier').text,
                                                        'cve_id': cve['osv_id'],
                                                        'name': vuln.find('name').text,
                                                        'description': vuln.find('description').text,
-                                                       'status': vuln.find('vul_status').text})
+                                                       'status': vuln.find('vul_status').text,
+                                                       'bdu_severity': bdu_severity,
+                                                       'severity': severity}
+                                                      )
                                     except:
                                         raise Exception(
                                             f"Can't add founded vulnerability, check XML Parse for vulnerability with CVE ID: {cve['osv_id']}")
@@ -71,9 +90,9 @@ class FSTEC:
                     pass
             return result
         except FileNotFoundError:
-            print(f"BDU not found")
+            raise Exception("BDU file not found")
         except ET.ParseError as e:
-            print(f"Error when parse BDU")
+            raise Exception("Error when parse BDU")
 
     def get_bdu_update_time(self):
         file_stats = os.stat(self.bdu_file)

@@ -1,7 +1,6 @@
 from flask import Blueprint, current_app, request, jsonify, send_file, abort
 from flask_cors import cross_origin
 import traceback
-from app.services.reports.docx_generator import create_svacer_report, create_osv_report, create_dependency_track_report
 from app.services.search_data.search_data import save_search_data
 
 from app.services.api_services.projects import get_projects, add_project, delete_project, add_project, change_project
@@ -15,6 +14,7 @@ from app.services.api_services.logs import get_logs
 from app.services.api_services.binary import get_binary_info, build_executable_module
 from app.services.api_services.licenses import check_licenses, add_license, delete_license
 from app.services.api_services.bdu import get_bdu_info, update_bdu, update_vulns_by_cve_id, get_component_dbu_vulns
+from app.services.api_services.reports import create_osv_report, create_bdu_report, create_dependency_track_report, create_svacer_report
 
 main = Blueprint('main', __name__)
 
@@ -83,7 +83,7 @@ def reports():
         snapshot_id = request.args.get('snapshot_id')
         severities_string = request.args.get('severities')
         report = create_osv_report(snapshot_id, severities_string)
-        report_name = f"{report['project_name']}_{report['datetime']}.docx"
+        report_name = f"osv_report_{report['project_name']}_{report['datetime']}.docx"
         response = send_file(
             path_or_file=report['report'],
             as_attachment=True,
@@ -92,6 +92,21 @@ def reports():
         )
         response.headers['Content-Disposition'] = f'attachment; filename="{report_name}"'
         current_app.logger.info(f'Sent OSV report: {report_name}')
+        return response
+
+    elif report_type == 'bdu':
+        snapshot_id = request.args.get('snapshot_id')
+        severities_string = request.args.get('severities')
+        report = create_bdu_report(snapshot_id, severities_string)
+        report_name = f"bdu_report_{report['project_name']}_{report['datetime']}.docx"
+        response = send_file(
+            path_or_file=report['report'],
+            as_attachment=True,
+            download_name=report_name,
+            mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        )
+        response.headers['Content-Disposition'] = f'attachment; filename="{report_name}"'
+        current_app.logger.info(f'Sent BDU report: {report_name}')
         return response
 
     elif report_type == 'svacer':

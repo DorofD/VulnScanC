@@ -27,7 +27,9 @@ def update_vulns_by_cve_id():
                                 bdu_vuln['cve_id'],
                                 bdu_vuln['name'],
                                 bdu_vuln['description'],
-                                bdu_vuln['status']
+                                bdu_vuln['status'],
+                                bdu_vuln['bdu_severity'],
+                                bdu_vuln['severity']
                                  ))
     if vulns_to_add:
         add_bdu_vulnerabilities(vulns_to_add)
@@ -43,4 +45,30 @@ def get_bdu_info():
 
 
 def get_component_dbu_vulns(component_id: int):
-    return get_bdu_vulnerabilities_by_component(component_id)
+    vulns = get_bdu_vulnerabilities_by_component(component_id)
+
+    critical_list = []
+    high_list = []
+    medium_list = []
+    low_list = []
+    not_found_list = []
+
+    for vuln in vulns:
+        if vuln['severity'] == 'not found':
+            not_found_list.append(vuln)
+            continue
+        if vuln['severity'] == 'Critical':
+            critical_list.append(vuln)
+            continue
+        if vuln['severity'] == 'High':
+            high_list.append(vuln)
+            continue
+        if vuln['severity'] == 'Medium':
+            medium_list.append(vuln)
+            continue
+        if vuln['severity'] == 'Low':
+            low_list.append(vuln)
+            continue
+    result = [*critical_list, *high_list, *
+              medium_list, *low_list, *not_found_list]
+    return result

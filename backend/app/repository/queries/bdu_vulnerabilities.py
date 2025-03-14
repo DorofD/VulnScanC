@@ -41,8 +41,8 @@ def get_bdu_vulnerabilities_count():
 
 
 def add_bdu_vulnerabilities(data_list: list):
-    """в data_list ожидаемся список значений в формате [{component_id: .., bdu_id: .., cve_id: .., name: .., description: .., status: ..}]"""
+    """в data_list ожидаемся список значений в формате [{component_id: .., bdu_id: .., cve_id: .., name: .., description: .., status: .., bdu_severity: .., severity: ..}]"""
     query = f"""
-        INSERT INTO bdu_vulnerabilities ('component_id', 'bdu_id', 'cve_id', 'name', 'description', 'status') VALUES (?, ?, ?, ?, ?, ?);
+        INSERT INTO bdu_vulnerabilities ('component_id', 'bdu_id', 'cve_id', 'name', 'description', 'status', 'bdu_severity', 'severity') VALUES (?, ?, ?, ?, ?, ?, ?, ?);
         """
     return execute_db_query(query, data_list)

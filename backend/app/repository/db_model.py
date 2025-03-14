@@ -94,6 +94,8 @@ def create_db():
                 "name"	TEXT,
                 "description"	TEXT,
                 "status"	TEXT,
+                "bdu_severity"	TEXT,
+                "severity"	TEXT,
                 FOREIGN KEY("component_id") REFERENCES "components"("id"),
                 PRIMARY KEY("id" AUTOINCREMENT)
             );

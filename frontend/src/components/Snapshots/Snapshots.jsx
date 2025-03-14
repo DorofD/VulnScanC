@@ -4,7 +4,7 @@ import "./Snapshots.css";
 import Button from "../Button/Button";
 import { apiGetProjects } from "../../services/apiProjects";
 import { apiGetProjectSnapshots, apiDeleteSnapshot } from "../../services/apiSnapshots";
-import { apiGetOsvReport } from "../../services/apiReports";
+import { apiGetOsvReport, apiGetBduReport } from "../../services/apiReports";
 import ProjectCard from "../Projects/ProjectCard/ProjectCard";
 import SnapshotCard from "./SnapshotCard/SnapshotCard";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
@@ -133,6 +133,25 @@ export default function Snapshots() {
         }
     }
 
+    async function getBduReport() {
+        try {
+            if (selectedSeverities.length === 0) {
+                setNotificationData({message:'Выберете severity', type: 'error'})
+                toggleNotificationFunc()
+                return false
+            } 
+            const report = await apiGetBduReport(pickedSnapshot.id, selectedSeverities, pickedProject.name, pickedSnapshot.datetime)
+            closeChangeModal()
+            setPickedSnapshot('')
+            setSelectedSeverities([])
+        } catch (err) {
+            setSnapshots([])
+            setSelectedSeverities([])
+            setNotificationData({message:'Не удалось загрузить отчет', type: 'error'})
+            toggleNotificationFunc()
+        }
+    }
+
     const filteredSnapshots = snapshots.filter(item => {
         return (
           (filterSnapshots.datetime === '' || item.datetime.includes(filterSnapshots.datetime))
@@ -250,7 +269,8 @@ export default function Snapshots() {
                             </label>
                         </div>
                         <div className="snapshotModalButtons">
-                            <Button style={"componentVulnerabilities"} onClick={() => getOsvReport() }> Создать отчет </Button>
+                            <Button style={"componentVulnerabilities"} onClick={() => getOsvReport() }> Создать отчет OSV </Button>
+                            <Button style={"componentVulnerabilities"} onClick={() => getBduReport() }> Создать отчет БДУ </Button>
 
                         </div>
                         <div className="snapshotModalNote"> *в отчет попадут только компоненты со статусом confirmed</div>
