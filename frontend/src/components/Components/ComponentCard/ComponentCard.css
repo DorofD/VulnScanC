@@ -4,8 +4,8 @@
     user-select: none;
     border: solid 3px #afafaf;
     border-radius: 10px;
-    margin: 20px;
-    height: 40px;
+    margin: 10px;
+    height: 65px;
 }
 
 .componentCardPicked {
@@ -14,8 +14,8 @@
     user-select: none;
     border: solid 3px rgb(34, 34, 34);
     border-radius: 10px;
-    margin: 20px;
-    height: 40px;
+    margin: 10px;
+    height: 65px;
     background-color: #e4e4e4;
 }
 .componentCard:hover {
@@ -41,6 +41,7 @@ div.componentStatus {
     display: block;
     width: 100%;
     text-align: left;
+    margin-bottom: 4px;
 }
 
 p.componentStatusFaded {

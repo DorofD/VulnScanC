@@ -306,6 +306,8 @@ export default function Components() {
                             name={component.address}
                             status={component.status}
                             license_number={component.licenses ? component.licenses.length : 0}
+                            osv_vuln_number={component.osv_vuln_count}
+                            bdu_vuln_number={component.bdu_vuln_count}
                             picked={pickedComponent.id === component.id && true || false}
                             onClick={() => {setcomponentVulnerabilities([]); setPickedComponent(component); setIsChangeModalOpen(true)}}>
                             </ComponentCard>)}

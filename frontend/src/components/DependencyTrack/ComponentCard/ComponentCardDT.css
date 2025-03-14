@@ -1,4 +1,4 @@
-.componentCard {
+.componentCardDT {
     padding: 10px;
     cursor: pointer;
     user-select: none;
@@ -8,7 +8,7 @@
     height: 40px;
 }
 
-.componentCardPicked {
+.componentCardPickedDT {
     padding: 10px;
     cursor: pointer;
     user-select: none;
@@ -18,32 +18,32 @@
     height: 40px;
     background-color: #e4e4e4;
 }
-.componentCard:hover {
+.componentCardDT:hover {
     background-color: #f1f1f1;
     border: solid 3px #474747;
 }
 
 
-p.componentName {
+p.componentNameDT {
     font-size: 16px;
     font-weight: 600;
     margin-top: 0;
     margin-bottom: 0px;
 }
 
-div.componentName {
+div.componentNameDT {
     display: block;
     width: 100%;
     text-align: left;
     padding-bottom: 5px;
 }
-div.componentStatus {
+div.componentStatusDT {
     display: block;
     width: 100%;
     text-align: left;
 }
 
-p.componentStatusFaded {
+p.componentStatusFadedDT {
     display: inline;
     color: rgba(0, 0, 0, 0.61);
 }

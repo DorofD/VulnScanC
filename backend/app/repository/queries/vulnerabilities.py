@@ -31,6 +31,16 @@ def get_vulnerabilities_by_component(id: int):
     return execute_db_query(query)
 
 
+def get_vulnerabilities_count_in_component(component_id):
+    """ Возвращает список уязвимостей в компоненте """
+    query = f"""
+        SELECT COUNT(*) FROM vulnerabilities
+        WHERE component_id = '{component_id}';
+        """
+    count = execute_db_query(query)[0]['COUNT(*)']
+    return count
+
+
 def add_vulnerabilities(data_list: list):
     """в data_list ожидаемся список значений в формате [{component_id: ..., osv_id: ..., full_data: ...}]"""
     query = f"""
