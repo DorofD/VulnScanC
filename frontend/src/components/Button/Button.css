@@ -236,6 +236,25 @@ button.logsCardClose{
     border-radius: 10px;
 }
 
+button.commentsCardClose{
+    text-align: center;
+    user-select: none;
+    font-family: Arial;
+    font-size: 14px;
+    display: inline;
+    margin: 0 auto;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    background: #ffbbbb;
+    width: 120px;
+    height: 30px;
+    border: 0;
+    color: #000000;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
 
 button.createUser {
     user-select: none;

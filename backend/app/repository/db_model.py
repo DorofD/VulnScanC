@@ -102,3 +102,18 @@ def create_db():
             """
     cursor = conn.cursor()
     cursor.execute(query)
+
+    query = """
+                CREATE TABLE IF NOT EXISTS "components_comments" (
+                    "id"	INTEGER NOT NULL UNIQUE,
+                    "user_id"	INTEGER NOT NULL,
+                    "component_id"	INTEGER NOT NULL,
+                    "datetime"	TEXT NOT NULL,
+                    "comment"	TEXT,
+                    FOREIGN KEY("user_id") REFERENCES "users"("id"),
+                    FOREIGN KEY("component_id") REFERENCES "components"("id"),
+                    PRIMARY KEY("id" AUTOINCREMENT)
+                );
+            """
+    cursor = conn.cursor()
+    cursor.execute(query)

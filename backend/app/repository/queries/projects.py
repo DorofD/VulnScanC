@@ -56,6 +56,3 @@ def delete_project(id):
             DELETE FROM projects WHERE id = {id};
             """
     execute_db_query(query)
-
-
-# delete_project(1)

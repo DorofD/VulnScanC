@@ -147,7 +147,7 @@ export default function Components() {
                         </>}
             <Modal isOpen={isChangeModalOpen} onClose={closeChangeModal}> 
                 <div className="DTmodalComponents">
-                    <div className="changeModalComponentsParams">
+                    <div className="changeModalComponentsParamsDT">
                         <p>Проект: {pickedProject.name}</p>
                         <p>Название: {pickedComponent.name}</p>
                         <p>Тип: {pickedComponent.classifier}</p>
@@ -183,15 +183,15 @@ export default function Components() {
                             </VulnerabilityCard>)}
             </div>
             <Modal isOpen={isVulnerabilityModalOpen} onClose={closeVulnerabilityModal}> 
-                {pickedVulnerability && <div className="vulnerabilityModal">
-                    <div className="vulnerabilityModalInfo">
+                {pickedVulnerability && <div className="vulnerabilityModalDT">
+                    <div className="vulnerabilityModalInfoDT">
                         <p> <b>CVE id: </b>{pickedVulnerability.vulnId}</p>
                         <p> <b>Severity: </b>{pickedVulnerability.severity}</p>
                         <p> <b>Описание: </b>{pickedVulnerability.description}</p>
                         <p> <b>Ссылки: </b>{pickedVulnerability.references}</p>
 
                     </div>
-                    <div className="changeModalProjectsButtons">
+                    <div className="changeModalProjectsButtonsDT">
                         
                         <Button style={"projectClose"} onClick={closeVulnerabilityModal}> Закрыть </Button>
                     </div>

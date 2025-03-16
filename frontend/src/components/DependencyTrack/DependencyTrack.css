@@ -83,7 +83,7 @@ div.DTmodalComponents {
     
 }
 
-div.changeModalComponentsParams{
+div.changeModalComponentsParamsDT{
     margin-bottom: 10px;
     height: 360px;
     overflow: auto;
@@ -96,19 +96,19 @@ div.changeModalComponentsParams{
     border-radius: 10px;
 }
 
-div.changeModalComponentsParams::-webkit-scrollbar {
+div.changeModalComponentsParamsDT::-webkit-scrollbar {
     width: 10px;
     background-color: #f1f1f1;
     margin: 40px;
     border-radius: 10px;
 }
 
-div.changeModalComponentsParams::-webkit-scrollbar-thumb {
+div.changeModalComponentsParamsDT::-webkit-scrollbar-thumb {
     background-color: #afafaf;
     border-radius: 10px;
 }
 
-div.changeModalProjectsButtons{
+div.changeModalProjectsButtonsDT{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -157,14 +157,14 @@ div.acceptModalProjectsText{
     margin-bottom: 10px;
 }
 
-div.vulnerabilityModal {
+div.vulnerabilityModalDT {
     padding: 5px;
     width: 600px;
     height: 820px;
     
 }
 
-div.vulnerabilityModalInfo{
+div.vulnerabilityModalInfoDT{
     margin-bottom: 10px;
     height: 740px;
     overflow: auto;
@@ -177,14 +177,14 @@ div.vulnerabilityModalInfo{
     border-radius: 10px;
 }
 
-div.vulnerabilityModalInfo::-webkit-scrollbar {
+div.vulnerabilityModalInfoDT::-webkit-scrollbar {
     width: 10px;
     background-color: #f1f1f1;
     margin: 40px;
     border-radius: 10px;
 }
 
-div.vulnerabilityModalInfo::-webkit-scrollbar-thumb {
+div.vulnerabilityModalInfoDT::-webkit-scrollbar-thumb {
     background-color: #afafaf;
     border-radius: 10px;
 }

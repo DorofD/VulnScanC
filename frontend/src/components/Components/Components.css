@@ -79,13 +79,13 @@ textarea.projects:disabled {
 div.changeModalComponents {
     padding: 5px;
     width: 600px;
-    height: 530px;
-    
+    height: 730px;   
 }
+
 
 div.changeModalComponentsParams{
     margin-bottom: 10px;
-    height: 360px;
+    height: 560px;
     overflow: auto;
     word-break: break-word;
     margin: 5px;
@@ -279,4 +279,55 @@ textarea.license:focus {
 
 textarea.license:disabled {
     background-color: #f1f1f1;
+}
+
+div.changeModalComments{
+    padding: 4px;
+    width: 700px;
+    height: 705px;   
+    /* border: solid 3px #afafaf; */
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+div.comments{
+    margin-bottom: 10px;
+    height: 570px;
+    overflow: auto;
+    word-break: break-word;
+    margin: 5px;
+    margin-bottom: 12px;
+    padding: 10px;
+    padding-right: 20px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+}
+
+textarea.comments {
+    font-family: Arial;
+    font-size: 18px;
+    width: 90%;
+    height: 60px;
+    resize: none;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+div.sendLogo {
+    display: inline;
+}
+
+
+img.sendLogo {
+    margin: 5px;
+    margin-bottom: 75px;
+    width: 35px;
+    vertical-align: middle;
+}
+
+img.sendLogo:hover {
+    width: 40px;
+    cursor: pointer;
 }

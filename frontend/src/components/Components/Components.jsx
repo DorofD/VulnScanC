@@ -7,18 +7,22 @@ import { apiGetProjectComponents, apiChangeComponentStatus } from "../../service
 import { apiGetComponentVulnerabilities } from "../../services/apiVulnerabilities";
 import { apiGetBduComponentVulns } from "../../services/apiBduFstec";
 import { apiCheckLicenses, apiAddLicense, apiDeleteLicense } from "../../services/apiLicenses";
+import { apiGetComponentComments, apiAddComponentComment, apiDeleteComponentComment} from "../../services/apiComments";
 import ProjectCard from "../Projects/ProjectCard/ProjectCard";
 import ComponentCard from "./ComponentCard/ComponentCard";
+import CommentCard from "./CommentCard/CommentCard";
 import VulnerabilityCard from "./VulnerabilityCard/VulnerabilityCard";
 import VulnerabilityCardBdu from "./VulnerabilityCardBdu/VulnerabilityCardBdu";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
 import Modal from "../Modal/Modal";
 import AcceptModal from "../AcceptModal/AcceptModal";
 import filterLogo from './filter.png'
+import sendLogo from './send.png'
 import Loader from "../Loader/Loader";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 export default function Components() {
-
+    const { userName, userId } = useAuthContext();
     const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
     const [ loaderActive, setLoaderActive ] = useState(false)
     
@@ -36,6 +40,9 @@ export default function Components() {
     const [pickedVulnerability, setPickedVulnerability] = useState('')
     const [showedVunls, setShowedVunls] = useState(false)
 
+    const [componentComments, setComponentComments] = useState([{id:0}])
+    const [componentComment, setComponentComment] = useState({user_id:userId, comment:''})
+    const [pickedComment, setPickedComment] = useState({id: ''})
 
     const [isChangeModalOpen, setIsChangeModalOpen] = useState(false);
     const [isAcceptModalOpen, setIsAcceptModalOpen] = useState(false);
@@ -58,6 +65,7 @@ export default function Components() {
     function closeChangeModal(){
         setIsChangeModalOpen(false);
         setNewLicense({component_id:'', key:'', name:'', spdx_id:'', url:''})
+        setComponentComment({user_id:userId, comment:''})
     } 
 
     function closeAcceptModal(){
@@ -240,6 +248,77 @@ export default function Components() {
         }
     }
 
+    async function getComponentComments(component_id) {
+        try {
+            const comments = await apiGetComponentComments(component_id)
+            setComponentComments(comments)
+            console.log(comments)
+        } catch (err) {
+            setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
+            toggleNotificationFunc()
+            setComponentComments([{id:0}])
+        }
+    }
+
+    async function addComponentComment() {
+        if (componentComment.comment === '') {
+            setNotificationData({message:'Введите комментарий', type: 'error'})
+            toggleNotificationFunc()
+            return 1
+        }
+        setLoaderActive(true)
+        try {
+            const response = await apiAddComponentComment(userId, pickedComponent.id, componentComment.comment)
+            if (response.status == 200) {
+                setLoaderActive(false)
+                getComponentComments(pickedComponent.id)
+                setNotificationData({message:'Комментарий добавлен', type: 'success'})
+                toggleNotificationFunc()
+                setComponentComment({user_id:userId, comment:''})
+                setPickedComment({id: ''})
+            } else {
+                setLoaderActive(false)
+                setNotificationData({message:'Не удалось добавить комментарий', type: 'error'})
+                toggleNotificationFunc()
+                setComponentComment({user_id:userId, comment:''})
+                setPickedComment({id: ''})
+            }
+        } catch (error) {
+            setLoaderActive(false)
+            setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
+            toggleNotificationFunc()
+            setComponentComment({user_id:userId, comment:''})
+            setPickedComment({id: ''})
+        }
+    }
+
+    async function deleteComponentComment() {
+        setLoaderActive(true)
+        try {
+            const response = await apiDeleteComponentComment(pickedComment.id)
+            if (response.status == 200) {
+                setLoaderActive(false)
+                getComponentComments(pickedComponent.id)
+                setNotificationData({message:'Комментарий удален', type: 'success'})
+                toggleNotificationFunc()
+                setComponentComment({user_id:userId, comment:''})
+                setPickedComment({id: ''})
+            } else {
+                setLoaderActive(false)
+                setNotificationData({message:'Не удалось удалить комментарий', type: 'error'})
+                toggleNotificationFunc()
+                setComponentComment({user_id:userId, comment:''})
+                setPickedComment({id: ''})
+            }
+        } catch (error) {
+            setLoaderActive(false)
+            setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
+            toggleNotificationFunc()
+            setComponentComment({user_id:userId, comment:''})
+            setPickedComment({id: ''})
+        }
+    }
+    
     const filteredComponents = components.filter(item => {
         return (
           (filterComponents.address === '' || item.address.includes(filterComponents.address)) &&
@@ -309,9 +388,10 @@ export default function Components() {
                             osv_vuln_number={component.osv_vuln_count}
                             bdu_vuln_number={component.bdu_vuln_count}
                             picked={pickedComponent.id === component.id && true || false}
-                            onClick={() => {setcomponentVulnerabilities([]); setPickedComponent(component); setIsChangeModalOpen(true)}}>
+                            onClick={() => {setcomponentVulnerabilities([]); setPickedComponent(component);getComponentComments(component.id); setIsChangeModalOpen(true)}}>
                             </ComponentCard>)}
                         </>}
+
             <Modal isOpen={isChangeModalOpen} onClose={closeChangeModal}> 
                 <div className="changeModalComponents">
                     <div className="changeModalComponentsParams">
@@ -393,6 +473,33 @@ export default function Components() {
                         </select>
                         <Button style={"projectAccept"} onClick={() => openAcceptModalWithAction(changeComponentStatus)}> Изменить </Button>
                         <Button style={"projectClose"} onClick={closeChangeModal}> Закрыть </Button>
+                    </div>
+                </div>
+                <div className="changeModalComments">Комментарии
+                    <div className="comments">
+                        {componentComments.map(comment =>
+                                <CommentCard
+                                    id={comment.id} 
+                                    onClick={() => {if (pickedComment.id ==! comment.id) {setPickedComment(comment)} else {setPickedComment({id: ''})}}}
+                                    picked={pickedComment.id === comment.id && true || false}
+                                    user={comment.user_name}
+                                    datetime={comment.datetime}
+                                    text={comment.comment}
+                                    deleteFunction = {() => deleteComponentComment()}
+                                    owner = {comment.user_name === userName && true || false}
+                                >
+                                </CommentCard>
+                            )}
+                    </div>
+                    <textarea className="comments"
+                        id={pickedComponent.id}
+                        placeholder='Комментарий'
+                        value={componentComment.comment}
+                        onChange={e => setComponentComment({...componentComment, comment: e.target.value})}>
+                    </textarea>
+                    <div className="sendLogo">
+
+                    <img src={sendLogo} alt="" className="sendLogo" onClick={addComponentComment}/>
                     </div>
                 </div>
             </Modal>
