@@ -52,21 +52,29 @@ def search_match(directory: str, extensions: list):
     # у API, к которому идёт обращение ниже, есть лимит на кол-во запросов в секунду. На данный момент sleep решает проблему
     time.sleep(0.1)
     print(f'\rrequest for search {directory}', end='', flush=True)
+    MAX_RETRIES = 5
+    WAIT_TIME_BASE = 30
     try:
         response = requests.post(
             'https://api.osv.dev/v1experimental/determineversion', json=data)
     except Exception as exc:
-        print(f"Exception: {exc}")
-        print(f"Try again...")
-        time.sleep(300)
-        print("Continuing execution...")
-        print(f'request for search {directory}')
-        try:
-            response = requests.post(
-                'https://api.osv.dev/v1experimental/determineversion', json=data)
-        except Exception as exc:
-            print(f"Failed attempt, shutdown, exception is: {exc}")
-            raise Exception(exc)
+        print(f"Initial request failed with exception: {exc}")
+        for i in range(MAX_RETRIES):
+            try:
+                wait_time = WAIT_TIME_BASE * (i + 1)
+                print(
+                    f"Attempt {i + 1}/{MAX_RETRIES}, waiting {wait_time} seconds...")
+                time.sleep(wait_time)
+                print("Retrying the request...")
+                response = requests.post(
+                    'https://api.osv.dev/v1experimental/determineversion', json=data)
+                print("Request succeeded")
+                break
+            except Exception as retry_exc:
+                print(f"Attempt {i + 1} failed: {retry_exc}")
+                if i == MAX_RETRIES - 1:
+                    print("All retry attempts failed. Raising exception.")
+                    raise retry_exc
 
     if not 'matches' in response.json():
         return False
