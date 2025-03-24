@@ -81,7 +81,22 @@ def get_all_snapshot_data(id):
 
     bdu_vulnerabilities = execute_db_query(query)
 
+    query = f"""
+        SELECT * FROM licenses;
+    """
+
+    licenses = execute_db_query(query)
+
+    query = f"""
+            SELECT cc.*, u.login AS user_name
+            FROM components_comments cc
+            JOIN users u ON cc.user_id = u.id
+            """
+    comments = execute_db_query(query)
+
     for component in components:
+        component['licenses'] = []
+        component['comments'] = []
         for vuln in vulnerabilities:
             if vuln['component_id'] == component['id']:
                 if 'vulnerabilities' not in component:
@@ -92,6 +107,12 @@ def get_all_snapshot_data(id):
                 if 'bdu_vulnerabilities' not in component:
                     component['bdu_vulnerabilities'] = []
                 component['bdu_vulnerabilities'].append(vuln)
+        for license in licenses:
+            if license['component_id'] == component['id']:
+                component['licenses'].append(license)
+        for comment in comments:
+            if comment['component_id'] == component['id']:
+                component['comments'].append(comment)
 
     result['components'] = components
     return result

@@ -44,19 +44,22 @@ class DOCX_GENERATOR:
 
         def create_component_table(doc, component, component_number):
             header_component_values = [
-                '№', 'Информация о компоненте']
+                '№', 'Информация о компоненте', 'Лицензии', 'Комментарии']
             last_paragraph = doc.add_paragraph()
             last_paragraph.paragraph_format.space_after = Cm(1)
 
-            table = doc.add_table(rows=1, cols=2)
+            table = doc.add_table(rows=1, cols=4)
             table.autofit = False
             table.columns[0].width = Cm(0.2)
             table.columns[1].width = Cm(6)
+            table.columns[2].width = Cm(6)
             header_cells = table.rows[0].cells
             for i in range(len(header_component_values)):
                 header_cells[i].text = header_component_values[i]
             header_cells[0].width = Cm(1)
-            header_cells[1].width = Cm(18)
+            header_cells[1].width = Cm(8)
+            header_cells[2].width = Cm(6)
+            header_cells[3].width = Cm(5)
 
             # настройка шрифта шапки таблицы
             for cell in header_cells:
@@ -75,6 +78,25 @@ class DOCX_GENERATOR:
                                     \nСсылка: {component['address']}
                                     \nТег: {component['tag']}
                                     \nВерсия: {component['version']}"""
+            if component['licenses']:
+                licenses_string = ''
+                license_count = 1
+                for license in component['licenses']:
+                    licenses_string += (
+                        f"\n{license_count}) {license['name']}")
+                    license_count += 1
+                body_cells[2].text = str(licenses_string)
+            else:
+                body_cells[2].text = "Лицензий для компонента не найдено"
+            if component['comments']:
+                comments_string = ''
+                for comment in component['comments']:
+                    comments_string += (
+                        f"\n{comment['user_name']}: {comment['comment']}\n")
+                body_cells[3].text = str(comments_string)
+            else:
+                body_cells[3].text = "Комментариев для компонента не найдено"
+
             # настройка шрифта тела таблицы
             for cell in body_cells:
                 for paragraph in cell.paragraphs:
