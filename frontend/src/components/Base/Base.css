@@ -5,18 +5,22 @@ div.baseSidebar {
     align-items: stretch;
     height: 95%;
     width: 12%;
+    box-sizing: initial
 }
-@media (width < 1670px){
+
+@media (width < 1670px) {
     div.sidebar {
         width: 15%;
     }
 }
-@media (width < 1370px){
+
+@media (width < 1370px) {
     div.sidebar {
         width: 23%;
     }
 }
-@media (width < 1000px){
+
+@media (width < 1000px) {
     div.sidebar {
         width: 24%;
     }
@@ -26,6 +30,7 @@ div.baseContent {
     display: flex;
     height: 95%;
     padding-left: 1px;
+    box-sizing: initial
 }
 
 nav.baseSidebar {
@@ -49,8 +54,9 @@ ul.base {
     text-decoration: none;
     width: 100%;
     box-sizing: border-box;
-    user-select: none; 
+    user-select: none;
 }
+
 .baseHref:hover {
     background-color: #6e8399e3;
     color: white;
@@ -66,7 +72,7 @@ ul.base {
     text-decoration: none;
     width: 100%;
     box-sizing: border-box;
-    user-select: none; 
+    user-select: none;
 }
 
 .activeBaseHref:hover {

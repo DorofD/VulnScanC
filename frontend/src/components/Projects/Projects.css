@@ -24,14 +24,16 @@ textarea.mainProjects {
     color: black;
 }
 
-textarea.mainProjects::-webkit-scrollbar, div.mainProjects::-webkit-scrollbar {
+textarea.mainProjects::-webkit-scrollbar,
+div.mainProjects::-webkit-scrollbar {
     width: 10px;
     background-color: #f1f1f1;
     margin: 40px;
     border-radius: 10px;
 }
 
-textarea.mainProjects::-webkit-scrollbar-thumb, div.mainProjects::-webkit-scrollbar-thumb {
+textarea.mainProjects::-webkit-scrollbar-thumb,
+div.mainProjects::-webkit-scrollbar-thumb {
     background-color: #afafaf;
 }
 
@@ -59,17 +61,17 @@ div.changeModalProjects {
     padding: 5px;
     width: 350px;
     height: 80px;
-    
+
 }
 
-div.changeModalProjectsName{
+div.changeModalProjectsName {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
 }
 
-div.changeModalProjectsButtons{
+div.changeModalProjectsButtons {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -79,29 +81,29 @@ div.acceptModalProjects {
     padding: 5px;
     width: 350px;
     height: 80px;
-    
+
 }
 
-div.acceptModalProjectsName{
+div.acceptModalProjectsName {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
 }
 
-div.acceptModalProjectsButtons{
+div.acceptModalProjectsButtons {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-div.acceptModalProjectsButtons{
+div.acceptModalProjectsButtons {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-div.acceptModalProjectsText{
+div.acceptModalProjectsText {
     font-family: Arial;
     font-size: 20px;
     display: flex;
