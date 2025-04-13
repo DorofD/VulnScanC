@@ -1,0 +1,50 @@
+.sarifFileCard {
+    vertical-align: middle;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+    margin: 20px;
+    height: 30px;
+}
+
+.sarifFileCardPicked {
+    vertical-align: middle;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    border: solid 3px rgb(34, 34, 34);
+    border-radius: 10px;
+    margin: 20px;
+    height: 30px;
+    background-color: #e4e4e4;
+}
+
+.sarifFileCard:hover {
+    background-color: #f1f1f1;
+    border: solid 3px #474747;
+}
+
+.sarifFileCardPicked:hover {
+    background-color: #f1f1f1;
+    border: solid 3px #474747;
+}
+
+
+div.sarifButtons {
+    display: block;
+    width: 25%;
+    align-items: center;
+}
+
+p.sarifFileName {
+    font-size: 20px;
+    font-weight: 400;
+    margin-top: 0;
+    margin-bottom: 0px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

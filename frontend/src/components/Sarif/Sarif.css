@@ -15,7 +15,21 @@ div.sarifSelect {
     height: 78%;
     border-bottom: solid 3px #f1f1f1;
     margin-bottom: 10px;
+    overflow: auto;
     /* background-color: rgb(150, 218, 137); */
+}
+
+div.sarifSelect::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+
+div.sarifSelect::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+    border-radius: 10px;
 }
 
 div.sarifReset {

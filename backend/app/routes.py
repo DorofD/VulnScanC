@@ -16,6 +16,7 @@ from app.services.api_services.licenses import check_licenses, add_license, dele
 from app.services.api_services.bdu import get_bdu_info, update_bdu, update_vulns_by_cve_id, get_component_dbu_vulns
 from app.services.api_services.reports import create_osv_report, create_bdu_report, create_dependency_track_report, create_svacer_report
 from app.services.api_services.component_comments import get_comments_for_component, add_comment_for_component, delete_component_comment
+from app.services.api_services.sarif import upload_sarif, get_sarif_path, get_sarif_filenames, delete_sarif
 
 main = Blueprint('main', __name__)
 
@@ -287,6 +288,30 @@ def dependency_track():
     if request.args.get('action') == 'get_components':
         result = get_dt_components(request.args.get('project_uuid'))
         return jsonify(result)
+
+
+@main.route('/sarif', methods=(['GET', 'POST']))
+@cross_origin()
+def sarif():
+    if request.method == 'GET':
+        if request.args.get('action') == 'get_filenames':
+            return get_sarif_filenames()
+        if request.args.get('action') == 'get_file':
+            return send_file(get_sarif_path(request.args.get('filename')), as_attachment=True)
+    if request.method == 'POST':
+        if 'file' in request.files and 'action' in request.form:
+            file = request.files['file']
+            action = request.form['action']
+            project_name = request.form.get('project_name')
+            if action == 'upload':
+                filename = upload_sarif(file, project_name)
+                if type(filename) == str:
+                    return jsonify({'success': True, 'message': f"File {filename} uploaded successfully"}), 200
+                return jsonify({'success': False, 'message': f"File not uploaded for project {project_name}"}), 400
+        data = request.json
+        if data['action'] == 'delete':
+            delete_sarif(data['filename'])
+        return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
 
 
 @main.route('/login', methods=(['POST']))
