@@ -49,9 +49,10 @@ export default function Components() {
         try {
             setLoadingProjects('loading')
             const projects = await apiGetProjects()
-            console.log(projects)
+            if (projects != false) {
+                setLoadingProjects('loaded')
+            } else { setLoadingProjects('error') }
             setProjects(projects)
-            setLoadingProjects('loaded')
         } catch (err) {
             setLoadingProjects('error')
         }
