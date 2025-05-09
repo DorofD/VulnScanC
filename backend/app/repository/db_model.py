@@ -117,3 +117,58 @@ def create_db():
             """
     cursor = conn.cursor()
     cursor.execute(query)
+
+    query = """
+                CREATE TABLE IF NOT EXISTS "bitbake_projects" (
+                    "id"	INTEGER NOT NULL UNIQUE,
+                    "name"	TEXT NOT NULL,
+                    PRIMARY KEY("id" AUTOINCREMENT)
+                );
+            """
+    cursor = conn.cursor()
+    cursor.execute(query)
+
+    query = """
+                CREATE TABLE IF NOT EXISTS "bitbake_snapshots" (
+                    "id"	INTEGER NOT NULL UNIQUE,
+                    "project_id"	INTEGER NOT NULL,
+                    "datetime"	TEXT NOT NULL,
+                    "components"	TEXT,
+                    PRIMARY KEY("id" AUTOINCREMENT),
+                    FOREIGN KEY("project_id") REFERENCES "bitbake_projects"("id")
+                );
+            """
+    cursor = conn.cursor()
+    cursor.execute(query)
+
+    query = """
+                CREATE TABLE IF NOT EXISTS "bitbake_components" (
+                    "id"	INTEGER NOT NULL UNIQUE,
+                    "project_id"	INTEGER NOT NULL,
+                    "name"	TEXT,
+                    "version"	TEXT,
+                    "layer"	TEXT,
+                    PRIMARY KEY("id" AUTOINCREMENT),
+                    FOREIGN KEY("project_id") REFERENCES "bitbake_projects"("id")
+                );
+            """
+    cursor = conn.cursor()
+    cursor.execute(query)
+
+    query = """
+                CREATE TABLE IF NOT EXISTS "bitbake_vulnerabilities" (
+                    "id"	INTEGER NOT NULL UNIQUE,
+                    "component_id"	INTEGER NOT NULL,
+                    "cve"	TEXT NOT NULL,
+                    "status"	TEXT,
+                    "summary"	TEXT,
+                    "cvss_v2"	TEXT,
+                    "cvss_v3"	TEXT,
+                    "vector"	TEXT,
+                    "more_information"	TEXT,
+                    PRIMARY KEY("id" AUTOINCREMENT),
+                    FOREIGN KEY("component_id") REFERENCES ""
+                );
+            """
+    cursor = conn.cursor()
+    cursor.execute(query)
