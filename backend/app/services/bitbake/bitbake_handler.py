@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from app.repository.queries.bitbake_projects import add_bitbake_project, get_bitbake_project, get_bitbake_projects, delete_bitbake_project
-from app.repository.queries.bitbake_components import add_bitbake_components, get_bitbake_component, get_bitbake_project_components
+from app.repository.queries.bitbake_projects import add_bitbake_project, get_bitbake_project, get_bitbake_projects, delete_bitbake_project, change_bitbake_project
+from app.repository.queries.bitbake_components import add_bitbake_components, get_bitbake_components, get_bitbake_project_components
 from app.repository.queries.bitbake_vulnerabilities import get_bitbake_vulnerabilities_by_component, get_bitbake_vulnerabilities_by_components
 from app.repository.queries.bitbake_vulnerabilities import get_bitbake_vulnerabilities_count_in_component, get_bitbake_vulnerabilities_ids, add_bitbake_vulnerabilities
 from app.repository.queries.bitbake_snapshots import add_bitbake_snapshot
@@ -11,7 +11,71 @@ class BitbakeHandler:
     def __init__(self):
         pass
 
+    def add_project(self, project_name):
+        add_bitbake_project(project_name)
+        return True
+
+    def delete_project(self, project_id):
+        delete_bitbake_project(project_id)
+        return True
+
+    def change_project(self, project_id, new_project_name):
+        change_bitbake_project(project_id, new_project_name)
+        return True
+
+    def get_projects(self):
+        return get_bitbake_projects()
+
+    def get_components(self, project_id, layer):
+        return get_bitbake_components(project_id, layer)
+
+    def get_vulnerabilities(self, component_id):
+        vulns = get_bitbake_vulnerabilities_by_component(component_id)
+        critical_list = []
+        high_list = []
+        medium_list = []
+        low_list = []
+        none_list = []
+        unknown_list = []
+        for vuln in vulns:
+            if vuln['severity'] == 'Critical':
+                critical_list.append(vuln)
+                continue
+            if vuln['severity'] == 'High':
+                high_list.append(vuln)
+                continue
+            if vuln['severity'] == 'Medium':
+                medium_list.append(vuln)
+                continue
+            if vuln['severity'] == 'Low':
+                low_list.append(vuln)
+                continue
+            if vuln['severity'] == 'None':
+                none_list.append(vuln)
+                continue
+            if vuln['severity'] == 'Unknown':
+                unknown_list.append(vuln)
+                continue
+        result = [*critical_list, *high_list, *medium_list,
+                  *low_list, *none_list, *unknown_list]
+        return result
+
     def parse_cve_report(self, cve_report):
+        """
+        Парсит bitbake отчёт формата .cve, возвращает объект:
+        {'layers':
+          'layer_name':
+            'package_name':
+              'version': ...,
+              'cves':
+                'some_cve':
+                  'cve_status': ...,
+                  'cve_summary': ...,
+                  'cvss_v2': ...,
+                  'cvss_v3': ...,
+                  'vector': ...,
+                  'more_information': ...}
+        """
         content = cve_report.read().decode('utf-8')
         # with open(content, "r", encoding='utf-8') as file:
         lines = content.splitlines()
@@ -71,6 +135,7 @@ class BitbakeHandler:
                         'cve_summary': "",
                         'cvss_v2': "",
                         'cvss_v3': "",
+                        'severity': "",
                         'vector': "",
                         'more_information': ""
                     }
@@ -105,6 +170,19 @@ class BitbakeHandler:
                 cvss_v3 = line.replace(initial_lines["cvss_v3"], '')
                 cvss_v3 = cvss_v3.replace('\n', '')
                 parsed_result['layers'][current_layer][current_package]['cves'][current_cve]['cvss_v3'] = cvss_v3
+                float_cvss = float(cvss_v3)
+                severity = 'Unknown'
+                if float_cvss == 0:
+                    severity = "None"
+                elif 0.1 <= float_cvss <= 3.9:
+                    severity = "Low"
+                elif 4.0 <= float_cvss <= 6.9:
+                    severity = "Medium"
+                elif 7.0 <= float_cvss <= 8.9:
+                    severity = "High"
+                elif 9.0 <= float_cvss <= 10.0:
+                    severity = "Critical"
+                parsed_result['layers'][current_layer][current_package]['cves'][current_cve]['severity'] = severity
 
             if initial_lines["vector"] in line:
                 vector = line.replace(initial_lines["vector"], '')
@@ -172,6 +250,8 @@ class BitbakeHandler:
                                                                'cves'][report_vuln]['cve_summary'],
                                                            report_components_list[report_component]['cves'][report_vuln]['cvss_v2'],
                                                            report_components_list[report_component]['cves'][report_vuln]['cvss_v3'],
+                                                           report_components_list[report_component][
+                                                               'cves'][report_vuln]['severity'],
                                                            report_components_list[report_component]['cves'][report_vuln]['vector'],
                                                            report_components_list[report_component][
                                                                'cves'][report_vuln]['more_information'],

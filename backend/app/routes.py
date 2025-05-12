@@ -17,7 +17,7 @@ from app.services.api_services.bdu import get_bdu_info, update_bdu, update_vulns
 from app.services.api_services.reports import create_osv_report, create_bdu_report, create_dependency_track_report, create_svacer_report
 from app.services.api_services.component_comments import get_comments_for_component, add_comment_for_component, delete_component_comment
 from app.services.api_services.sarif import upload_sarif, get_sarif_path, get_sarif_filenames, delete_sarif
-from app.services.api_services.bitbake import handle_bb_cve_report
+from app.services.api_services.bitbake import add_bitbake_project, delete_bitbake_project, change_bitbake_project, get_bitbake_projects, get_bitbake_components, get_bitbake_vulnerabilities, handle_bb_cve_report
 
 main = Blueprint('main', __name__)
 
@@ -316,29 +316,40 @@ def sarif():
 
 
 @main.route('/bitbake', methods=['GET', 'POST'])
-# отправить отчёт
-# curl -X POST -F "file=@./report.cve" -F "project=project_name" http://192.168.1.2:5000/bitbake
 @cross_origin()
 def bitbake():
+    if request.method == 'GET':
+        if request.args.get('action') == 'get_projects':
+            # возвращает project_id, project_name, и слои проекта
+            return get_bitbake_projects()
+        if request.args.get('action') == 'get_components':
+            # возвращает компоненты по id проекта и слою
+            project_id = request.args.get('project_id')
+            layer = request.args.get('layer')
+            return get_bitbake_components(project_id, layer)
+        if request.args.get('action') == 'get_vulnerabilities':
+            component_id = request.args.get('component_id')
+            return get_bitbake_vulnerabilities(component_id)
     if request.method == 'POST':
+        # отправить отчёт
+        # curl -X POST -F "file=@./report.cve" -F "project=project_name" http://192.168.1.2:5000/bitbake
         if 'file' in request.files and 'project' in request.form:
             project = request.form['project']
             file = request.files['file']
             handle_bb_cve_report(project, file)
-
             return "File processed successfully!", 200
+        data = request.json
+        if data['action'] == 'add_project':
+            if add_bitbake_project(data['project_name']):
+                return "Project created", 200
+        if data['action'] == 'delete_project':
+            if delete_bitbake_project(data['project_id']):
+                return "Project deleted", 200
+        if data['action'] == 'change_project':
+            if change_bitbake_project(data['project_id'], data['project_name']):
+                return "Project changed", 200
+
     return "Invalid request", 400
-    #     action = request.form['action']
-    #     project_name = request.form.get('project_name')
-    #     if action == 'upload':
-    #         filename = upload_sarif(file, project_name)
-    #         if type(filename) == str:
-    #             return jsonify({'success': True, 'message': f"File {filename} uploaded successfully"}), 200
-    #         return jsonify({'success': False, 'message': f"File not uploaded for project {project_name}"}), 400
-    # data = request.json
-    # if data['action'] == 'delete':
-    #     delete_sarif(data['filename'])
-    # return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
 
 
 @main.route('/login', methods=(['POST']))

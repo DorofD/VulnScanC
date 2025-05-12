@@ -1,3 +1,10 @@
+p.projectsTitle {
+    text-align: center;
+    font-family: Arial;
+    /* font-size: 24px; */
+    /* font-weight: 600; */
+}
+
 div.mainProjects {
     height: 100%;
     width: 30%;

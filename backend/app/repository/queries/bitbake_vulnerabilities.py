@@ -42,8 +42,8 @@ def get_bitbake_vulnerabilities_count_in_component(component_id):
 
 
 def add_bitbake_vulnerabilities(data_list: list):
-    """в data_list ожидаемся список значений в формате [[component_id, cve, status, summary, cvss_v2, cvss_v3, vector, more_information], [] ]"""
+    """в data_list ожидаемся список значений в формате [[component_id, cve, status, summary, cvss_v2, cvss_v3, severity, vector, more_information], [] ]"""
     query = f"""
-            INSERT INTO bitbake_vulnerabilities ('component_id', 'cve', 'status', 'summary', 'cvss_v2', 'cvss_v3', 'vector', 'more_information') VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+            INSERT INTO bitbake_vulnerabilities ('component_id', 'cve', 'status', 'summary', 'cvss_v2', 'cvss_v3', 'severity', 'vector', 'more_information') VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
             """
     return execute_db_query(query, data_list)

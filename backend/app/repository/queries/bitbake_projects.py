@@ -9,10 +9,23 @@ def add_bitbake_project(name):
 
 
 def get_bitbake_projects():
+    """Возвращает список в формате [{id: ..., 'name': ..., 'layers': ['layer1', 'layer2', ...]}, ...]"""
     query = f"""
             SELECT * FROM bitbake_projects
             """
-    return execute_db_query(query)
+    projects = execute_db_query(query)
+
+    for project in projects:
+        project['layers'] = []
+        query = f"""
+                SELECT DISTINCT layer FROM bitbake_components
+                WHERE project_id = '{project['id']}'
+                """
+        layers = execute_db_query(query)
+        for layer in layers:
+            project['layers'].append(layer['layer'])
+
+    return projects
 
 
 def get_bitbake_project(name):

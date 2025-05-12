@@ -164,6 +164,7 @@ def create_db():
                     "summary"	TEXT,
                     "cvss_v2"	TEXT,
                     "cvss_v3"	TEXT,
+                    "severity"  TEXT,
                     "vector"	TEXT,
                     "more_information"	TEXT,
                     PRIMARY KEY("id" AUTOINCREMENT),
