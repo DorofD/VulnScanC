@@ -354,3 +354,71 @@ img.sendLogo:hover {
     width: 40px;
     cursor: pointer;
 }
+
+.custom-checkbox input[type="checkbox"] {
+    display: none;
+    /* Скрываем стандартный чекбокс */
+}
+
+.custom-checkbox label {
+    position: relative;
+    padding-left: 30px;
+    user-select: none;
+    /* Отступ для кастомного квадратика */
+    cursor: pointer;
+}
+
+.custom-checkbox label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    /* Размер квадратика */
+    height: 20px;
+    border: 2px solid #646464;
+    /* Граница квадратика */
+    background-color: #fff;
+    /* Фон квадратика */
+    border-radius: 4px;
+    /* Скругленные углы (опционально) */
+}
+
+.custom-checkbox input[type="checkbox"]:checked+label::before {
+    background-color: #2190ffe3;
+    /* Цвет заливки при активном состоянии */
+    background-color: #2190ffe3;
+}
+
+.custom-checkbox input[type="checkbox"]:checked+label::after {
+    content: '✔';
+    /* Галочка */
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: white;
+}
+
+.hintBox {
+    margin-top: 10px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.hintBox h3 {
+    margin-top: 0;
+}
+
+.hintBox p {
+    margin-bottom: 10px;
+}
+
+.hintBox strong {
+    color: #007bff;
+}

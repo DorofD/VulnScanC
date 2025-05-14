@@ -186,6 +186,40 @@ button.bitbakeClearFilter {
     border-radius: 10px;
 }
 
+button.showHint {
+    user-select: none;
+    font-family: Arial;
+    font-size: 22px;
+    display: inline;
+    margin: 0 auto;
+    margin-left: 20px;
+    text-transform: uppercase;
+    background: #c0c0c0;
+    width: 25px;
+    height: 25px;
+    border: 0;
+    color: #000000;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+button.showHintActivated {
+    user-select: none;
+    font-family: Arial;
+    font-size: 22px;
+    display: inline;
+    margin: 0 auto;
+    margin-left: 20px;
+    text-transform: uppercase;
+    background: #2190ffe3;
+    width: 25px;
+    height: 25px;
+    border: 0;
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
 button.componentVulnerabilities {
     user-select: none;
     font-family: Arial;

@@ -46,12 +46,14 @@ export default function Bitbake() {
     const [isChangeModalOpen, setIsChangeModalOpen] = useState(false);
     const [isAcceptModalOpen, setIsAcceptModalOpen] = useState(false);
     const [isVulnerabilityModalOpen, setIsVulnerabilityModalOpen] = useState(false);
+    const [showHint, setShowHint] = useState(false);
 
 
     const [actionFunction, setActionFunction] = useState(null);
 
 
     const [filterComponents, setFilterComponents] = useState({ name: '' });
+    const [hidePatched, setHidePatched] = useState(false);
     const [filterVulnerabilities, setFilterVulnerabilities] = useState({ cve: '' });
     const [filterVulnerabilitiesBdu, setFilterVulnerabilitiesBdu] = useState({ bdu_id: '' });
 
@@ -94,11 +96,7 @@ export default function Bitbake() {
         try {
             setLoadingComponents('loading');
             const components = await apiGetBitbakeProjectComponents(id, layer);
-
-            // Сортируем компоненты по cve_count в порядке убывания
             const sortedComponents = components.sort((a, b) => b.cve_count - a.cve_count);
-
-            // Устанавливаем отсортированные компоненты
             setComponents(sortedComponents);
             setLoadingComponents('loaded');
         } catch (err) {
@@ -294,7 +292,8 @@ export default function Bitbake() {
     const filteredVulnerabilities = componentVulnerabilities.filter(item => {
         if (showedVunls == 'cve') {
             return (
-                (filterVulnerabilities.cve === '' || item.cve.includes(filterVulnerabilities.cve))
+                (filterVulnerabilities.cve === '' || item.cve.includes(filterVulnerabilities.cve)) &&
+                (!hidePatched || item.status !== "Patched")
             );
         }
         if (showedVunls == 'bdu') {
@@ -302,9 +301,7 @@ export default function Bitbake() {
                 (filterVulnerabilitiesBdu.bdu_id === '' || item.bdu_id.includes(filterVulnerabilitiesBdu.bdu_id))
             );
         }
-    }
-    )
-
+    });
     useEffect(() => {
         getProjects()
     }, [])
@@ -491,6 +488,45 @@ export default function Bitbake() {
                         <input type="text" className="bitbakeVulnerabilityFilter" placeholder="CVE id" onChange={e => setFilterVulnerabilities({ ...filterVulnerabilities, cve: e.target.value })} value={filterVulnerabilities.cve} />
                         <button onClick={() => setFilterVulnerabilities({ cve: '' })} className="bitbakeClearFilter">Очистить</button>
                     </div>
+                    <div className="custom-checkbox">
+                        <input
+                            type="checkbox"
+                            id="checkbox1"
+                            checked={console.log('checked')}
+                            onChange={() => {
+                                setHidePatched((prev) => !prev);
+                            }}
+                        />
+                        <label htmlFor="checkbox1">Скрыть Patched</label>
+                        <button
+                            onClick={() => {
+                                setShowHint((prev) => !prev);
+                            }}
+                            className={showHint ? "showHintActivated" : "showHint"}
+                        >
+                            ?
+                        </button>
+                        {showHint &&
+                            <div className="hintBox">
+                                <p>
+                                    Статус <strong>Patched</strong> означает, что был применен файл
+                                    исправления для устранения проблемы безопасности.
+                                </p>
+                                <p>
+                                    Статус <strong>Unpathed</strong> означает, что исправления
+                                    для устранения проблемы не применялись и что проблему необходимо
+                                    изучить.
+                                </p>
+                                <p>
+                                    Статус <strong>Ignored</strong> означает, что после
+                                    анализа было решено игнорировать проблему, поскольку она, например,
+                                    затрагивает программный компонент на другой платформе операционной
+                                    системы.
+                                </p>
+                            </div>
+                        }
+                    </div>
+
                     {filteredVulnerabilities.map(vuln =>
                         <BitbakeVulnerabilityCard id={vuln.id}
                             name={vuln.cve}
