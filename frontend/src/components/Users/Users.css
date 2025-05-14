@@ -19,7 +19,7 @@ div.users::-webkit-scrollbar-thumb {
     background-color: #afafaf;
 }
 
-@media (width < 980px){
+@media (width < 980px) {
     div.users {
         margin: 1%;
     }
@@ -30,16 +30,16 @@ div.addModalUsers {
     width: 350px;
     height: 350px;
     text-align: center;
-    
+
 }
 
-div.addModalUsersParams{
+div.addModalUsersParams {
     display: inline-block;
     margin-bottom: 10px;
     word-break: break-word;
 }
 
-div.addModalUsersParamsValues{
+div.addModalUsersParamsValues {
     width: 60%;
     display: flex;
     flex-direction: column;
@@ -56,10 +56,12 @@ input.addModalUsers {
     font-family: Arial;
     font-size: large;
     width: 300px;
+    height: 32px;
     padding: 4px;
     border: solid 3px #afafaf;
     border-radius: 10px;
 }
+
 input.addModalUsers:disabled {
     background-color: #f1f1f1;
 }
@@ -84,7 +86,7 @@ select.addModalUsers:hover {
     cursor: pointer;
 }
 
-div.addModalUsersButtons{
+div.addModalUsersButtons {
     display: flex;
     justify-content: center;
     align-items: center;
