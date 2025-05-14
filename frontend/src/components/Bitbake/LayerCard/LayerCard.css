@@ -1,0 +1,51 @@
+.layerCard {
+    vertical-align: middle;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+    margin: 20px;
+    height: 30px;
+}
+
+.layerCardPicked {
+    vertical-align: middle;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    border: solid 3px rgb(34, 34, 34);
+    border-radius: 10px;
+    margin: 20px;
+    height: 30px;
+    background-color: #e4e4e4;
+}
+
+.layerCard:hover {
+    background-color: #f1f1f1;
+    border: solid 3px #474747;
+}
+
+.layerCardPicked:hover {
+    background-color: #f1f1f1;
+    border: solid 3px #474747;
+}
+
+div.userContent {
+    display: block;
+    width: 75%;
+}
+
+div.userButtons {
+    display: block;
+    width: 25%;
+    align-items: center;
+}
+
+p.name {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 0px;
+    text-align: left;
+}

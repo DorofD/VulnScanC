@@ -42,3 +42,19 @@ export async function apiChangeBitbakeProject(id, name) {
     })
     return response
 }
+
+export async function apiGetBitbakeProjectComponents(project_id, layer) {
+    const response = await fetch(`${process.env.BACKEND_URL}/bitbake?action=get_components&project_id=${project_id}&layer=${layer}`, {
+        method: 'GET',
+    })
+    const projects = await response.json()
+    return projects
+}
+
+export async function apiGetBitbakeComponentVulnerabilities(component_id) {
+    const response = await fetch(`${process.env.BACKEND_URL}/bitbake?action=get_vulnerabilities&component_id=${component_id}`, {
+        method: 'GET',
+    })
+    const projects = await response.json()
+    return projects
+}

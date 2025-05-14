@@ -53,6 +53,11 @@ export default function Base() {
                             </NavLink>
                         </li>
                         <li>
+                            <NavLink to="/bitbake" className={({ isActive }) => isActive ? 'activeBaseHref' : 'baseHref'}>
+                                Bitbake
+                            </NavLink>
+                        </li>
+                        <li>
                             <NavLink to="/svacer" className={({ isActive }) => isActive ? 'activeBaseHref' : 'baseHref'}>
                                 Svacer
                             </NavLink>

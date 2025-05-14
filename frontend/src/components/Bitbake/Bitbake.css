@@ -1,0 +1,343 @@
+div.bitbakeProjects {
+    height: 100%;
+    width: 25%;
+    overflow: auto;
+    text-align: center;
+}
+
+div.bitbakeLayers {
+    height: 100%;
+    width: 25%;
+    text-align: center;
+    overflow: auto;
+}
+
+div.bitbakeComponents {
+    height: 100%;
+    width: 25%;
+    text-align: center;
+    overflow: auto;
+}
+
+div.bitbakeVulnerabilities {
+    height: 100%;
+    width: 25%;
+    text-align: center;
+    overflow: auto;
+}
+
+div.bitbakeVulnerabilities::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+
+div.bitbakeVulnerabilities::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+    border-radius: 10px;
+}
+
+textarea.mainProjects {
+    font-family: Arial;
+    font-size: 18px;
+    width: 95%;
+    height: 70%;
+    resize: none;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: solid 4px #afafaf;
+    border-radius: 10px;
+    color: black;
+}
+
+textarea.mainProjects::-webkit-scrollbar,
+div.mainProjects::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+textarea.mainProjects::-webkit-scrollbar-thumb,
+div.mainProjects::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+}
+
+
+textarea.projects {
+    font-family: Arial;
+    font-size: 20px;
+    width: 90%;
+    height: 30px;
+    resize: none;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+
+}
+
+textarea.projects:focus {
+    border: solid 3px #646464;
+}
+
+textarea.projects:disabled {
+    background-color: #f1f1f1;
+}
+
+div.changeModalComponents {
+    padding: 5px;
+    width: 600px;
+    height: 730px;
+}
+
+
+div.changeModalComponentsParams {
+    margin-bottom: 10px;
+    height: 560px;
+    overflow: auto;
+    word-break: break-word;
+    margin: 5px;
+    margin-bottom: 12px;
+    padding: 10px;
+    padding-right: 20px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+}
+
+div.changeModalComponentsParams::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+div.changeModalComponentsParams::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+    border-radius: 10px;
+}
+
+div.changeModalProjectsButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.changeModalComponentVulnerabilitiesButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+div.acceptModalProjects {
+    padding: 5px;
+    width: 350px;
+    height: 80px;
+
+}
+
+div.acceptModalProjectsName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+div.acceptModalProjectsButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.acceptModalProjectsButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.acceptModalProjectsText {
+    font-family: Arial;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+div.vulnerabilityModal {
+    padding: 5px;
+    width: 600px;
+    height: 820px;
+
+}
+
+div.vulnerabilityModalInfo {
+    margin-bottom: 10px;
+    height: 740px;
+    overflow: auto;
+    word-break: break-word;
+    margin: 5px;
+    margin-bottom: 12px;
+    padding: 10px;
+    padding-right: 20px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+}
+
+div.vulnerabilityModalInfo::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+div.vulnerabilityModalInfo::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+    border-radius: 10px;
+}
+
+.componentSelect {
+    user-select: none;
+    font-family: Arial;
+    font-size: 16px;
+    width: 180px;
+    padding: 8px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+}
+
+.componentSelect:focus {
+    border: solid 3px #646464;
+}
+
+.componentSelect:hover {
+    border: solid 3px #646464;
+    cursor: pointer;
+}
+
+div.filterLogo {
+    display: inline;
+}
+
+img.filterLogo {
+    width: 30px;
+    vertical-align: middle;
+}
+
+.componentFilter {
+    font-family: Arial;
+    font-size: large;
+    width: 150px;
+    padding: 4px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+}
+
+.vulnerabilityFilter {
+    font-family: Arial;
+    font-size: large;
+    width: 300px;
+    padding: 4px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+}
+
+.clearFilter {
+    font-family: Arial;
+    font-size: medium;
+    width: 100px;
+    padding: 8px;
+    margin-left: 10px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+ul.license {
+    list-style: none;
+    padding: 10px;
+    /* border: solid 3px #e9e9e9;
+    border-radius: 10px; */
+}
+
+li.license {
+    padding-left: 10px;
+    border: solid 3px #e9e9e9;
+    border-radius: 10px;
+}
+
+textarea.license {
+    font-family: Arial;
+    font-size: 20px;
+    width: 90%;
+    height: 30px;
+    resize: none;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+
+}
+
+textarea.license:focus {
+    border: solid 3px #646464;
+}
+
+textarea.license:disabled {
+    background-color: #f1f1f1;
+}
+
+div.changeModalComments {
+    padding: 4px;
+    width: 700px;
+    height: 705px;
+    /* border: solid 3px #afafaf; */
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+div.comments {
+    margin-bottom: 10px;
+    height: 570px;
+    overflow: auto;
+    word-break: break-word;
+    margin: 5px;
+    margin-bottom: 12px;
+    padding: 10px;
+    padding-right: 20px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+}
+
+textarea.comments {
+    font-family: Arial;
+    font-size: 18px;
+    width: 90%;
+    height: 60px;
+    resize: none;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+div.sendLogo {
+    display: inline;
+}
+
+
+img.sendLogo {
+    margin: 5px;
+    margin-bottom: 75px;
+    width: 35px;
+    vertical-align: middle;
+}
+
+img.sendLogo:hover {
+    width: 40px;
+    cursor: pointer;
+}

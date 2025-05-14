@@ -16,6 +16,7 @@ import SvacerAdmin from "./SvacerAdmin/SvacerAdmin";
 import MarkdownViewer from "./MarkdownViewer/MarkdownViewer";
 import Binary from "./Binary/Binary";
 import SarifViewer from "./Sarif/Sarif";
+import Bitbake from "./Bitbake/Bitbake";
 import { PrivateRoute } from "./PrivateRoute/PrivateRoute";
 import { useAuthContext } from "../hooks/useAuthContext";
 
@@ -30,6 +31,7 @@ export default function App() {
                         <Route path="/components" element={<Components />} />
                         <Route path="/bdu_fstec" element={<BduFstec />} />
                         <Route path="/snapshots" element={<Snapshots />} />
+                        <Route path="/bitbake" element={<Bitbake />} />
                         <Route path="/svacer" element={<Svacer />} />
                         <Route path="/dependencyTrack" element={<DependencyTrack />} />
                         <Route path="/sarif" element={<SarifViewer />} />
