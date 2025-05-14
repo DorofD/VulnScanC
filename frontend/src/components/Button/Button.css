@@ -7,10 +7,10 @@ button.login {
     padding: 15px;
     color: #FFFFFF;
     cursor: pointer;
-    user-select: none; 
+    user-select: none;
 }
-  
-    
+
+
 button.logout {
     all: unset;
     width: 6%;
@@ -22,7 +22,7 @@ button.logout {
     font-size: large;
     display: inline-block;
     text-align: center;
-    user-select: none; 
+    user-select: none;
 }
 
 
@@ -88,7 +88,7 @@ button.reservationAdd {
     border-radius: 10px;
 }
 
-button.reservationExit{
+button.reservationExit {
     font-family: Arial;
     font-size: medium;
     display: block;
@@ -120,7 +120,7 @@ button.projectAccept {
     border-radius: 10px;
 }
 
-button.projectReject{
+button.projectReject {
     user-select: none;
     font-family: Arial;
     font-size: 15px;
@@ -136,7 +136,7 @@ button.projectReject{
     border-radius: 10px;
 }
 
-button.projectClose{
+button.projectClose {
     user-select: none;
     font-family: Arial;
     font-size: 15px;
@@ -152,7 +152,24 @@ button.projectClose{
     border-radius: 10px;
 }
 
-button.clearFilter{
+button.clearFilter {
+    user-select: none;
+    font-family: Arial;
+    font-size: 16px;
+    display: inline;
+    margin: 0 auto;
+    margin-left: 20px;
+    text-transform: uppercase;
+    background: #c0c0c0;
+    width: 110px;
+    height: 30px;
+    border: 0;
+    color: #000000;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+button.bitbakeClearFilter {
     user-select: none;
     font-family: Arial;
     font-size: 16px;
@@ -201,7 +218,7 @@ button.componentVulnerabilities-disabled {
     border-radius: 10px;
 }
 
-button.logsDownload{
+button.logsDownload {
     user-select: none;
     font-family: Arial;
     font-size: 15px;
@@ -218,7 +235,7 @@ button.logsDownload{
     margin-left: 10px;
 }
 
-button.logsCardClose{
+button.logsCardClose {
     text-align: center;
     user-select: none;
     font-family: Arial;
@@ -236,7 +253,7 @@ button.logsCardClose{
     border-radius: 10px;
 }
 
-button.commentsCardClose{
+button.commentsCardClose {
     text-align: center;
     user-select: none;
     font-family: Arial;
@@ -272,7 +289,7 @@ button.createUser {
     border-radius: 10px;
 }
 
-button.buildBinary{
+button.buildBinary {
     user-select: none;
     font-family: Arial;
     font-size: 15px;

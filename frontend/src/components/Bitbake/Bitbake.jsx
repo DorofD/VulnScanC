@@ -51,7 +51,7 @@ export default function Bitbake() {
     const [actionFunction, setActionFunction] = useState(null);
 
 
-    const [filterComponents, setFilterComponents] = useState({ address: '', status: '' });
+    const [filterComponents, setFilterComponents] = useState({ name: '' });
     const [filterVulnerabilities, setFilterVulnerabilities] = useState({ cve: '' });
     const [filterVulnerabilitiesBdu, setFilterVulnerabilitiesBdu] = useState({ bdu_id: '' });
 
@@ -92,13 +92,18 @@ export default function Bitbake() {
 
     async function getProjectComponents(id, layer) {
         try {
-            setLoadingComponents('loading')
-            const components = await apiGetBitbakeProjectComponents(id, layer)
-            setComponents(components)
-            setLoadingComponents('loaded')
+            setLoadingComponents('loading');
+            const components = await apiGetBitbakeProjectComponents(id, layer);
+
+            // Сортируем компоненты по cve_count в порядке убывания
+            const sortedComponents = components.sort((a, b) => b.cve_count - a.cve_count);
+
+            // Устанавливаем отсортированные компоненты
+            setComponents(sortedComponents);
+            setLoadingComponents('loaded');
         } catch (err) {
-            setComponents([])
-            setLoadingComponents('error')
+            setComponents([]);
+            setLoadingComponents('error');
         }
     }
 
@@ -281,8 +286,7 @@ export default function Bitbake() {
 
     const filteredComponents = components.filter(item => {
         return (
-            (filterComponents.address === '' || item.address.includes(filterComponents.address)) &&
-            (filterComponents.status === '' || item.status.includes(filterComponents.status))
+            (filterComponents.name === '' || item.name.includes(filterComponents.name))
         );
     }
     )
@@ -341,9 +345,8 @@ export default function Bitbake() {
 
                 <div >
                     <img src={filterLogo} alt="" className="filterLogo" />
-                    <input type="text" className="componentFilter" placeholder="Название" onChange={e => setFilterComponents({ ...filterComponents, address: e.target.value })} value={filterComponents.address} />
-                    <input type="text" className="componentFilter" placeholder="Статус" onChange={e => setFilterComponents({ ...filterComponents, status: e.target.value })} value={filterComponents.status} />
-                    <button onClick={() => setFilterComponents({ address: '', status: '' })} className="clearFilter">Очистить</button>
+                    <input type="text" className="componentFilter" placeholder="Название" onChange={e => setFilterComponents({ ...filterComponents, name: e.target.value })} value={filterComponents.name} />
+                    <button onClick={() => setFilterComponents({ name: '' })} className="bitbakeClearFilter">Очистить</button>
                 </div>
 
                 {pickedProject.id && !pickedLayer && <p> Выберете слой</p>}
@@ -351,7 +354,7 @@ export default function Bitbake() {
                 {loadingComponents === 'error' && <p> бекенд отвалился</p>}
                 {loadingComponents === 'loaded' && <>
 
-                    {components.length === 0 && loadingComponents === 'loaded' && <p> Компоненты не найдены</p>}
+                    {filteredComponents.length === 0 && loadingComponents === 'loaded' && <p> Компоненты не найдены</p>}
                     {filteredComponents.map(component =>
                         <BitbakeComponentCard id={component.id}
                             name={component.name}
@@ -481,12 +484,12 @@ export default function Bitbake() {
 
                 <p>Уязвимости</p>
 
-                {pickedProject.id !== '' && pickedComponent.id !== '' && componentVulnerabilities.length === 0 && <p> Уязвимости не найдены</p>}
+                {/* {pickedProject.id !== '' && pickedComponent.id !== '' && componentVulnerabilities.length === 0 && showedVunls && <p> Уязвимости не найдены</p>} */}
                 {showedVunls == 'cve' && <>
                     <div >
                         <img src={filterLogo} alt="" className="filterLogo" />
-                        <input type="text" className="vulnerabilityFilter" placeholder="CVE id" onChange={e => setFilterVulnerabilities({ ...filterVulnerabilities, cve: e.target.value })} value={filterVulnerabilities.cve} />
-                        <button onClick={() => setFilterVulnerabilities({ cve: '' })} className="clearFilter">Очистить</button>
+                        <input type="text" className="bitbakeVulnerabilityFilter" placeholder="CVE id" onChange={e => setFilterVulnerabilities({ ...filterVulnerabilities, cve: e.target.value })} value={filterVulnerabilities.cve} />
+                        <button onClick={() => setFilterVulnerabilities({ cve: '' })} className="bitbakeClearFilter">Очистить</button>
                     </div>
                     {filteredVulnerabilities.map(vuln =>
                         <BitbakeVulnerabilityCard id={vuln.id}
@@ -502,7 +505,7 @@ export default function Bitbake() {
                     <div >
                         <img src={filterLogo} alt="" className="filterLogo" />
                         <input type="text" className="vulnerabilityFilter" placeholder="BDU id" onChange={e => setFilterVulnerabilitiesBdu({ ...filterVulnerabilities, bdu_id: e.target.value })} value={filterVulnerabilitiesBdu.bdu_id} />
-                        <button onClick={() => setFilterVulnerabilitiesBdu({ bdu_id: '' })} className="clearFilter">Очистить</button>
+                        <button onClick={() => setFilterVulnerabilitiesBdu({ bdu_id: '' })} className="bitbakeClearFilter">Очистить</button>
                     </div>
                     {filteredVulnerabilities.map(vuln =>
                         <VulnerabilityCardBdu id={vuln.id}

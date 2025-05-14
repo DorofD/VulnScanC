@@ -237,10 +237,10 @@ img.filterLogo {
     border-radius: 10px;
 }
 
-.vulnerabilityFilter {
+.bitbakeVulnerabilityFilter {
     font-family: Arial;
     font-size: large;
-    width: 300px;
+    width: 200px;
     padding: 4px;
     margin-left: 10px;
     margin-bottom: 15px;
@@ -248,16 +248,16 @@ img.filterLogo {
     border-radius: 10px;
 }
 
-.clearFilter {
+/* .bitbakeClearFilter {
     font-family: Arial;
     font-size: medium;
     width: 100px;
-    padding: 8px;
+    padding: 4px;
     margin-left: 10px;
     border: solid 3px #afafaf;
     border-radius: 10px;
     cursor: pointer;
-}
+} */
 
 ul.license {
     list-style: none;
