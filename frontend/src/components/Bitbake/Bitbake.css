@@ -39,6 +39,19 @@ div.bitbakeVulnerabilities::-webkit-scrollbar-thumb {
     border-radius: 10px;
 }
 
+div.bitbakeComponents::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+
+div.bitbakeComponents::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+    border-radius: 10px;
+}
+
 textarea.mainProjects {
     font-family: Arial;
     font-size: 18px;
