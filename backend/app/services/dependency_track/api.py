@@ -38,7 +38,6 @@ class DT:
             if response.status_code == 200:
                 if not response.json():
                     break
-                print(len(components))
                 components += response.json()
                 params['offset'] += params['limit']
             else:
