@@ -11,7 +11,6 @@ def handle_bb_cve_report(project_name, cve_report):
 def handle_bb_licenses(license_file):
     bb = BitbakeHandler()
     licenses_data = bb.parse_licenses(license_file)
-    # print(licenses_data)
     bb.update_licenses(licenses_data)
     return True
 

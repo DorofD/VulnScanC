@@ -24,9 +24,6 @@ def get_bitbake_components_with_licenses():
     return components
 
 
-print(get_bitbake_components_with_licenses())
-
-
 def get_bitbake_components(project_id: int, layer: str):
     """Возвращает компоненты и кол-во уязвимостей для них"""
     # query = f"""
