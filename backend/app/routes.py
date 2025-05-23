@@ -13,11 +13,11 @@ from app.services.api_services.dependency_track import get_projects as get_dt_pr
 from app.services.api_services.logs import get_logs
 from app.services.api_services.binary import get_binary_info, build_executable_module
 from app.services.api_services.licenses import check_licenses, add_license, delete_license
-from app.services.api_services.bdu import get_bdu_info, update_bdu, update_vulns_by_cve_id, get_component_dbu_vulns
+from app.services.api_services.bdu import get_bdu_info, update_bdu, update_vulns_by_cve_id, get_component_bdu_vulns
 from app.services.api_services.reports import create_osv_report, create_bdu_report, create_dependency_track_report, create_svacer_report
 from app.services.api_services.component_comments import get_comments_for_component, add_comment_for_component, delete_component_comment
 from app.services.api_services.sarif import upload_sarif, get_sarif_path, get_sarif_filenames, delete_sarif
-from app.services.api_services.bitbake import add_bitbake_project, delete_bitbake_project, change_bitbake_project, get_bitbake_projects, get_bitbake_components, get_bitbake_vulnerabilities, handle_bb_cve_report
+from app.services.api_services.bitbake import add_bitbake_project, delete_bitbake_project, change_bitbake_project, get_bitbake_projects, get_bitbake_components, get_bitbake_vulnerabilities, handle_bb_cve_report, handle_bb_licenses, delete_bitbake_license, add_bitbake_license
 
 main = Blueprint('main', __name__)
 
@@ -239,7 +239,8 @@ def bdu():
             result = get_bdu_info()
         elif request.args.get('action') == 'get_component_vulns':
             component_id = request.args.get('component_id')
-            result = get_component_dbu_vulns(component_id)
+            component_type = request.args.get('component_type')
+            result = get_component_bdu_vulns(component_id, component_type)
         else:
             return jsonify({'error': f"Missing required parameters", }), 400
         return jsonify(result)
@@ -331,12 +332,18 @@ def bitbake():
             component_id = request.args.get('component_id')
             return get_bitbake_vulnerabilities(component_id)
     if request.method == 'POST':
-        # отправить отчёт
-        # curl -X POST -F "file=@./report.cve" -F "project=project_name" http://192.168.1.2:5000/bitbake
-        if 'file' in request.files and 'project' in request.form:
+        # отправить отчёт cve
+        # curl -X POST -F "file=@./report.cve" -F "action=upload_cve"-F "project=project_name" http://192.168.1.2:5000/bitbake
+        if 'file' in request.files and request.form['action'] == 'upload_cve':
             project = request.form['project']
             file = request.files['file']
             handle_bb_cve_report(project, file)
+            return "File processed successfully!", 200
+        # отправить лицензии
+        # curl -X POST -F "file=@./license.manifest" -F "action=upload_licenses" http://192.168.1.2:5000/bitbake
+        if 'file' in request.files and request.form['action'] == 'upload_licenses':
+            file = request.files['file']
+            handle_bb_licenses(file)
             return "File processed successfully!", 200
         data = request.json
         if data['action'] == 'add_project':
@@ -348,6 +355,12 @@ def bitbake():
         if data['action'] == 'change_project':
             if change_bitbake_project(data['project_id'], data['project_name']):
                 return "Project changed", 200
+        if data['action'] == 'add_license':
+            if add_bitbake_license(data['component_id'], data['license_name'], data['recipe_name']):
+                return "License deleted", 200
+        if data['action'] == 'delete_license':
+            if delete_bitbake_license(data['license_id']):
+                return "License deleted", 200
 
     return "Invalid request", 400
 

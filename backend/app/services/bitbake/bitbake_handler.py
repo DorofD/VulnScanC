@@ -1,10 +1,11 @@
 from datetime import datetime
 
 from app.repository.queries.bitbake_projects import add_bitbake_project, get_bitbake_project, get_bitbake_projects, delete_bitbake_project, change_bitbake_project
-from app.repository.queries.bitbake_components import add_bitbake_components, get_bitbake_components, get_bitbake_project_components
+from app.repository.queries.bitbake_components import add_bitbake_components, get_bitbake_components, get_bitbake_project_components, get_bitbake_components_with_licenses
 from app.repository.queries.bitbake_vulnerabilities import get_bitbake_vulnerabilities_by_component, get_bitbake_vulnerabilities_by_components
 from app.repository.queries.bitbake_vulnerabilities import get_bitbake_vulnerabilities_count_in_component, get_bitbake_vulnerabilities_ids, add_bitbake_vulnerabilities
 from app.repository.queries.bitbake_snapshots import add_bitbake_snapshot
+from app.repository.queries.bitbake_licenses import add_bitbake_license, get_bitbake_component_licenses, delete_bitbake_license
 
 
 class BitbakeHandler:
@@ -15,8 +16,16 @@ class BitbakeHandler:
         add_bitbake_project(project_name)
         return True
 
+    def add_license(self, component_id, license_name, recipe_name):
+        add_bitbake_license(component_id, license_name, recipe_name)
+        return True
+
     def delete_project(self, project_id):
         delete_bitbake_project(project_id)
+        return True
+
+    def delete_license(self, license_id):
+        delete_bitbake_license(license_id)
         return True
 
     def change_project(self, project_id, new_project_name):
@@ -27,7 +36,11 @@ class BitbakeHandler:
         return get_bitbake_projects()
 
     def get_components(self, project_id, layer):
-        return get_bitbake_components(project_id, layer)
+        components = get_bitbake_components(project_id, layer)
+        for component in components:
+            licenses = get_bitbake_component_licenses(component['id'])
+            component['licenses'] = licenses
+        return components
 
     def get_vulnerabilities(self, component_id):
         vulns = get_bitbake_vulnerabilities_by_component(component_id)
@@ -277,3 +290,69 @@ class BitbakeHandler:
         except Exception as exc:
             raise Exception(f"Error when create snapshot: {exc}")
         return True
+
+    def parse_licenses(self, license_file):
+        """
+        Парсит bitbake отчёт формата license.manifest, возвращает объект:
+        [{package_name: .., package_version: .., recipe_name: .., licenses: ['license1', 'license2', ..]}, ..]
+        """
+        content = license_file.read().decode('utf-8')
+        lines = content.splitlines()
+
+        initial_lines = {
+            'package_name': "PACKAGE NAME: ",
+            'package_version': "PACKAGE VERSION: ",
+            'recipe_name': "RECIPE NAME: ",
+            'license': "LICENSE: "
+        }
+
+        parsed_result = []
+        current_package = {}
+
+        for line in lines:
+            if initial_lines['package_name'] in line:
+                if current_package:
+                    parsed_result.append(current_package)
+                current_package = {
+                    'package_name': line.replace(initial_lines['package_name'], '').strip()
+                }
+
+            elif initial_lines['package_version'] in line:
+                current_package['package_version'] = line.replace(
+                    initial_lines['package_version'], '').strip()
+
+            elif initial_lines['recipe_name'] in line:
+                current_package['recipe_name'] = line.replace(
+                    initial_lines['recipe_name'], '').strip()
+
+            elif initial_lines['license'] in line:
+                license_line = line.replace(
+                    initial_lines['license'], '').strip()
+                if '&' in license_line:
+                    current_package['licenses'] = license_line.replace(
+                        " ", "").split("&")
+                elif '|' in license_line:
+                    current_package['licenses'] = license_line.replace(
+                        " ", "").split("|")
+                else:
+                    current_package['licenses'] = [license_line]
+
+        if current_package:
+            parsed_result.append(current_package)
+        return parsed_result
+
+    def update_licenses(self, parsed_licenses):
+        components = get_bitbake_components_with_licenses()
+        licenses_to_add = []
+        for component in components:
+            for note in parsed_licenses:
+                if note['package_name'] == component['name'] and note['package_version'] == component['version']:
+                    existing_licenses = {license['license']
+                                         for license in component['licenses']}
+                    for license in note['licenses']:
+                        if license not in existing_licenses:
+                            licenses_to_add.append(
+                                {'component_id': component['id'], 'license': license, 'recipe_name': note['recipe_name']})
+        for license in licenses_to_add:
+            add_bitbake_license(
+                license['component_id'], license['license'], license['recipe_name'])

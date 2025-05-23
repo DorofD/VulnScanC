@@ -18,6 +18,20 @@ export async function apiAddBitbakeProject(name) {
     return response
 }
 
+export async function apiAddBitbakeLicense(component_id, license_name, recipe_name) {
+    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'add_license',
+            component_id: component_id,
+            license_name: license_name,
+            recipe_name: recipe_name,
+        })
+    })
+    return response
+}
+
 export async function apiDeleteBitbakeProject(id) {
     const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
         method: 'POST',
@@ -57,4 +71,16 @@ export async function apiGetBitbakeComponentVulnerabilities(component_id) {
     })
     const projects = await response.json()
     return projects
+}
+
+export async function apiDeleteBitbakeLicense(id) {
+    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'delete_license',
+            license_id: id,
+        })
+    })
+    return response
 }

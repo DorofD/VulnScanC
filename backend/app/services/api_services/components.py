@@ -13,7 +13,7 @@ def get_project_components(id):
         osv_vuln_count = get_vulnerabilities_count_in_component(
             component['id'])
         bdu_vuln_coiunt = get_bdu_vulnerabilities_count_in_component(
-            component['id'])
+            component['id'], component_type='common')
 
         component['licenses'] = licenses
         component['osv_vuln_count'] = osv_vuln_count

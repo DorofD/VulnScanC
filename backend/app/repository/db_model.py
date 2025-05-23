@@ -89,6 +89,7 @@ def create_db():
             CREATE TABLE IF NOT EXISTS "bdu_vulnerabilities" (
                 "id"	INTEGER NOT NULL UNIQUE,
                 "component_id"	INTEGER NOT NULL,
+                "component_type"	TEXT NOT NULL,
                 "bdu_id"	TEXT NOT NULL,
                 "cve_id"	TEXT NOT NULL,
                 "name"	TEXT,
@@ -96,7 +97,6 @@ def create_db():
                 "status"	TEXT,
                 "bdu_severity"	TEXT,
                 "severity"	TEXT,
-                FOREIGN KEY("component_id") REFERENCES "components"("id"),
                 PRIMARY KEY("id" AUTOINCREMENT)
             );
             """
@@ -169,6 +169,19 @@ def create_db():
                     "more_information"	TEXT,
                     PRIMARY KEY("id" AUTOINCREMENT),
                     FOREIGN KEY("component_id") REFERENCES ""
+                );
+            """
+    cursor = conn.cursor()
+    cursor.execute(query)
+
+    query = """
+                CREATE TABLE IF NOT EXISTS "bitbake_licenses" (
+                    "id"	INTEGER NOT NULL UNIQUE,
+                    "component_id"	INTEGER NOT NULL,
+                    "license"	TEXT,
+                    "recipe_name"	TEXT,
+                    PRIMARY KEY("id" AUTOINCREMENT),
+                    FOREIGN KEY("component_id") REFERENCES "bitbake_components"("id")
                 );
             """
     cursor = conn.cursor()

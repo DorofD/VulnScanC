@@ -2,10 +2,11 @@ from app.repository.queries.base_query import execute_db_query
 
 
 def get_bitbake_vulnerabilities_ids():
-    """ Возвращает cve и component_id уязвимостей """
+    """ Возвращает cve и component_id уязвимостей со статусом Unpatched"""
     query = f"""
         SELECT cve, component_id
-        FROM bitbake_vulnerabilities;
+        FROM bitbake_vulnerabilities
+        WHERE status = 'Unpatched';
         """
     return execute_db_query(query)
 

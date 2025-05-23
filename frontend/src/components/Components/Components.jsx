@@ -138,7 +138,7 @@ export default function Components() {
 
     async function showComponentVulnerabilitiesBdu() {
         try {
-            const vulnerabilities = await apiGetBduComponentVulns(pickedComponent.id)
+            const vulnerabilities = await apiGetBduComponentVulns(pickedComponent.id, 'common')
             setcomponentVulnerabilities(vulnerabilities)
         } catch (err) {
             setcomponentVulnerabilities([])

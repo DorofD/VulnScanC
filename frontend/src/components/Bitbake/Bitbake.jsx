@@ -2,9 +2,8 @@ import React, { version } from "react";
 import { useState, useEffect, useContext } from "react";
 import "./Bitbake.css";
 import Button from "../Button/Button";
-import { apiGetBitbakeProjects, apiGetBitbakeProjectComponents, apiGetBitbakeComponentVulnerabilities } from "../../services/apiBitbake";
+import { apiGetBitbakeProjects, apiGetBitbakeProjectComponents, apiGetBitbakeComponentVulnerabilities, apiDeleteBitbakeLicense, apiAddBitbakeLicense } from "../../services/apiBitbake";
 import { apiGetBduComponentVulns } from "../../services/apiBduFstec";
-import { apiCheckLicenses, apiAddLicense, apiDeleteLicense } from "../../services/apiLicenses";
 import { apiGetComponentComments, apiAddComponentComment, apiDeleteComponentComment } from "../../services/apiComments";
 import ProjectCard from "../Projects/ProjectCard/ProjectCard";
 import LayerCard from "./LayerCard/LayerCard";
@@ -34,7 +33,7 @@ export default function Bitbake() {
     const [loadingComponents, setLoadingComponents] = useState('loading')
     const [components, setComponents] = useState([{ address: '' }])
     const [pickedComponent, setPickedComponent] = useState({ id: '' })
-    const [newLicense, setNewLicense] = useState({ component_id: '', key: '', name: '', spdx_id: '', url: '' })
+    const [newLicense, setNewLicense] = useState({ component_id: '', name: '', recipe: '' })
     const [componentVulnerabilities, setcomponentVulnerabilities] = useState([])
     const [pickedVulnerability, setPickedVulnerability] = useState('')
     const [showedVunls, setShowedVunls] = useState(false)
@@ -131,7 +130,7 @@ export default function Bitbake() {
 
     async function showComponentVulnerabilitiesBdu() {
         try {
-            const vulnerabilities = await apiGetBduComponentVulns(pickedComponent.id)
+            const vulnerabilities = await apiGetBduComponentVulns(pickedComponent.id, 'bitbake')
             setcomponentVulnerabilities(vulnerabilities)
         } catch (err) {
             setcomponentVulnerabilities([])
@@ -142,33 +141,9 @@ export default function Bitbake() {
     }
 
 
-    async function checkLicenses() {
-        setNotificationData({ message: 'Выполняется поиск лицензий', type: 'success' })
-        toggleNotificationFunc()
-        setLoaderActive(true)
-
-        try {
-            const response = await apiCheckLicenses(pickedProject.id)
-            if (response.status == 200) {
-                setLoaderActive(false)
-                getProjectComponents(pickedProject.id)
-                setNotificationData({ message: 'Поиск завершен', type: 'success' })
-                toggleNotificationFunc()
-            } else {
-                setLoaderActive(false)
-                setNotificationData({ message: 'Не удалось выполнить поиск лицензий', type: 'error' })
-                toggleNotificationFunc()
-            }
-        } catch (error) {
-            setLoaderActive(false)
-            setNotificationData({ message: `Проблема с бекендом: ${err}`, type: 'error' })
-            toggleNotificationFunc()
-        }
-    }
-
     async function deleteLicense(license_id) {
         try {
-            const response = await apiDeleteLicense(license_id)
+            const response = await apiDeleteBitbakeLicense(license_id)
             if (response.status == 200) {
                 setLoaderActive(false)
                 getProjectComponents(pickedProject.id)
@@ -187,9 +162,9 @@ export default function Bitbake() {
         }
     }
 
-    async function addLicense() {
+    async function addBitbakeLicense() {
         try {
-            const response = await apiAddLicense(pickedComponent.id, newLicense.key, newLicense.name, newLicense.spdx_id, newLicense.url)
+            const response = await apiAddBitbakeLicense(pickedComponent.id, newLicense.name, newLicense.recipe)
             if (response.status == 200) {
                 setLoaderActive(false)
                 getProjectComponents(pickedProject.id)
@@ -319,7 +294,7 @@ export default function Bitbake() {
                         <ProjectCard id={project.id}
                             name={project.name}
                             picked={pickedProject.id === project.id && true || false}
-                            onClick={() => { setcomponentVulnerabilities([]); setPickedLayer(''); setPickedProject(project) }}>
+                            onClick={() => { setcomponentVulnerabilities([]); setPickedLayer(''); setPickedProject(project); }}>
                         </ProjectCard>)}
                 </>}
             </div>
@@ -349,15 +324,15 @@ export default function Bitbake() {
                 {pickedProject.id && !pickedLayer && <p> Выберете слой</p>}
                 {pickedLayer && loadingComponents === 'loading' && <p> Loading components...</p>}
                 {loadingComponents === 'error' && <p> бекенд отвалился</p>}
-                {loadingComponents === 'loaded' && <>
+                {pickedProject.id && pickedLayer && loadingComponents === 'loaded' && <>
 
                     {filteredComponents.length === 0 && loadingComponents === 'loaded' && <p> Компоненты не найдены</p>}
                     {filteredComponents.map(component =>
                         <BitbakeComponentCard id={component.id}
                             name={component.name}
-                            license_number={component.licenses ? component.licenses.length : 0}
+                            license_number={component.license_count}
                             osv_vuln_number={component.cve_count}
-                            bdu_vuln_number={component.bdu_vuln_count}
+                            bdu_vuln_number={component.bdu_count}
                             picked={pickedComponent.id === component.id && true || false}
                             onClick={() => { setcomponentVulnerabilities([]); setPickedComponent(component); getComponentComments(component.id); setIsChangeModalOpen(true) }}>
                         </BitbakeComponentCard>)}
@@ -376,10 +351,8 @@ export default function Bitbake() {
                                     <ul className="license">
                                         {pickedComponent.licenses.map((license) => (
                                             <li className="license" key={license.id}>
-                                                <p>Название: {license.name}</p>
-                                                <p>Ключ: {license.key}</p>
-                                                <p>SPDX ID: {license.spdx_id}</p>
-                                                <p>URL: {license.url !== "None" ? <a href={license.url} target="_blank" rel="noopener noreferrer">{license.url}</a> : "Нет ссылки"}</p>
+                                                <p>Название: {license.license}</p>
+                                                <p>Рецепт: {license.recipe_name}</p>
                                                 <p><Button style={"projectReject"} onClick={() => openAcceptModalWithAction(() => deleteLicense(license.id))}> Удалить </Button></p>
                                             </li>
 
@@ -389,7 +362,6 @@ export default function Bitbake() {
                                     <> Лицензий не найдено</>
                                 )}
                                 <p>Добавить лицензию</p>
-                                <p>Добавление лицензий для Bitbake в разработке</p>
                                 <textarea name="newLicense"
                                     id={pickedComponent.id}
                                     placeholder='Название'
@@ -400,37 +372,21 @@ export default function Bitbake() {
                                 </textarea>
                                 <textarea name="newLicense"
                                     id={pickedComponent.id}
-                                    placeholder='Ключ'
+                                    placeholder='Рецепт'
                                     className="license"
-                                    value={newLicense.key}
-                                    onChange={e => setNewLicense({ ...newLicense, key: e.target.value })}
+                                    value={newLicense.recipe}
+                                    onChange={e => setNewLicense({ ...newLicense, recipe: e.target.value })}
                                 >
                                 </textarea>
-                                <textarea name="newLicense"
-                                    id={pickedComponent.id}
-                                    placeholder='SPDX ID'
-                                    className="license"
-                                    value={newLicense.spdx_id}
-                                    onChange={e => setNewLicense({ ...newLicense, spdx_id: e.target.value })}
-                                >
-                                </textarea>
-                                <textarea name="newLicense"
-                                    id={pickedComponent.id}
-                                    placeholder='URL'
-                                    className="license"
-                                    value={newLicense.url}
-                                    onChange={e => setNewLicense({ ...newLicense, url: e.target.value })}
-                                >
-                                </textarea>
-                                {/* <p><Button style={"projectAccept"} onClick={() => addLicense()}> Добавить </Button></p> */}
+                                <p><Button style={"projectAccept"} onClick={() => addBitbakeLicense()}> Добавить </Button></p>
                             </div>
                         </div>
                         <div className="changeModalComponentVulnerabilitiesButton">
                             <Button style={"componentVulnerabilities"} onClick={() => { setShowedVunls('cve'); showComponentVulnerabilities() }}> Показать уязвимости CVE </Button>
                         </div>
-                        {/* <div className="changeModalComponentVulnerabilitiesButton">
+                        <div className="changeModalComponentVulnerabilitiesButton">
                             <Button style={"componentVulnerabilities"} onClick={() => { setShowedVunls('bdu'); showComponentVulnerabilitiesBdu() }}> Показать уязвимости БДУ </Button>
-                        </div> */}
+                        </div>
                         <div className="changeModalProjectsButtons">
                             <Button style={"projectClose"} onClick={closeChangeModal}> Закрыть </Button>
                         </div>

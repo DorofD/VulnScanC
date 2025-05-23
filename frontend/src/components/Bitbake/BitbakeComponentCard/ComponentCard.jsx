@@ -19,7 +19,7 @@ export default function BitbakeComponentCard({ id, name, license_number, osv_vul
                 <div className="bitbakeComponentStatus">
                     <p className="bitbakeComponentLicenseFaded">Лицензии: </p>{license_number}
                     <p className="bitbakeComponentLicenseFaded"> CVE: </p>{osv_vuln_number}
-                    <p className="bitbakeComponentLicenseFaded">БДУ ФСТЭК: </p>{bdu_vuln_number}
+                    <p className="bitbakeComponentLicenseFaded">БДУ: </p>{bdu_vuln_number}
                 </div>
             </div>
         </>

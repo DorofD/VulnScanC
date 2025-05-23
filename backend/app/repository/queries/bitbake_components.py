@@ -3,9 +3,28 @@ from app.repository.queries.base_query import execute_db_query
 
 def get_bitbake_component(id: int):
     query = f"""
-                SELECT * FROM bitbake_components WHERE id = '{id}'; 
+                SELECT * FROM bitbake_components WHERE id = '{id}';
             """
     return execute_db_query(query)
+
+
+def get_bitbake_components_with_licenses():
+    query = f"""
+        SELECT * FROM bitbake_components;
+    """
+    components = execute_db_query(query)
+
+    for component in components:
+        query = f"""
+            SELECT * FROM bitbake_licenses
+            WHERE component_id = '{component['id']}';
+        """
+        component['licenses'] = execute_db_query(query)
+
+    return components
+
+
+print(get_bitbake_components_with_licenses())
 
 
 def get_bitbake_components(project_id: int, layer: str):
@@ -15,7 +34,7 @@ def get_bitbake_components(project_id: int, layer: str):
     #             WHERE id = '{project_id}' AND layer = '{layer}';
     #         """
     query = f"""
-                SELECT 
+                SELECT
                     bc.*,
                     COUNT(bv.component_id) AS cve_count
                 FROM bitbake_components AS bc
@@ -24,6 +43,40 @@ def get_bitbake_components(project_id: int, layer: str):
                 WHERE bc.project_id = '{project_id}' AND bc.layer = '{layer}'
                 GROUP BY bc.id;
             """
+    query = f"""
+        SELECT
+            bc.*,
+            COALESCE(vuln_counts.cve_count, 0) AS cve_count,
+            COALESCE(bdu_counts.bdu_count, 0) AS bdu_count,
+            COALESCE(license_counts.license_count, 0) AS license_count
+        FROM bitbake_components AS bc
+        LEFT JOIN (
+            SELECT
+                component_id,
+                COUNT(*) AS cve_count
+            FROM bitbake_vulnerabilities
+            GROUP BY component_id
+        ) AS vuln_counts
+        ON bc.id = vuln_counts.component_id
+        LEFT JOIN (
+            SELECT
+                component_id,
+                COUNT(*) AS bdu_count
+            FROM bdu_vulnerabilities
+            WHERE component_type = 'bitbake'
+            GROUP BY component_id
+        ) AS bdu_counts
+        ON bc.id = bdu_counts.component_id
+        LEFT JOIN (
+            SELECT
+                component_id,
+                COUNT(*) AS license_count
+            FROM bitbake_licenses
+            GROUP BY component_id
+        ) AS license_counts
+        ON bc.id = license_counts.component_id
+        WHERE bc.project_id = '{project_id}' AND bc.layer = '{layer}';
+    """
 
     return execute_db_query(query)
 

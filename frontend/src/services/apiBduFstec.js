@@ -4,15 +4,15 @@ export async function apiGetBduInfo() {
     })
     const projects = await response.json()
     return projects
-} 
+}
 
-export async function apiGetBduComponentVulns(component_id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bdu?action=get_component_vulns&component_id=${component_id}`, {
+export async function apiGetBduComponentVulns(component_id, component_type) {
+    const response = await fetch(`${process.env.BACKEND_URL}/bdu?action=get_component_vulns&component_id=${component_id}&component_type=${component_type}`, {
         method: 'GET',
     })
     const projects = await response.json()
     return projects
-} 
+}
 
 export async function apiUpdateBdu() {
     const response = await fetch(`${process.env.BACKEND_URL}/bdu`, {
