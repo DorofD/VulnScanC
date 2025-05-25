@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app.repository.queries.components_comments import add_comment as add_component_db
+from app.repository.queries.components_comments import add_comment as add_comment_db
 from app.repository.queries.components_comments import get_comments_for_component as get_comments_for_component_db
 from app.repository.queries.components_comments import delete_comment as delete_comment_db
 
@@ -8,7 +8,7 @@ from app.repository.queries.components_comments import delete_comment as delete_
 def add_comment_for_component(user_id, component_id, comment):
     now = datetime.now()
     formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
-    add_component_db(user_id, component_id, formatted_time, comment)
+    add_comment_db(user_id, component_id, formatted_time, comment)
 
 
 def get_comments_for_component(component_id):

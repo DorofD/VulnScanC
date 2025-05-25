@@ -84,3 +84,37 @@ export async function apiDeleteBitbakeLicense(id) {
     })
     return response
 }
+
+export async function apiGetBitbakeComponentComments(component_id) {
+    const response = await fetch(`${process.env.BACKEND_URL}/bitbake?action=get_component_comments&component_id=${component_id}`, {
+        method: 'GET',
+    })
+    const comments = await response.json()
+    return comments
+}
+
+export async function apiAddBitbakeComponentComment(user_id, component_id, comment) {
+    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'add_component_comment',
+            user_id: user_id,
+            component_id: component_id,
+            comment: comment
+        })
+    })
+    return response
+}
+
+export async function apiDeleteBitbakeComponentComment(comment_id) {
+    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'delete_component_comment',
+            comment_id: comment_id
+        })
+    })
+    return response
+}

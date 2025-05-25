@@ -25,6 +25,11 @@ def add_bitbake_license(component_id, license_name, recipe_name):
     return bb.add_license(component_id, license_name, recipe_name)
 
 
+def add_bitbake_component_comment(user_id, component_id, comment):
+    bb = BitbakeHandler()
+    return bb.add_comment_for_component(user_id, component_id, comment)
+
+
 def delete_bitbake_project(project_id):
     bb = BitbakeHandler()
     return bb.delete_project(project_id)
@@ -33,6 +38,11 @@ def delete_bitbake_project(project_id):
 def delete_bitbake_license(license_id):
     bb = BitbakeHandler()
     return bb.delete_license(license_id)
+
+
+def delete_bitbake_component_comment(comment_id):
+    bb = BitbakeHandler()
+    return bb.delete_component_comment(comment_id)
 
 
 def change_bitbake_project(project_id, new_project_name):
@@ -53,3 +63,8 @@ def get_bitbake_components(project_id, layer):
 def get_bitbake_vulnerabilities(component_id):
     bb = BitbakeHandler()
     return bb.get_vulnerabilities(component_id)
+
+
+def get_bitbake_comments_for_component(component_id):
+    bb = BitbakeHandler()
+    return bb.get_comments_for_component(component_id)

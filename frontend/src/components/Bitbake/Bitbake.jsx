@@ -2,9 +2,8 @@ import React, { version } from "react";
 import { useState, useEffect, useContext } from "react";
 import "./Bitbake.css";
 import Button from "../Button/Button";
-import { apiGetBitbakeProjects, apiGetBitbakeProjectComponents, apiGetBitbakeComponentVulnerabilities, apiDeleteBitbakeLicense, apiAddBitbakeLicense } from "../../services/apiBitbake";
+import { apiGetBitbakeProjects, apiGetBitbakeProjectComponents, apiGetBitbakeComponentVulnerabilities, apiDeleteBitbakeLicense, apiAddBitbakeLicense, apiAddBitbakeComponentComment, apiGetBitbakeComponentComments, apiDeleteBitbakeComponentComment } from "../../services/apiBitbake";
 import { apiGetBduComponentVulns } from "../../services/apiBduFstec";
-import { apiGetComponentComments, apiAddComponentComment, apiDeleteComponentComment } from "../../services/apiComments";
 import ProjectCard from "../Projects/ProjectCard/ProjectCard";
 import LayerCard from "./LayerCard/LayerCard";
 import BitbakeComponentCard from "./BitbakeComponentCard/ComponentCard";
@@ -186,9 +185,9 @@ export default function Bitbake() {
         }
     }
 
-    async function getComponentComments(component_id) {
+    async function getBitbakeComponentComments(component_id) {
         try {
-            const comments = await apiGetComponentComments(component_id)
+            const comments = await apiGetBitbakeComponentComments(component_id)
             setComponentComments(comments)
             console.log(comments)
         } catch (err) {
@@ -198,7 +197,7 @@ export default function Bitbake() {
         }
     }
 
-    async function addComponentComment() {
+    async function addBitbakeComponentComment() {
         if (componentComment.comment === '') {
             setNotificationData({ message: 'Введите комментарий', type: 'error' })
             toggleNotificationFunc()
@@ -206,10 +205,10 @@ export default function Bitbake() {
         }
         setLoaderActive(true)
         try {
-            const response = await apiAddComponentComment(userId, pickedComponent.id, componentComment.comment)
+            const response = await apiAddBitbakeComponentComment(userId, pickedComponent.id, componentComment.comment)
             if (response.status == 200) {
                 setLoaderActive(false)
-                getComponentComments(pickedComponent.id)
+                getBitbakeComponentComments(pickedComponent.id)
                 setNotificationData({ message: 'Комментарий добавлен', type: 'success' })
                 toggleNotificationFunc()
                 setComponentComment({ user_id: userId, comment: '' })
@@ -230,13 +229,13 @@ export default function Bitbake() {
         }
     }
 
-    async function deleteComponentComment() {
+    async function deleteBitbakeComponentComment() {
         setLoaderActive(true)
         try {
-            const response = await apiDeleteComponentComment(pickedComment.id)
+            const response = await apiDeleteBitbakeComponentComment(pickedComment.id)
             if (response.status == 200) {
                 setLoaderActive(false)
-                getComponentComments(pickedComponent.id)
+                getBitbakeComponentComments(pickedComponent.id)
                 setNotificationData({ message: 'Комментарий удален', type: 'success' })
                 toggleNotificationFunc()
                 setComponentComment({ user_id: userId, comment: '' })
@@ -334,7 +333,7 @@ export default function Bitbake() {
                             osv_vuln_number={component.cve_count}
                             bdu_vuln_number={component.bdu_count}
                             picked={pickedComponent.id === component.id && true || false}
-                            onClick={() => { setcomponentVulnerabilities([]); setPickedComponent(component); getComponentComments(component.id); setIsChangeModalOpen(true) }}>
+                            onClick={() => { setcomponentVulnerabilities([]); setPickedComponent(component); getBitbakeComponentComments(component.id); setIsChangeModalOpen(true) }}>
                         </BitbakeComponentCard>)}
                 </>}
 
@@ -401,7 +400,7 @@ export default function Bitbake() {
                                     user={comment.user_name}
                                     datetime={comment.datetime}
                                     text={comment.comment}
-                                    deleteFunction={() => deleteComponentComment()}
+                                    deleteFunction={() => deleteBitbakeComponentComment()}
                                     owner={comment.user_name === userName && true || false}
                                 >
                                 </CommentCard>
@@ -409,14 +408,13 @@ export default function Bitbake() {
                         </div>
                         <textarea className="comments"
                             id={pickedComponent.id}
-                            // placeholder='Комментарий'
-                            placeholder='Комментарии для Bitbake в разработке'
+                            placeholder='Комментарий'
                             value={componentComment.comment}
                             onChange={e => setComponentComment({ ...componentComment, comment: e.target.value })}>
                         </textarea>
-                        {/* <div className="sendLogo">
-                            <img src={sendLogo} alt="" className="sendLogo" onClick={addComponentComment} />
-                        </div> */}
+                        <div className="sendLogo">
+                            <img src={sendLogo} alt="" className="sendLogo" onClick={addBitbakeComponentComment} />
+                        </div>
                     </div>
                 </Modal>
 
