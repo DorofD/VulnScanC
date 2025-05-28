@@ -118,3 +118,37 @@ export async function apiDeleteBitbakeComponentComment(comment_id) {
     })
     return response
 }
+
+export async function apiGetBitbakeVulnComments(vuln_id) {
+    const response = await fetch(`${process.env.BACKEND_URL}/bitbake?action=get_vuln_comments&vuln_id=${vuln_id}`, {
+        method: 'GET',
+    })
+    const comments = await response.json()
+    return comments
+}
+
+export async function apiAddBitbakeVulnComment(user_id, vuln_id, comment) {
+    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'add_vuln_comment',
+            user_id: user_id,
+            vuln_id: vuln_id,
+            comment: comment
+        })
+    })
+    return response
+}
+
+export async function apiDeleteBitbakeVulnComment(comment_id) {
+    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'delete_vuln_comment',
+            comment_id: comment_id
+        })
+    })
+    return response
+}

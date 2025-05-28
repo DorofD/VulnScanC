@@ -17,7 +17,10 @@ from app.services.api_services.bdu import get_bdu_info, update_bdu, update_vulns
 from app.services.api_services.reports import create_osv_report, create_bdu_report, create_dependency_track_report, create_svacer_report
 from app.services.api_services.component_comments import get_comments_for_component, add_comment_for_component, delete_component_comment
 from app.services.api_services.sarif import upload_sarif, get_sarif_path, get_sarif_filenames, delete_sarif
-from app.services.api_services.bitbake import add_bitbake_project, delete_bitbake_project, change_bitbake_project, get_bitbake_projects, get_bitbake_components, get_bitbake_vulnerabilities, handle_bb_cve_report, handle_bb_licenses, delete_bitbake_license, add_bitbake_license, add_bitbake_component_comment, delete_bitbake_component_comment, get_bitbake_comments_for_component
+from app.services.api_services.bitbake import add_bitbake_project, delete_bitbake_project, change_bitbake_project, get_bitbake_projects
+from app.services.api_services.bitbake import get_bitbake_components, get_bitbake_vulnerabilities, handle_bb_cve_report, handle_bb_licenses, delete_bitbake_license, add_bitbake_license
+from app.services.api_services.bitbake import add_bitbake_component_comment, delete_bitbake_component_comment, get_bitbake_comments_for_component
+from app.services.api_services.bitbake import add_bitbake_vulnerability_comment, delete_bitbake_vulnerability_comment, get_bitbake_comments_for_vulnerability
 
 main = Blueprint('main', __name__)
 
@@ -334,6 +337,9 @@ def bitbake():
         if request.args.get('action') == 'get_component_comments':
             component_id = request.args.get('component_id')
             return get_bitbake_comments_for_component(component_id)
+        if request.args.get('action') == 'get_vuln_comments':
+            vuln_id = request.args.get('vuln_id')
+            return get_bitbake_comments_for_vulnerability(vuln_id)
     if request.method == 'POST':
         # отправить отчёт cve
         # curl -X POST -F "file=@./report.cve" -F "action=upload_cve"-F "project=project_name" http://192.168.1.2:5000/bitbake
@@ -369,6 +375,12 @@ def bitbake():
                 return "Comment added", 200
         if data['action'] == 'delete_component_comment':
             if delete_bitbake_component_comment(data['comment_id']):
+                return "Comment deleted", 200
+        if data['action'] == 'add_vuln_comment':
+            if add_bitbake_vulnerability_comment(data['user_id'], data['vuln_id'], data['comment']):
+                return "Comment added", 200
+        if data['action'] == 'delete_vuln_comment':
+            if delete_bitbake_vulnerability_comment(data['comment_id']):
                 return "Comment deleted", 200
     return "Invalid request", 400
 

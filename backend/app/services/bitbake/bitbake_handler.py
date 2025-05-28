@@ -7,6 +7,7 @@ from app.repository.queries.bitbake_vulnerabilities import get_bitbake_vulnerabi
 from app.repository.queries.bitbake_snapshots import add_bitbake_snapshot
 from app.repository.queries.bitbake_licenses import add_bitbake_license, get_bitbake_component_licenses, delete_bitbake_license
 from app.repository.queries.bitbake_components_comments import add_bitbake_component_comment, delete_bitbake_component_comment, get_bitbake_comments_for_component
+from app.repository.queries.bitbake_vulnerabilities_comments import add_bitbake_vulnerability_comment, delete_bitbake_vulnerability_comment, get_bitbake_comments_for_vulnerability
 
 
 class BitbakeHandler:
@@ -50,11 +51,25 @@ class BitbakeHandler:
             user_id, component_id, formatted_time, comment)
         return True
 
+    def add_comment_for_vulnerability(self, user_id, vuln_id, comment):
+        now = datetime.now()
+        formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
+        add_bitbake_vulnerability_comment(
+            user_id, vuln_id, formatted_time, comment)
+        return True
+
     def get_comments_for_component(self, component_id):
         return (get_bitbake_comments_for_component(component_id))
 
+    def get_comments_for_vulnerability(self, vuln_id):
+        return (get_bitbake_comments_for_vulnerability(vuln_id))
+
     def delete_component_comment(self, id):
         delete_bitbake_component_comment(id)
+        return True
+
+    def delete_vulnerability_comment(self, id):
+        delete_bitbake_vulnerability_comment(id)
         return True
 
     def get_vulnerabilities(self, component_id):

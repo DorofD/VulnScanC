@@ -2,7 +2,7 @@ import React, { version } from "react";
 import { useState, useEffect, useContext } from "react";
 import "./Bitbake.css";
 import Button from "../Button/Button";
-import { apiGetBitbakeProjects, apiGetBitbakeProjectComponents, apiGetBitbakeComponentVulnerabilities, apiDeleteBitbakeLicense, apiAddBitbakeLicense, apiAddBitbakeComponentComment, apiGetBitbakeComponentComments, apiDeleteBitbakeComponentComment } from "../../services/apiBitbake";
+import { apiGetBitbakeProjects, apiGetBitbakeProjectComponents, apiGetBitbakeComponentVulnerabilities, apiDeleteBitbakeLicense, apiAddBitbakeLicense, apiAddBitbakeComponentComment, apiGetBitbakeComponentComments, apiDeleteBitbakeComponentComment, apiAddBitbakeVulnComment, apiDeleteBitbakeVulnComment, apiGetBitbakeVulnComments } from "../../services/apiBitbake";
 import { apiGetBduComponentVulns } from "../../services/apiBduFstec";
 import ProjectCard from "../Projects/ProjectCard/ProjectCard";
 import LayerCard from "./LayerCard/LayerCard";
@@ -39,6 +39,8 @@ export default function Bitbake() {
 
     const [componentComments, setComponentComments] = useState([{ id: 0 }])
     const [componentComment, setComponentComment] = useState({ user_id: userId, comment: '' })
+    const [vulnComments, setVulnComments] = useState([{ id: 0 }])
+    const [vulnComment, setVulnComment] = useState({ user_id: userId, comment: '' })
     const [pickedComment, setPickedComment] = useState({ id: '' })
 
     const [isChangeModalOpen, setIsChangeModalOpen] = useState(false);
@@ -65,6 +67,7 @@ export default function Bitbake() {
         setIsChangeModalOpen(false);
         setNewLicense({ component_id: '', key: '', name: '', spdx_id: '', url: '' })
         setComponentComment({ user_id: userId, comment: '' })
+        setVulnComment({ user_id: userId, comment: '' })
     }
 
     function closeAcceptModal() {
@@ -77,6 +80,7 @@ export default function Bitbake() {
         setPickedVulnerability('')
         setIsVulnerabilityModalOpen(false);
         setNewLicense({ component_id: '', key: '', name: '', spdx_id: '', url: '' })
+        setVulnComment({ user_id: userId, comment: '' })
     }
 
     async function getProjects() {
@@ -115,17 +119,6 @@ export default function Bitbake() {
         closeChangeModal()
     }
 
-    async function showComponentVulnerabilities() {
-        try {
-            const vulnerabilities = await apiGetBitbakeComponentVulnerabilities(pickedComponent.id)
-            setcomponentVulnerabilities(vulnerabilities)
-        } catch (err) {
-            setcomponentVulnerabilities([])
-            setNotificationData({ message: `Проблема с бекендом: ${err}`, type: 'error' })
-            toggleNotificationFunc()
-        }
-        closeChangeModal()
-    }
 
     async function showComponentVulnerabilitiesBdu() {
         try {
@@ -189,11 +182,21 @@ export default function Bitbake() {
         try {
             const comments = await apiGetBitbakeComponentComments(component_id)
             setComponentComments(comments)
-            console.log(comments)
         } catch (err) {
             setNotificationData({ message: `Проблема с бекендом: ${err}`, type: 'error' })
             toggleNotificationFunc()
             setComponentComments([{ id: 0 }])
+        }
+    }
+
+    async function getBitbakeVulnComments(vuln_id) {
+        try {
+            const comments = await apiGetBitbakeVulnComments(vuln_id)
+            setVulnComments(comments)
+        } catch (err) {
+            setNotificationData({ message: `Проблема с бекендом: ${err}`, type: 'error' })
+            toggleNotificationFunc()
+            setVulnComments([{ id: 0 }])
         }
     }
 
@@ -229,6 +232,38 @@ export default function Bitbake() {
         }
     }
 
+    async function addBitbakeVulnComment() {
+        if (vulnComment.comment === '') {
+            setNotificationData({ message: 'Введите комментарий', type: 'error' })
+            toggleNotificationFunc()
+            return 1
+        }
+        setLoaderActive(true)
+        try {
+            const response = await apiAddBitbakeVulnComment(userId, pickedVulnerability.id, vulnComment.comment)
+            if (response.status == 200) {
+                setLoaderActive(false)
+                getBitbakeVulnComments(pickedVulnerability.id)
+                setNotificationData({ message: 'Комментарий добавлен', type: 'success' })
+                toggleNotificationFunc()
+                setVulnComment({ user_id: userId, comment: '' })
+                setPickedComment({ id: '' })
+            } else {
+                setLoaderActive(false)
+                setNotificationData({ message: 'Не удалось добавить комментарий', type: 'error' })
+                toggleNotificationFunc()
+                setVulnComment({ user_id: userId, comment: '' })
+                setPickedComment({ id: '' })
+            }
+        } catch (error) {
+            setLoaderActive(false)
+            setNotificationData({ message: `Проблема с бекендом: ${err}`, type: 'error' })
+            toggleNotificationFunc()
+            setVulnComment({ user_id: userId, comment: '' })
+            setPickedComment({ id: '' })
+        }
+    }
+
     async function deleteBitbakeComponentComment() {
         setLoaderActive(true)
         try {
@@ -252,6 +287,33 @@ export default function Bitbake() {
             setNotificationData({ message: `Проблема с бекендом: ${err}`, type: 'error' })
             toggleNotificationFunc()
             setComponentComment({ user_id: userId, comment: '' })
+            setPickedComment({ id: '' })
+        }
+    }
+
+    async function deleteBitbakeVulnComment() {
+        setLoaderActive(true)
+        try {
+            const response = await apiDeleteBitbakeVulnComment(pickedComment.id)
+            if (response.status == 200) {
+                setLoaderActive(false)
+                getBitbakeVulnComments(pickedVulnerability.id)
+                setNotificationData({ message: 'Комментарий удален', type: 'success' })
+                toggleNotificationFunc()
+                setVulnComment({ user_id: userId, comment: '' })
+                setPickedComment({ id: '' })
+            } else {
+                setLoaderActive(false)
+                setNotificationData({ message: 'Не удалось удалить комментарий', type: 'error' })
+                toggleNotificationFunc()
+                setVulnComment({ user_id: userId, comment: '' })
+                setPickedComment({ id: '' })
+            }
+        } catch (error) {
+            setLoaderActive(false)
+            setNotificationData({ message: `Проблема с бекендом: ${err}`, type: 'error' })
+            toggleNotificationFunc()
+            setVulnComment({ user_id: userId, comment: '' })
             setPickedComment({ id: '' })
         }
     }
@@ -484,7 +546,7 @@ export default function Bitbake() {
                     {filteredVulnerabilities.map(vuln =>
                         <BitbakeVulnerabilityCard id={vuln.id}
                             name={vuln.cve}
-                            onClick={() => { setPickedVulnerability(vuln); setIsVulnerabilityModalOpen(true) }}
+                            onClick={() => { setPickedVulnerability(vuln); getBitbakeVulnComments(vuln.id); setIsVulnerabilityModalOpen(true) }}
                             picked={pickedVulnerability.id === vuln.id && true || false}
                             severity={vuln.severity}
                             status={vuln.status}
@@ -508,8 +570,8 @@ export default function Bitbake() {
                 </>}
             </div>
             <Modal isOpen={isVulnerabilityModalOpen} onClose={closeVulnerabilityModal}>
-                {pickedVulnerability && showedVunls == 'cve' && <div className="vulnerabilityModal">
-                    <div className="vulnerabilityModalInfo">
+                {pickedVulnerability && showedVunls == 'cve' && <div className="bitbakeVulnerabilityModal">
+                    <div className="bitbakeVulnerabilityModalInfo">
                         <p> <b>CVE id: </b>{pickedVulnerability.cve}</p>
                         <p> <b>Статус: </b>{pickedVulnerability.status}</p>
                         <p> <b>Описание: </b>{pickedVulnerability.summary}</p>
@@ -524,8 +586,8 @@ export default function Bitbake() {
                         <Button style={"projectClose"} onClick={closeVulnerabilityModal}> Закрыть </Button>
                     </div>
                 </div>}
-                {pickedVulnerability && showedVunls == 'bdu' && <div className="vulnerabilityModal">
-                    <div className="vulnerabilityModalInfo">
+                {pickedVulnerability && showedVunls == 'bdu' && <div className="bitbakeVulnerabilityModal">
+                    <div className="bitbakeVulnerabilityModalInfo">
                         <p> <b>BDU id: </b>{pickedVulnerability.bdu_id}</p>
                         <p> <b>CVE id: </b>{pickedVulnerability.cve_id}</p>
                         <p> <b>Название: </b>{pickedVulnerability.name}</p>
@@ -535,6 +597,32 @@ export default function Bitbake() {
                     </div>
                     <div className="changeModalProjectsButtons">
                         <Button style={"projectClose"} onClick={closeVulnerabilityModal}> Закрыть </Button>
+                    </div>
+                </div>}
+                {pickedVulnerability && showedVunls == 'cve' && <div className="changeModalComments">Комментарии
+                    <div className="comments">
+                        {vulnComments.map(comment =>
+                            <CommentCard
+                                id={comment.id}
+                                onClick={() => { if (pickedComment.id == !comment.id) { setPickedComment(comment) } else { setPickedComment({ id: '' }) } }}
+                                picked={pickedComment.id === comment.id && true || false}
+                                user={comment.user_name}
+                                datetime={comment.datetime}
+                                text={comment.comment}
+                                deleteFunction={() => deleteBitbakeVulnComment()}
+                                owner={comment.user_name === userName && true || false}
+                            >
+                            </CommentCard>
+                        )}
+                    </div>
+                    <textarea className="comments"
+                        id={pickedVulnerability.id}
+                        placeholder='Комментарий'
+                        value={vulnComment.comment}
+                        onChange={e => setVulnComment({ ...vulnComment, comment: e.target.value })}>
+                    </textarea>
+                    <div className="sendLogo">
+                        <img src={sendLogo} alt="" className="sendLogo" onClick={addBitbakeVulnComment} />
                     </div>
                 </div>}
             </Modal>

@@ -134,6 +134,21 @@ def create_db():
     cursor.execute(query)
 
     query = """
+                CREATE TABLE IF NOT EXISTS "bitbake_vulnerabilities_comments" (
+                    "id"	INTEGER NOT NULL UNIQUE,
+                    "user_id"	INTEGER NOT NULL,
+                    "vuln_id"	INTEGER NOT NULL,
+                    "datetime"	TEXT NOT NULL,
+                    "comment"	TEXT,
+                    FOREIGN KEY("user_id") REFERENCES "users"("id"),
+                    FOREIGN KEY("vuln_id") REFERENCES "bitbake_vulnerabilities"("id"),
+                    PRIMARY KEY("id" AUTOINCREMENT)
+                );
+            """
+    cursor = conn.cursor()
+    cursor.execute(query)
+
+    query = """
                 CREATE TABLE IF NOT EXISTS "bitbake_projects" (
                     "id"	INTEGER NOT NULL UNIQUE,
                     "name"	TEXT NOT NULL,

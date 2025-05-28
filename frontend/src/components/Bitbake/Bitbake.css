@@ -179,14 +179,14 @@ div.acceptModalProjectsText {
     margin-bottom: 10px;
 }
 
-div.vulnerabilityModal {
+div.bitbakeVulnerabilityModal {
     padding: 5px;
     width: 600px;
     height: 820px;
 
 }
 
-div.vulnerabilityModalInfo {
+div.bitbakeVulnerabilityModalInfo {
     margin-bottom: 10px;
     height: 740px;
     overflow: auto;
