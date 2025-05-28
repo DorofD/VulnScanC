@@ -1,10 +1,10 @@
 from datetime import datetime
 
 from app.repository.queries.bitbake_projects import add_bitbake_project, get_bitbake_project, get_bitbake_projects, delete_bitbake_project, change_bitbake_project
-from app.repository.queries.bitbake_components import add_bitbake_components, get_bitbake_components, get_bitbake_project_components, get_bitbake_components_with_licenses
+from app.repository.queries.bitbake_components import add_bitbake_components, get_bitbake_components, get_bitbake_project_components, get_bitbake_components_with_licenses, get_bitbake_component
 from app.repository.queries.bitbake_vulnerabilities import get_bitbake_vulnerabilities_by_component, get_bitbake_vulnerabilities_by_components
 from app.repository.queries.bitbake_vulnerabilities import get_bitbake_vulnerabilities_count_in_component, get_bitbake_vulnerabilities_ids, add_bitbake_vulnerabilities
-from app.repository.queries.bitbake_snapshots import add_bitbake_snapshot
+from app.repository.queries.bitbake_snapshots import add_bitbake_snapshot, get_all_bitbake_snapshot_data, get_bitbake_project_snapshots, get_bitbake_project_snapshots_with_components, delete_bitbake_snapshot
 from app.repository.queries.bitbake_licenses import add_bitbake_license, get_bitbake_component_licenses, delete_bitbake_license
 from app.repository.queries.bitbake_components_comments import add_bitbake_component_comment, delete_bitbake_component_comment, get_bitbake_comments_for_component
 from app.repository.queries.bitbake_vulnerabilities_comments import add_bitbake_vulnerability_comment, delete_bitbake_vulnerability_comment, get_bitbake_comments_for_vulnerability
@@ -386,3 +386,24 @@ class BitbakeHandler:
         for license in licenses_to_add:
             add_bitbake_license(
                 license['component_id'], license['license'], license['recipe_name'])
+
+    def get_project_snapshots(self, project_id):
+        snapshots = get_bitbake_project_snapshots(project_id)
+
+        for snapshot in snapshots:
+            if not snapshot['components']:
+                snapshot['components'] = [
+                    {'path': 'Компоненты не обнаружены', 'status': 'Компоненты не обнаружены'}]
+                continue
+            component_ids_list = list(
+                map(int, snapshot['components'].split(', ')))
+            snapshot['components'] = []
+            for id in component_ids_list:
+                component = get_bitbake_component(id)
+                snapshot['components'].append(component[0])
+        snapshots.reverse()
+        return snapshots
+
+    def delete_snapshot(self, snapshot_id):
+        delete_bitbake_snapshot(snapshot_id)
+        return True

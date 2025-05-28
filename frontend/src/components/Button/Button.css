@@ -340,6 +340,36 @@ button.buildBinary {
     margin-left: 10px;
 }
 
+
+button.snapshotsProjectType {
+    user-select: none;
+    font-family: Arial;
+    font-size: 18px;
+    margin: 12px;
+    background: #c0c0c0;
+    width: 240px;
+    height: 30px;
+    border: 0;
+    color: #000000;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+button.snapshotsProjectTypeActive {
+    user-select: none;
+    font-family: Arial;
+    font-size: 18px;
+    margin: 12px;
+    background: #2190ffe3;
+    width: 240px;
+    height: 30px;
+    border: 0;
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 10px;
+
+}
+
 button:hover {
     background-color: #6e8399e3;
     color: white;

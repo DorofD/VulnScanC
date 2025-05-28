@@ -1,6 +1,7 @@
 from app.repository.queries.snapshots import get_project_snapshots as get_project_snapshots_db
 from app.repository.queries.snapshots import delete_snapshot as delete_snapshot_db
 from app.repository.queries.components import get_component as get_component_db
+from app.services.bitbake.bitbake_handler import BitbakeHandler
 
 
 def get_project_snapshots(project_id):
@@ -23,3 +24,15 @@ def get_project_snapshots(project_id):
 
 def delete_snapshot(id):
     delete_snapshot_db(id)
+
+
+def get_bitbake_project_snapshots(project_id):
+    bb = BitbakeHandler()
+    snapshots = bb.get_project_snapshots(project_id)
+    return snapshots
+
+
+def delete_bitbake_snapshot(snapshot_id):
+    bb = BitbakeHandler()
+    bb.delete_snapshot(snapshot_id)
+    return True

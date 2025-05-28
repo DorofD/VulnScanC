@@ -6,7 +6,7 @@ from app.services.search_data.search_data import save_search_data
 from app.services.api_services.projects import get_projects, add_project, delete_project, add_project, change_project
 from app.services.api_services.components import get_project_components, change_component_status
 from app.services.api_services.vulnerabilities import get_vulnerabilities_by_component
-from app.services.api_services.snapshots import get_project_snapshots, delete_snapshot
+from app.services.api_services.snapshots import get_project_snapshots, delete_snapshot, get_bitbake_project_snapshots, delete_bitbake_snapshot
 from app.services.api_services.users import signin, get_users, add_user, delete_user, change_user
 from app.services.api_services.svacer import get_projects as get_svacer_projects, get_snapshots as get_svacer_snapshots
 from app.services.api_services.dependency_track import get_projects as get_dt_projects, get_components as get_dt_components
@@ -74,12 +74,7 @@ def search_data():
 @main.route('/reports', methods=(['GET']))
 @cross_origin()
 def reports():
-    if not request.args.get('type'):
-        return jsonify({
-            'error': 'Missing required parameters: type',
-        }), 400
-    else:
-        report_type = request.args.get('type')
+    report_type = request.args.get('report_type')
 
     if report_type == 'osv':
         if not request.args.get('snapshot_id'):
@@ -148,6 +143,45 @@ def reports():
             f"Sent Dependency-Track report for project with uuid: {project_uuid}")
         return send_file(path_or_file=report['report'], as_attachment=True, download_name=report['report_name'], mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
 
+    elif report_type == 'bitbake':
+        snapshot_id = request.args.get('snapshot_id')
+        severities_string = request.args.get('severities')
+        layers_string = request.args.get('layers')
+        print(report_type)
+        print(severities_string)
+        print(layers_string)
+        # report = create_bdu_report(snapshot_id, severities_string)
+        # report_name = f"bdu_report_{report['project_name']}_{report['datetime']}.docx"
+        # response = send_file(
+        #     path_or_file=report['report'],
+        #     as_attachment=True,
+        #     download_name=report_name,
+        #     mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        # )
+        # response.headers['Content-Disposition'] = f'attachment; filename="{report_name}"'
+        # current_app.logger.info(f'Sent BDU report: {report_name}')
+        # return response
+        return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
+
+    elif report_type == 'bitbake_bdu':
+        snapshot_id = request.args.get('snapshot_id')
+        severities_string = request.args.get('severities')
+        layers_string = request.args.get('layers')
+        print(report_type)
+        print(severities_string)
+        print(layers_string)
+        # report = create_bdu_report(snapshot_id, severities_string)
+        # report_name = f"bdu_report_{report['project_name']}_{report['datetime']}.docx"
+        # response = send_file(
+        #     path_or_file=report['report'],
+        #     as_attachment=True,
+        #     download_name=report_name,
+        #     mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        # )
+        # response.headers['Content-Disposition'] = f'attachment; filename="{report_name}"'
+        # current_app.logger.info(f'Sent BDU report: {report_name}')
+        # return response
+        return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
     else:
         return jsonify({
             'error': f"Invalid type: {report_type}. Valid values: osv, svacer, dependency_track",
@@ -260,14 +294,30 @@ def bdu():
 @cross_origin()
 def snapshots():
     if request.method == 'GET':
-        project_id = request.args.get('project_id')
-        result = get_project_snapshots(project_id)
-        return jsonify(result)
+        project_type = request.args.get('project_type')
+        if project_type == 'common':
+            project_id = request.args.get('project_id')
+            result = get_project_snapshots(project_id)
+            return jsonify(result)
+        elif project_type == 'bitbake':
+            project_id = request.args.get('project_id')
+            result = get_bitbake_project_snapshots(project_id)
+            return jsonify(result)
+        else:
+            return jsonify({'success': False, 'error': 'Unkown project type'}), 400, {'ContentType': 'application/json'}
     if request.method == 'POST':
         data = request.json
-        if data['action'] == 'delete':
-            delete_snapshot(data['snapshot_id'])
-        return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
+        project_type = data['project_type']
+        if project_type == 'common':
+            if data['action'] == 'delete':
+                delete_snapshot(data['snapshot_id'])
+            return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
+        elif project_type == 'bitbake':
+            if data['action'] == 'delete':
+                delete_bitbake_snapshot(data['snapshot_id'])
+            return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
+        else:
+            return jsonify({'success': False, 'error': 'Unkown project type'}), 400, {'ContentType': 'application/json'}
 
 
 @main.route('/svacer', methods=(['GET']))

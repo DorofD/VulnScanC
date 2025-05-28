@@ -26,14 +26,16 @@ textarea.mainProjects {
     color: black;
 }
 
-textarea.mainProjects::-webkit-scrollbar, div.mainProjects::-webkit-scrollbar {
+textarea.mainProjects::-webkit-scrollbar,
+div.mainProjects::-webkit-scrollbar {
     width: 10px;
     background-color: #f1f1f1;
     margin: 40px;
     border-radius: 10px;
 }
 
-textarea.mainProjects::-webkit-scrollbar-thumb, div.mainProjects::-webkit-scrollbar-thumb {
+textarea.mainProjects::-webkit-scrollbar-thumb,
+div.mainProjects::-webkit-scrollbar-thumb {
     background-color: #afafaf;
 }
 
@@ -60,10 +62,16 @@ textarea.projects:disabled {
 div.snapshotModal {
     padding: 5px;
     width: 600px;
-    height: 780px; 
+    height: 780px;
 }
 
-div.snapshotModalInfo{
+div.bitbakeSnapshotModal {
+    padding: 5px;
+    width: 600px;
+    height: 880px;
+}
+
+div.snapshotModalInfo {
     margin-bottom: 10px;
     height: 390px;
     overflow: auto;
@@ -76,28 +84,28 @@ div.snapshotModalInfo{
     border-radius: 10px;
 }
 
-div.snapshotReport{
+div.snapshotReport {
     border: solid 3px #afafaf;
     border-radius: 10px;
     padding: 10px;
     margin: 5px;
 }
 
-div.snapshotModalNote{
+div.snapshotModalNote {
     padding-bottom: 5px;
 }
 
-div.snapshotModalNoteLabel{
+div.snapshotModalNoteLabel {
     padding: 5px;
     text-align: center;
 }
 
-div.snapshotCheckboxes{
+div.snapshotCheckboxes {
     display: flex;
     flex-direction: column;
 }
 
-div.snapshotModalButtons{
+div.snapshotModalButtons {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -120,29 +128,29 @@ div.acceptModalProjects {
     padding: 5px;
     width: 350px;
     height: 80px;
-    
+
 }
 
-div.acceptModalProjectsName{
+div.acceptModalProjectsName {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
 }
 
-div.acceptModalProjectsButtons{
+div.acceptModalProjectsButtons {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-div.acceptModalProjectsButtons{
+div.acceptModalProjectsButtons {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-div.acceptModalProjectsText{
+div.acceptModalProjectsText {
     font-family: Arial;
     font-size: 20px;
     display: flex;
@@ -156,10 +164,10 @@ div.vulnerabilityModal {
     padding: 5px;
     width: 600px;
     height: 820px;
-    
+
 }
 
-div.vulnerabilityModalInfo{
+div.vulnerabilityModalInfo {
     margin-bottom: 10px;
     height: 740px;
     overflow: auto;
@@ -221,4 +229,12 @@ img.filterLogo {
     margin-bottom: 15px;
     border: solid 3px #afafaf;
     border-radius: 10px;
+}
+
+div.projectTypeButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    padding-top: 15px;
 }
