@@ -40,6 +40,7 @@ export default function Snapshots() {
     const [actionFunction, setActionFunction] = useState(null);
 
     const [filterSnapshots, setFilterSnapshots] = useState({ datetime: '' });
+    const [showHint, setShowHint] = useState(false);
 
     const openAcceptModalWithAction = (action) => {
         setActionFunction(() => action);
@@ -310,8 +311,27 @@ export default function Snapshots() {
                             </div>
 
                             <div className="snapshotReport">
-                                <div className="snapshotModalNoteLabel"> Создание отчета</div>
-                                <div className="snapshotModalNote"> Выберете severity уязвимостей, которые попадут в отчет:</div>
+                                <div className="snapshotModalNoteLabel"> Создание отчета
+                                    <button
+                                        onClick={() => {
+                                            setShowHint((prev) => !prev);
+                                        }}
+                                        className={showHint ? "showHintActivated" : "showHint"}
+                                    >
+                                        ?
+                                    </button>
+                                </div>
+                                {showHint &&
+                                    <div className="hintBox">
+                                        <p>
+                                            В отчет попадут только компоненты со статусом confirmed
+                                        </p>
+                                        <p>
+                                            В отчет не попадут компоненты без уязвимостей
+                                        </p>
+                                    </div>
+                                }
+                                <div className="snapshotModalNote"> Выберите уровни критичности уязвимостей, которые попадут в отчет:</div>
                                 <div className="snapshotCheckboxes">
                                     <label>
                                         <input
@@ -363,8 +383,8 @@ export default function Snapshots() {
                                     <Button style={"componentVulnerabilities"} onClick={() => getBduReport()}> Создать отчет БДУ </Button>
 
                                 </div>
-                                <div className="snapshotModalNote"> *в отчет попадут только компоненты со статусом confirmed</div>
-                                <div className="snapshotModalNote"> *в отчет не попадут компоненты без уязвимостей</div>
+                                {/* <div className="snapshotModalNote"> *в отчет попадут только компоненты со статусом confirmed</div>
+                                <div className="snapshotModalNote"> *в отчет не попадут компоненты без уязвимостей</div> */}
                             </div>
 
                             <div className="snapshotModalButtons">
@@ -375,7 +395,7 @@ export default function Snapshots() {
                     }
                     {pickedSnapshot && projectType == 'bitbake' &&
                         <div className="bitbakeSnapshotModal">
-                            <div className="snapshotModalInfo">
+                            <div className="bitbakeSnapshotModalInfo">
                                 <div className="snapshotModalNoteLabel"> Информация о снапшоте</div>
                                 <p> <b>Проект: </b>{pickedProject.name}</p>
                                 <p> <b>Время создания: </b>{pickedSnapshot.datetime}</p>
@@ -391,8 +411,30 @@ export default function Snapshots() {
                                 }
                             </div>
 
-                            <div className="snapshotReport">
-                                <div className="snapshotModalNoteLabel"> Создание отчета</div>
+                            <div className="bitbakeSnapshotReport">
+                                <div className="snapshotModalNoteLabel"> Создание отчета
+                                    <button
+                                        onClick={() => {
+                                            setShowHint((prev) => !prev);
+                                        }}
+                                        className={showHint ? "showHintActivated" : "showHint"}
+                                    >
+                                        ?
+                                    </button>
+                                </div>
+                                {showHint &&
+                                    <div className="hintBox">
+                                        <p>
+                                            В отчёт попадут только компоненты из выбранных слоёв
+                                        </p>
+                                        <p>
+                                            В отчёт попадут только уязвимости с выбранными уровнями критичности и статусом Unpatched
+                                        </p>
+                                        <p>
+                                            Компонент не попадёт в отчёт, если у него нет Unpatched уязвимостей, либо выбранные уровни критичности имеют только уязвимости со статусом Patched
+                                        </p>
+                                    </div>
+                                }
                                 {pickedProject.layers && <>
                                     Выберете слои, которые попадут в отчёт:
                                     <div className="snapshotCheckboxes">
@@ -411,8 +453,9 @@ export default function Snapshots() {
                                     </div>
                                 </> || <p>Слои не найдены</p>}
 
+
                                 <br />
-                                <div className="snapshotModalNote"> Выберете severity уязвимостей, которые попадут в отчет:</div>
+                                <div className="snapshotModalNote"> Выберите уровни критичности уязвимостей, которые попадут в отчет:</div>
                                 <div className="snapshotCheckboxes">
                                     <label>
                                         <input
@@ -453,10 +496,18 @@ export default function Snapshots() {
                                     <label>
                                         <input
                                             type="checkbox"
-                                            checked={selectedSeverities.includes('Without')}
-                                            onChange={() => handleCheckboxChange('Without')}
+                                            checked={selectedSeverities.includes('None')}
+                                            onChange={() => handleCheckboxChange('None')}
                                         />
-                                        Without
+                                        None
+                                    </label>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedSeverities.includes('Unknown')}
+                                            onChange={() => handleCheckboxChange('Unknown')}
+                                        />
+                                        Unknown
                                     </label>
                                 </div>
                                 <div className="snapshotModalButtons">

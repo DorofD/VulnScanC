@@ -45,14 +45,16 @@ textarea.mainProjects {
     color: black;
 }
 
-textarea.mainProjects::-webkit-scrollbar, div.mainProjects::-webkit-scrollbar {
+textarea.mainProjects::-webkit-scrollbar,
+div.mainProjects::-webkit-scrollbar {
     width: 10px;
     background-color: #f1f1f1;
     margin: 40px;
     border-radius: 10px;
 }
 
-textarea.mainProjects::-webkit-scrollbar-thumb, div.mainProjects::-webkit-scrollbar-thumb {
+textarea.mainProjects::-webkit-scrollbar-thumb,
+div.mainProjects::-webkit-scrollbar-thumb {
     background-color: #afafaf;
 }
 
@@ -79,11 +81,11 @@ textarea.projects:disabled {
 div.changeModalComponents {
     padding: 5px;
     width: 600px;
-    height: 730px;   
+    height: 730px;
 }
 
 
-div.changeModalComponentsParams{
+div.changeModalComponentsParams {
     margin-bottom: 10px;
     height: 560px;
     overflow: auto;
@@ -108,13 +110,13 @@ div.changeModalComponentsParams::-webkit-scrollbar-thumb {
     border-radius: 10px;
 }
 
-div.changeModalProjectsButtons{
+div.changeModalProjectsButtons {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-div.changeModalComponentVulnerabilitiesButton{
+div.changeModalComponentVulnerabilitiesButton {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -125,29 +127,29 @@ div.acceptModalProjects {
     padding: 5px;
     width: 350px;
     height: 80px;
-    
+
 }
 
-div.acceptModalProjectsName{
+div.acceptModalProjectsName {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
 }
 
-div.acceptModalProjectsButtons{
+div.acceptModalProjectsButtons {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-div.acceptModalProjectsButtons{
+div.acceptModalProjectsButtons {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-div.acceptModalProjectsText{
+div.acceptModalProjectsText {
     font-family: Arial;
     font-size: 20px;
     display: flex;
@@ -161,10 +163,10 @@ div.vulnerabilityModal {
     padding: 5px;
     width: 600px;
     height: 820px;
-    
+
 }
 
-div.vulnerabilityModalInfo{
+div.vulnerabilityModalInfo {
     margin-bottom: 10px;
     height: 740px;
     overflow: auto;
@@ -227,6 +229,7 @@ img.filterLogo {
     border: solid 3px #afafaf;
     border-radius: 10px;
 }
+
 .vulnerabilityFilter {
     font-family: Arial;
     font-size: large;
@@ -247,7 +250,7 @@ img.filterLogo {
     border: solid 3px #afafaf;
     border-radius: 10px;
     cursor: pointer;
-} 
+}
 
 ul.license {
     list-style: none;
@@ -281,17 +284,17 @@ textarea.license:disabled {
     background-color: #f1f1f1;
 }
 
-div.changeModalComments{
+div.changeModalComments {
     padding: 4px;
     width: 700px;
-    height: 705px;   
+    height: 705px;
     /* border: solid 3px #afafaf; */
     border-radius: 10px;
     margin-top: 10px;
     margin-right: 10px;
 }
 
-div.comments{
+div.comments {
     margin-bottom: 10px;
     height: 570px;
     overflow: auto;
@@ -301,6 +304,18 @@ div.comments{
     padding: 10px;
     padding-right: 20px;
     border: solid 3px #afafaf;
+    border-radius: 10px;
+}
+
+div.comments::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+div.comments::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
     border-radius: 10px;
 }
 

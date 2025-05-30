@@ -8,8 +8,10 @@ from docx.oxml import parse_xml
 from docx.oxml.ns import nsdecls
 
 from app.repository.queries.snapshots import get_all_snapshot_data
+from app.repository.queries.bitbake_snapshots import get_all_bitbake_snapshot_data
 from app.services.svacer.api import Svacer
 from app.services.dependency_track.api import DT
+from app.services.bitbake.bitbake_handler import BitbakeHandler
 
 
 class DOCX_GENERATOR:
@@ -614,3 +616,211 @@ class DOCX_GENERATOR:
         doc.save(doc_io)
         doc_io.seek(0)
         return {'report_name': report_name, 'report': doc_io}
+
+    def create_bitbake_report(self, snapshot_id: int, layers_string: str, severities_string: str):
+        snapshot_data = get_all_bitbake_snapshot_data(snapshot_id)
+        project_name = snapshot_data['project_name']
+        datetime = snapshot_data['datetime']
+
+        doc = Document()
+        heading = doc.add_paragraph(
+            f"Отчёт об уязвимостях CVE в Bitbake проекте \n{project_name} от {datetime}")
+        heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        heading.runs[0].font.bold = True
+        heading.runs[0].font.name = 'Times New Roman'
+        heading.runs[0].font.size = Pt(16)
+        for section in doc.sections:
+            # отступы от краев страницы
+            section.left_margin = Cm(1)
+            section.right_margin = Cm(1)
+            section.top_margin = Cm(1)
+            section.bottom_margin = Cm(1)
+
+        def create_component_table(doc, component, component_number):
+            header_component_values = [
+                '№', 'Информация о компоненте', 'Лицензии', 'Комментарии']
+            last_paragraph = doc.add_paragraph()
+            last_paragraph.paragraph_format.space_after = Cm(1)
+
+            table = doc.add_table(rows=1, cols=4)
+            table.autofit = False
+            table.columns[0].width = Cm(0.2)
+            table.columns[1].width = Cm(6)
+            table.columns[2].width = Cm(6)
+            header_cells = table.rows[0].cells
+            for i in range(len(header_component_values)):
+                header_cells[i].text = header_component_values[i]
+            header_cells[0].width = Cm(1)
+            header_cells[1].width = Cm(8)
+            header_cells[2].width = Cm(6)
+            header_cells[3].width = Cm(5)
+
+            # настройка шрифта шапки таблицы
+            for cell in header_cells:
+                for paragraph in cell.paragraphs:
+                    for run in paragraph.runs:
+                        run.font.bold = True
+                        run.font.name = 'Times New Roman'
+                        run.font.size = Pt(12)
+                        paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+            table.add_row()
+            body_cells = table.rows[1].cells
+            body_cells[0].text = str(component_number)
+            body_cells[1].text = f"""Название: {component['name']}
+                                    \nВерсия: {component['version']}
+                                    \nСлой: {component['layer']}"""
+            if component['licenses']:
+                licenses_string = ''
+                license_count = 1
+                for license in component['licenses']:
+                    licenses_string += (
+                        f"\n{license_count}) {license['license']}")
+                    license_count += 1
+                body_cells[2].text = str(licenses_string)
+            else:
+                body_cells[2].text = "Лицензий для компонента не найдено"
+            if component['comments']:
+                comments_string = ''
+                for comment in component['comments']:
+                    comments_string += (
+                        f"\n{comment['user_name']}: {comment['comment']}\n")
+                body_cells[3].text = str(comments_string)
+            else:
+                body_cells[3].text = "Комментариев для компонента не найдено"
+
+            # настройка шрифта тела таблицы
+            for cell in body_cells:
+                for paragraph in cell.paragraphs:
+                    for run in paragraph.runs:
+                        run.font.name = 'Times New Roman'
+                        run.font.size = Pt(12)
+            # непрозрачные границы таблицы
+            tbl = table._tbl
+            tbl.tblPr.append(parse_xml(self.tblBorders))
+
+        def create_vulnerabilities_table(doc, vulnerabilities):
+            header_component_values = [
+                'ID', 'Информация об уязвимости', 'Severity', 'Комментарии']
+            last_paragraph = doc.add_paragraph()
+            last_paragraph.paragraph_format.space_after = Cm(1)
+            table = doc.add_table(rows=1, cols=4)
+            table.autofit = False
+
+            header_cells = table.rows[0].cells
+            for i in range(len(header_component_values)):
+                header_cells[i].text = header_component_values[i]
+            for cell in header_cells:
+                for paragraph in cell.paragraphs:
+                    for run in paragraph.runs:
+                        run.font.bold = True
+                        run.font.name = 'Times New Roman'
+                        run.font.size = Pt(12)
+                        paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+            count = 1
+            for vuln in vulnerabilities:
+                if vuln['status'] == 'Patched':
+                    continue
+                # dict_vuln = ast.literal_eval(vuln)
+                table.add_row()
+                body_cells = table.rows[count].cells
+                body_cells[0].text = vuln['cve']
+                body_cells[1].text = f"{vuln['summary']} \nБольше информации: {vuln['more_information']}"
+                if 'severity' in vuln:
+                    body_cells[2].text = f"""
+                                            Severity: {vuln['severity']}
+                                            Статус: {vuln['status']}
+                                            CVSS v3: {vuln['cvss_v3']}
+                                            Вектор: {vuln['vector']}
+                                        """
+                else:
+                    body_cells[2].text = "No severities found"
+                if vuln['comments']:
+                    print(vuln['comments'])
+                    comments_string = ''
+                    for comment in vuln['comments']:
+                        comments_string += (
+                            f"\n{comment['user_name']}: {comment['comment']}\n")
+                    body_cells[3].text = str(comments_string)
+                else:
+                    body_cells[3].text = "Комментариев для уязвимости не найдено"
+
+                # настройка шрифта
+                for cell in body_cells:
+                    for paragraph in cell.paragraphs:
+                        for run in paragraph.runs:
+                            run.font.name = 'Times New Roman'
+                            run.font.size = Pt(12)
+                count += 1
+                # непрозрачные границы таблицы
+            tbl = table._tbl
+            tbl.tblPr.append(parse_xml(self.tblBorders))
+
+        def sort_vulnerabilities(vulnerabilities, severities_str):
+            critical_list = []
+            high_list = []
+            medium_list = []
+            low_list = []
+            none_list = []
+            unknown_list = []
+            for vuln in vulnerabilities:
+                if vuln['severity'] == 'Critical':
+                    critical_list.append(vuln)
+                    continue
+                if vuln['severity'] == 'High':
+                    high_list.append(vuln)
+                    continue
+                if vuln['severity'] == 'Medium':
+                    medium_list.append(vuln)
+                    continue
+                if vuln['severity'] == 'Low':
+                    low_list.append(vuln)
+                    continue
+                if vuln['severity'] == 'None':
+                    none_list.append(vuln)
+                    continue
+                if vuln['severity'] == 'Unknown':
+                    unknown_list.append(vuln)
+                    continue
+            result = [*critical_list, *high_list, *medium_list,
+                      *low_list, *none_list, *unknown_list]
+            result = []
+            if 'Critical' in severities_str:
+                result.extend(critical_list)
+            if 'High' in severities_str:
+                result.extend(high_list)
+            if 'Medium' in severities_str:
+                result.extend(medium_list)
+            if 'Low' in severities_str:
+                result.extend(low_list)
+            if 'None' in severities_str:
+                result.extend(none_list)
+            if 'Unknown' in severities_str:
+                result.extend(unknown_list)
+            return result
+
+        components = snapshot_data['components']
+
+        layers = layers_string.split(",")
+        for layer in components:
+            if layer not in layers:
+                continue
+            count = 1
+            for component in components[layer]:
+                # print(component)
+                if 'vulnerabilities' not in component or not component['vulnerabilities']:
+                    continue
+                sorted_vulnerabilities = sort_vulnerabilities(
+                    component['vulnerabilities'], severities_string)
+                component['vulnerabilities'] = sorted_vulnerabilities
+                if 'vulnerabilities' in component and component['vulnerabilities'] != []:
+                    create_component_table(doc, component, count)
+                    create_vulnerabilities_table(
+                        doc, component['vulnerabilities'])
+                count += 1
+
+        doc_io = BytesIO()
+        doc.save(doc_io)
+        doc_io.seek(0)
+        return {'project_name': project_name, 'datetime': datetime, 'report': doc_io}

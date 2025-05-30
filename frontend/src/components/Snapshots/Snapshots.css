@@ -73,6 +73,19 @@ div.bitbakeSnapshotModal {
 
 div.snapshotModalInfo {
     margin-bottom: 10px;
+    height: 440px;
+    overflow: auto;
+    word-break: break-word;
+    margin: 5px;
+    margin-bottom: 12px;
+    padding: 10px;
+    padding-right: 20px;
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+}
+
+div.bitbakeSnapshotModalInfo {
+    margin-bottom: 10px;
     height: 390px;
     overflow: auto;
     word-break: break-word;
@@ -89,6 +102,19 @@ div.snapshotReport {
     border-radius: 10px;
     padding: 10px;
     margin: 5px;
+    overflow: auto;
+    word-break: break-word;
+    height: 260px;
+}
+
+div.bitbakeSnapshotReport {
+    border: solid 3px #afafaf;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+    overflow: auto;
+    word-break: break-word;
+    height: 400px;
 }
 
 div.snapshotModalNote {
@@ -120,6 +146,42 @@ div.snapshotModalInfo::-webkit-scrollbar {
 }
 
 div.snapshotModalInfo::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+    border-radius: 10px;
+}
+
+div.bitbakeSnapshotReport::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+div.bitbakeSnapshotReport::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+    border-radius: 10px;
+}
+
+div.snapshotReport::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+div.snapshotReport::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+    border-radius: 10px;
+}
+
+div.bitbakeSnapshotModalInfo::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    margin: 40px;
+    border-radius: 10px;
+}
+
+div.bitbakeSnapshotModalInfo::-webkit-scrollbar-thumb {
     background-color: #afafaf;
     border-radius: 10px;
 }

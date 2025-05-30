@@ -76,7 +76,7 @@ def get_all_snapshot_data(id):
         SELECT *
         FROM bdu_vulnerabilities
         JOIN components ON bdu_vulnerabilities.component_id = components.id
-        WHERE components.id IN ({components_str});
+        WHERE components.id IN ({components_str}) AND components.component_type = 'common';
     """
 
     bdu_vulnerabilities = execute_db_query(query)

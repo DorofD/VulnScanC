@@ -68,7 +68,7 @@ def get_all_bitbake_snapshot_data(id):
         SELECT *
         FROM bitbake_vulnerabilities
         JOIN bitbake_components ON bitbake_vulnerabilities.component_id = bitbake_components.id
-        WHERE bitbake_components.id IN ({components_str});
+        WHERE bitbake_components.id IN ({components_str}) AND bitbake_vulnerabilities.status = 'Unpatched';
     """
 
     vulnerabilities = execute_db_query(query)
@@ -77,24 +77,31 @@ def get_all_bitbake_snapshot_data(id):
         SELECT *
         FROM bdu_vulnerabilities
         JOIN components ON bdu_vulnerabilities.component_id = components.id
-        WHERE components.id IN ({components_str});
+        WHERE components.id IN ({components_str}) AND bdu_vulnerabilities.component_type = 'bitbake';
     """
 
     bdu_vulnerabilities = execute_db_query(query)
 
     query = f"""
-        SELECT * FROM licenses;
+        SELECT * FROM bitbake_licenses;
     """
 
     licenses = execute_db_query(query)
 
     query = f"""
             SELECT cc.*, u.login AS user_name
-            FROM components_comments cc
+            FROM bitbake_components_comments cc
             JOIN users u ON cc.user_id = u.id
             """
-    comments = execute_db_query(query)
+    components_comments = execute_db_query(query)
 
+    query = f"""
+            SELECT cc.*, u.login AS user_name
+            FROM bitbake_vulnerabilities_comments cc
+            JOIN users u ON cc.user_id = u.id
+            """
+    vulns_comments = execute_db_query(query)
+    print(vulnerabilities)
     for component in components:
         component['licenses'] = []
         component['comments'] = []
@@ -102,7 +109,12 @@ def get_all_bitbake_snapshot_data(id):
             if vuln['component_id'] == component['id']:
                 if 'vulnerabilities' not in component:
                     component['vulnerabilities'] = []
-                component['vulnerabilities'].append(vuln['full_data'])
+                vuln['comments'] = []
+                for vuln_comment in vulns_comments:
+                    if vuln_comment['vuln_id'] == vuln['id']:
+                        vuln['comments'].append(vuln_comment)
+                component['vulnerabilities'].append(vuln)
+
         for vuln in bdu_vulnerabilities:
             if vuln['component_id'] == component['id']:
                 if 'bdu_vulnerabilities' not in component:
@@ -111,9 +123,19 @@ def get_all_bitbake_snapshot_data(id):
         for license in licenses:
             if license['component_id'] == component['id']:
                 component['licenses'].append(license)
-        for comment in comments:
+        for comment in components_comments:
             if comment['component_id'] == component['id']:
                 component['comments'].append(comment)
 
-    result['components'] = components
+    sorted_components = {}
+    layers = []
+
+    for component in components:
+        if component['layer'] not in layers:
+            layers.append(component['layer'])
+            sorted_components[component['layer']] = []
+        sorted_components[component['layer']].append(component)
+    result['components'] = sorted_components
+    result['layers'] = layers
+
     return result

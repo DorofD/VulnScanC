@@ -14,7 +14,7 @@ from app.services.api_services.logs import get_logs
 from app.services.api_services.binary import get_binary_info, build_executable_module
 from app.services.api_services.licenses import check_licenses, add_license, delete_license
 from app.services.api_services.bdu import get_bdu_info, update_bdu, update_vulns_by_cve_id, get_component_bdu_vulns
-from app.services.api_services.reports import create_osv_report, create_bdu_report, create_dependency_track_report, create_svacer_report
+from app.services.api_services.reports import create_osv_report, create_bdu_report, create_dependency_track_report, create_svacer_report, create_bitbake_report, create_bitbake_bdu_report
 from app.services.api_services.component_comments import get_comments_for_component, add_comment_for_component, delete_component_comment
 from app.services.api_services.sarif import upload_sarif, get_sarif_path, get_sarif_filenames, delete_sarif
 from app.services.api_services.bitbake import add_bitbake_project, delete_bitbake_project, change_bitbake_project, get_bitbake_projects
@@ -147,21 +147,21 @@ def reports():
         snapshot_id = request.args.get('snapshot_id')
         severities_string = request.args.get('severities')
         layers_string = request.args.get('layers')
-        print(report_type)
-        print(severities_string)
-        print(layers_string)
-        # report = create_bdu_report(snapshot_id, severities_string)
-        # report_name = f"bdu_report_{report['project_name']}_{report['datetime']}.docx"
-        # response = send_file(
-        #     path_or_file=report['report'],
-        #     as_attachment=True,
-        #     download_name=report_name,
-        #     mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        # )
-        # response.headers['Content-Disposition'] = f'attachment; filename="{report_name}"'
-        # current_app.logger.info(f'Sent BDU report: {report_name}')
-        # return response
-        return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
+        # print(report_type)
+        # print(severities_string)
+        # print(layers_string)
+        report = create_bitbake_report(
+            snapshot_id, layers_string, severities_string)
+        report_name = f"bitbake_report_{report['project_name']}_{report['datetime']}.docx"
+        response = send_file(
+            path_or_file=report['report'],
+            as_attachment=True,
+            download_name=report_name,
+            mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        )
+        response.headers['Content-Disposition'] = f'attachment; filename="{report_name}"'
+        current_app.logger.info(f'Sent BDU report: {report_name}')
+        return response
 
     elif report_type == 'bitbake_bdu':
         snapshot_id = request.args.get('snapshot_id')

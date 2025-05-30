@@ -23,3 +23,17 @@ def create_svacer_report(project_name, ids):
     dg = DOCX_GENERATOR()
     result = dg.create_svacer_report(project_name, ids)
     return result
+
+
+def create_bitbake_report(snapshot_id, layers_string, severities_string):
+    dg = DOCX_GENERATOR()
+    result = dg.create_bitbake_report(
+        snapshot_id, layers_string, severities_string)
+    return result
+
+
+def create_bitbake_bdu_report(snapshot_id, layers_string, severities_string):
+    # dg = DOCX_GENERATOR()
+    # result = dg.create_osv_report(snapshot_id, severities_string)
+    # return result
+    pass
