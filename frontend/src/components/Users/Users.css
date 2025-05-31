@@ -9,22 +9,6 @@ div.usersHeader {
     margin: 20px;
 }
 
-div.users::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-}
-
-div.users::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-}
-
-@media (width < 980px) {
-    div.users {
-        margin: 1%;
-    }
-}
-
 div.addModalUsers {
     padding: 5px;
     width: 350px;

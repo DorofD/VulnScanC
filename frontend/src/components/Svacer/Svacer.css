@@ -3,13 +3,14 @@ div.svacerProjects {
     width: 30%;
     overflow: auto;
 }
+
 div.svacerSnapshots {
     height: 100%;
     width: 35%;
     overflow: auto;
 }
 
-div.svacerLabel{
+div.svacerLabel {
     padding-top: 20px;
     text-align: center;
 }
@@ -21,17 +22,6 @@ div.snapshotsComponents {
     overflow: auto;
 }
 
-div.svacerProjects::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-div.svacerProjects::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-    border-radius: 10px;
-}
 
 div.filterLogo {
     display: inline;

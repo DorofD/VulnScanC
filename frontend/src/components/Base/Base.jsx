@@ -18,7 +18,7 @@ const NavLink = React.forwardRef((props, ref) => {
 
 export default function Base() {
     const { isAuthenticated, toogleAuth } = useAuthContext();
-    const { userName, userRole } = useAuthContext();
+    const { userName, userRole, accessToken } = useAuthContext();
     const { notificationData } = useNotificationContext();
     const location = useLocation();
 

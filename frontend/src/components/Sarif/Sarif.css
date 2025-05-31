@@ -8,7 +8,6 @@ div.sarifMenu {
 div.sarifUpload {
     height: 10%;
     border-bottom: solid 3px #f1f1f1;
-    /* background-color: rgb(84, 250, 250); */
 }
 
 div.sarifSelect {
@@ -16,25 +15,10 @@ div.sarifSelect {
     border-bottom: solid 3px #f1f1f1;
     margin-bottom: 10px;
     overflow: auto;
-    /* background-color: rgb(150, 218, 137); */
-}
-
-div.sarifSelect::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-
-div.sarifSelect::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-    border-radius: 10px;
 }
 
 div.sarifReset {
     height: 1%;
-    /* background-color: rgb(103, 146, 94); */
 }
 
 div.sarifViewer {
@@ -42,7 +26,6 @@ div.sarifViewer {
     width: 70%;
     text-align: center;
     overflow: auto;
-    /* background-color: bisque; */
 }
 
 input.sarif {

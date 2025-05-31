@@ -1,5 +1,6 @@
+import { authFetch } from './authFetch';
 export async function apiGetSarifFilesList() {
-    const response = await fetch(`${process.env.BACKEND_URL}/sarif?action=get_filenames`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/sarif?action=get_filenames`, {
         method: 'GET',
     })
     const files = await response.json()
@@ -7,7 +8,7 @@ export async function apiGetSarifFilesList() {
 }
 
 export async function apiGetSarifFile(filename) {
-    const response = await fetch(`${process.env.BACKEND_URL}/sarif?action=get_file&filename=${filename}`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/sarif?action=get_file&filename=${filename}`, {
         method: 'GET',
     })
     if (!response.ok) {
@@ -18,9 +19,11 @@ export async function apiGetSarifFile(filename) {
 }
 
 export async function apiDeleteSarifFile(filename) {
-    const response = await fetch(`${process.env.BACKEND_URL}/sarif`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/sarif`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
             action: 'delete',
             filename: filename

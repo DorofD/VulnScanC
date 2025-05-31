@@ -7,28 +7,12 @@ div.admin-sidebar {
     width: 15%;
 }
 
-@media (width < 1280px){
-    div.admin-sidebar {
-        width: 20%;
-    }
-}
 
-@media (width < 980px){
-    div.admin-sidebar {
-        width: 30%;
-    }
-}
 
 div.admin-content {
     display: flex;
     height: 100%;
     width: 60%;
-}
-
-@media (width < 980px){
-    div.admin-content {
-        width: 100%;
-    }
 }
 
 nav.admin-sidebar {
@@ -53,8 +37,9 @@ ul.admin {
     text-decoration: none;
     width: 100%;
     box-sizing: border-box;
-    user-select: none; 
+    user-select: none;
 }
+
 .adminHref:hover {
     background-color: #6e8399e3;
     color: white;
@@ -70,7 +55,7 @@ ul.admin {
     text-decoration: none;
     width: 100%;
     box-sizing: border-box;
-    user-select: none; 
+    user-select: none;
 }
 
 .activeAdminHref:hover {

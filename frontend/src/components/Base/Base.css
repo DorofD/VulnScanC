@@ -8,24 +8,6 @@ div.baseSidebar {
     box-sizing: initial
 }
 
-@media (width < 1670px) {
-    div.sidebar {
-        width: 15%;
-    }
-}
-
-@media (width < 1370px) {
-    div.sidebar {
-        width: 23%;
-    }
-}
-
-@media (width < 1000px) {
-    div.sidebar {
-        width: 24%;
-    }
-}
-
 div.baseContent {
     display: flex;
     height: 95%;
@@ -99,4 +81,15 @@ span.baseHeader {
 .active {
     background-color: #2190ffe3;
     color: white;
+}
+
+div::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+}
+
+div::-webkit-scrollbar-thumb {
+    background-color: #afafaf;
+    border-radius: 10px;
 }

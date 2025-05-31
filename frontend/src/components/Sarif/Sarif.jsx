@@ -46,7 +46,12 @@ export default function SarifViewer() {
         try {
             setLoading('loading')
             const files = await apiGetSarifFilesList()
-            setFiles(files)
+            if (Array.isArray(files)) {
+                setFiles(files);
+            } else {
+                console.error('Received data is not an array', files);
+                setFiles([]);
+            }
             setLoading('loaded')
         } catch (err) {
             setLoading('error')
@@ -112,6 +117,7 @@ export default function SarifViewer() {
                                 onClick={() => { handleReset(); setPickedFile(file); showSarifFile(String(file)) }}>
                             </SarifFileCard>)}
                     </>}
+                    {loading === 'loaded' && !files && <>Файлы не были найдены, либо переданы в приложение некорректно</>}
                 </div>
                 <div className="sarifReset">
                     <Button

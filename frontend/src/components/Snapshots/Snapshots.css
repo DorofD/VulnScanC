@@ -26,39 +26,6 @@ textarea.mainProjects {
     color: black;
 }
 
-textarea.mainProjects::-webkit-scrollbar,
-div.mainProjects::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-textarea.mainProjects::-webkit-scrollbar-thumb,
-div.mainProjects::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-}
-
-
-textarea.projects {
-    font-family: Arial;
-    font-size: 20px;
-    width: 90%;
-    height: 30px;
-    resize: none;
-    border: solid 3px #afafaf;
-    border-radius: 10px;
-
-}
-
-textarea.projects:focus {
-    border: solid 3px #646464;
-}
-
-textarea.projects:disabled {
-    background-color: #f1f1f1;
-}
-
 div.snapshotModal {
     padding: 5px;
     width: 600px;
@@ -138,54 +105,6 @@ div.snapshotModalButtons {
     padding: 10px;
 }
 
-div.snapshotModalInfo::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-div.snapshotModalInfo::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-    border-radius: 10px;
-}
-
-div.bitbakeSnapshotReport::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-div.bitbakeSnapshotReport::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-    border-radius: 10px;
-}
-
-div.snapshotReport::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-div.snapshotReport::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-    border-radius: 10px;
-}
-
-div.bitbakeSnapshotModalInfo::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-div.bitbakeSnapshotModalInfo::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-    border-radius: 10px;
-}
-
 div.acceptModalProjects {
     padding: 5px;
     width: 350px;
@@ -239,18 +158,6 @@ div.vulnerabilityModalInfo {
     padding: 10px;
     padding-right: 20px;
     border: solid 3px #afafaf;
-    border-radius: 10px;
-}
-
-div.vulnerabilityModalInfo::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-div.vulnerabilityModalInfo::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
     border-radius: 10px;
 }
 

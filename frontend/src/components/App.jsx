@@ -17,6 +17,7 @@ import MarkdownViewer from "./MarkdownViewer/MarkdownViewer";
 import Binary from "./Binary/Binary";
 import SarifViewer from "./Sarif/Sarif";
 import Bitbake from "./Bitbake/Bitbake";
+import Login from "./Login/Login";
 import { PrivateRoute } from "./PrivateRoute/PrivateRoute";
 import { useAuthContext } from "../hooks/useAuthContext";
 
@@ -25,6 +26,7 @@ export default function App() {
     return (
         <>
             <Routes>
+                <Route path="/login" element={<Login />} />
                 <Route element={<PrivateRoute />}>
                     <Route path="/" element={<Base />}>
                         <Route index element={<Projects />} />

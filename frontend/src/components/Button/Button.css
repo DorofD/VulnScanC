@@ -1,28 +1,27 @@
+button {
+    border: 0;
+    cursor: pointer;
+    user-select: none;
+}
+
 button.login {
     text-transform: uppercase;
     outline: 0;
     background: #2190ffe3;
     width: 100%;
-    border: 0;
     padding: 15px;
     color: #FFFFFF;
-    cursor: pointer;
-    user-select: none;
 }
 
 
 button.logout {
-    all: unset;
     width: 6%;
-    border: 0;
     height: 100%;
     margin-left: 10px;
     color: #000;
-    cursor: pointer;
     font-size: large;
     display: inline-block;
     text-align: center;
-    user-select: none;
 }
 
 
@@ -34,10 +33,8 @@ button.userChange {
     text-transform: uppercase;
     background: #4caf50;
     width: 150px;
-    border: 0;
     padding: 10px;
     color: #FFFFFF;
-    cursor: pointer;
     border-radius: 10px;
     margin-bottom: 6px;
 }
@@ -51,9 +48,7 @@ button.UserAdd {
     background: #4CAF50;
     width: 150px;
     height: 40px;
-    border: 0;
     color: #FFFFFF;
-    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -65,10 +60,10 @@ button.userDelete {
     text-transform: uppercase;
     background: #ff2020;
     width: 150px;
-    border: 0;
+
     padding: 10px;
     color: #FFFFFF;
-    cursor: pointer;
+
     border-radius: 10px;
     margin-top: 10px;
 }
@@ -82,9 +77,9 @@ button.reservationAdd {
     background: #4CAF50;
     width: 120px;
     height: 40px;
-    border: 0;
+
     color: #FFFFFF;
-    cursor: pointer;
+
     border-radius: 10px;
 }
 
@@ -97,9 +92,9 @@ button.reservationExit {
     background: #ff2020;
     width: 120px;
     height: 40px;
-    border: 0;
+
     color: #FFFFFF;
-    cursor: pointer;
+
     border-radius: 10px;
 }
 
@@ -112,11 +107,9 @@ button.projectAccept {
     margin: 0 auto;
     text-transform: uppercase;
     background: #4CAF50;
-    width: 100px;
-    height: 30px;
-    border: 0;
+    width: 8em;
+    height: 2em;
     color: #FFFFFF;
-    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -130,9 +123,7 @@ button.projectReject {
     background: #ff2020;
     width: 100px;
     height: 30px;
-    border: 0;
     color: #FFFFFF;
-    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -144,28 +135,24 @@ button.projectClose {
     margin: 0 auto;
     text-transform: uppercase;
     background: #c0c0c0;
-    width: 100px;
-    height: 30px;
-    border: 0;
+    width: 8em;
+    height: 2em;
     color: #000000;
-    cursor: pointer;
     border-radius: 10px;
 }
 
 button.clearFilter {
     user-select: none;
     font-family: Arial;
-    font-size: 16px;
+    font-size: 15px;
     display: inline;
     margin: 0 auto;
     margin-left: 20px;
     text-transform: uppercase;
     background: #c0c0c0;
-    width: 110px;
-    height: 30px;
-    border: 0;
+    width: 8em;
+    height: 2em;
     color: #000000;
-    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -180,9 +167,7 @@ button.bitbakeClearFilter {
     background: #c0c0c0;
     width: 110px;
     height: 30px;
-    border: 0;
     color: #000000;
-    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -197,9 +182,7 @@ button.showHint {
     background: #c0c0c0;
     width: 25px;
     height: 25px;
-    border: 0;
     color: #000000;
-    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -214,9 +197,7 @@ button.showHintActivated {
     background: #2190ffe3;
     width: 25px;
     height: 25px;
-    border: 0;
     color: #ffffff;
-    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -230,9 +211,7 @@ button.componentVulnerabilities {
     background: #c0c0c0;
     width: 240px;
     height: 30px;
-    border: 0;
     color: #000000;
-    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -246,9 +225,7 @@ button.componentVulnerabilities-disabled {
     background: #707070;
     width: 220px;
     height: 30px;
-    border: 0;
     color: #000000;
-    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -262,9 +239,7 @@ button.logsDownload {
     background: #c0c0c0;
     width: 100px;
     height: 30px;
-    border: 0;
     color: #000000;
-    cursor: pointer;
     border-radius: 10px;
     margin-left: 10px;
 }
@@ -281,9 +256,7 @@ button.logsCardClose {
     background: #ffbbbb;
     width: 50px;
     height: 30px;
-    border: 0;
     color: #000000;
-    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -300,9 +273,7 @@ button.commentsCardClose {
     background: #ffbbbb;
     width: 120px;
     height: 30px;
-    border: 0;
     color: #000000;
-    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -317,9 +288,7 @@ button.createUser {
     background: #c0c0c0;
     width: 230px;
     height: 30px;
-    border: 0;
     color: #000000;
-    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -333,9 +302,7 @@ button.buildBinary {
     background: #c0c0c0;
     width: 300px;
     height: 30px;
-    border: 0;
     color: #000000;
-    cursor: pointer;
     border-radius: 10px;
     margin-left: 10px;
 }
@@ -349,9 +316,7 @@ button.snapshotsProjectType {
     background: #c0c0c0;
     width: 240px;
     height: 30px;
-    border: 0;
     color: #000000;
-    cursor: pointer;
     border-radius: 10px;
 }
 
@@ -363,9 +328,7 @@ button.snapshotsProjectTypeActive {
     background: #2190ffe3;
     width: 240px;
     height: 30px;
-    border: 0;
     color: #ffffff;
-    cursor: pointer;
     border-radius: 10px;
 
 }

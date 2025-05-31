@@ -26,31 +26,6 @@ div.bitbakeVulnerabilities {
     overflow: auto;
 }
 
-div.bitbakeVulnerabilities::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-
-div.bitbakeVulnerabilities::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-    border-radius: 10px;
-}
-
-div.bitbakeComponents::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-
-div.bitbakeComponents::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-    border-radius: 10px;
-}
 
 textarea.mainProjects {
     font-family: Arial;
@@ -63,39 +38,6 @@ textarea.mainProjects {
     border: solid 4px #afafaf;
     border-radius: 10px;
     color: black;
-}
-
-textarea.mainProjects::-webkit-scrollbar,
-div.mainProjects::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-textarea.mainProjects::-webkit-scrollbar-thumb,
-div.mainProjects::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-}
-
-
-textarea.projects {
-    font-family: Arial;
-    font-size: 20px;
-    width: 90%;
-    height: 30px;
-    resize: none;
-    border: solid 3px #afafaf;
-    border-radius: 10px;
-
-}
-
-textarea.projects:focus {
-    border: solid 3px #646464;
-}
-
-textarea.projects:disabled {
-    background-color: #f1f1f1;
 }
 
 div.changeModalComponents {
@@ -118,17 +60,6 @@ div.changeModalComponentsParams {
     border-radius: 10px;
 }
 
-div.changeModalComponentsParams::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-div.changeModalComponentsParams::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-    border-radius: 10px;
-}
 
 div.changeModalProjectsButtons {
     display: flex;
@@ -196,18 +127,6 @@ div.bitbakeVulnerabilityModalInfo {
     padding: 10px;
     padding-right: 20px;
     border: solid 3px #afafaf;
-    border-radius: 10px;
-}
-
-div.vulnerabilityModalInfo::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-div.vulnerabilityModalInfo::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
     border-radius: 10px;
 }
 

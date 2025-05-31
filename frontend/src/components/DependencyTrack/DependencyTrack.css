@@ -19,19 +19,6 @@ div.componentsVulnerabilities {
     overflow: auto;
 }
 
-div.componentsVulnerabilities::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-
-div.componentsVulnerabilities::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-    border-radius: 10px;
-}
-
 textarea.mainProjects {
     font-family: Arial;
     font-size: 18px;
@@ -45,45 +32,14 @@ textarea.mainProjects {
     color: black;
 }
 
-textarea.mainProjects::-webkit-scrollbar, div.mainProjects::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-textarea.mainProjects::-webkit-scrollbar-thumb, div.mainProjects::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-}
-
-
-textarea.projects {
-    font-family: Arial;
-    font-size: 20px;
-    width: 90%;
-    height: 30px;
-    resize: none;
-    border: solid 3px #afafaf;
-    border-radius: 10px;
-
-}
-
-textarea.projects:focus {
-    border: solid 3px #646464;
-}
-
-textarea.projects:disabled {
-    background-color: #f1f1f1;
-}
-
 div.DTmodalComponents {
     padding: 5px;
     width: 500px;
     height: 450px;
-    
+
 }
 
-div.changeModalComponentsParamsDT{
+div.changeModalComponentsParamsDT {
     margin-bottom: 10px;
     height: 360px;
     overflow: auto;
@@ -96,25 +52,13 @@ div.changeModalComponentsParamsDT{
     border-radius: 10px;
 }
 
-div.changeModalComponentsParamsDT::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-div.changeModalComponentsParamsDT::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
-    border-radius: 10px;
-}
-
-div.changeModalProjectsButtonsDT{
+div.changeModalProjectsButtonsDT {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-div.changeModalComponentVulnerabilitiesButton{
+div.changeModalComponentVulnerabilitiesButton {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -125,29 +69,29 @@ div.acceptModalProjects {
     padding: 5px;
     width: 350px;
     height: 80px;
-    
+
 }
 
-div.acceptModalProjectsName{
+div.acceptModalProjectsName {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
 }
 
-div.acceptModalProjectsButtons{
+div.acceptModalProjectsButtons {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-div.acceptModalProjectsButtons{
+div.acceptModalProjectsButtons {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-div.acceptModalProjectsText{
+div.acceptModalProjectsText {
     font-family: Arial;
     font-size: 20px;
     display: flex;
@@ -161,10 +105,10 @@ div.vulnerabilityModalDT {
     padding: 5px;
     width: 600px;
     height: 820px;
-    
+
 }
 
-div.vulnerabilityModalInfoDT{
+div.vulnerabilityModalInfoDT {
     margin-bottom: 10px;
     height: 740px;
     overflow: auto;
@@ -174,18 +118,6 @@ div.vulnerabilityModalInfoDT{
     padding: 10px;
     padding-right: 20px;
     border: solid 3px #afafaf;
-    border-radius: 10px;
-}
-
-div.vulnerabilityModalInfoDT::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f1f1f1;
-    margin: 40px;
-    border-radius: 10px;
-}
-
-div.vulnerabilityModalInfoDT::-webkit-scrollbar-thumb {
-    background-color: #afafaf;
     border-radius: 10px;
 }
 
@@ -227,6 +159,7 @@ img.filterLogo {
     border: solid 3px #afafaf;
     border-radius: 10px;
 }
+
 .vulnerabilityFilter {
     font-family: Arial;
     font-size: large;
@@ -237,14 +170,3 @@ img.filterLogo {
     border: solid 3px #afafaf;
     border-radius: 10px;
 }
-
-.clearFilter {
-    font-family: Arial;
-    font-size: medium;
-    width: 100px;
-    padding: 8px;
-    margin-left: 10px;
-    border: solid 3px #afafaf;
-    border-radius: 10px;
-    cursor: pointer;
-} 
