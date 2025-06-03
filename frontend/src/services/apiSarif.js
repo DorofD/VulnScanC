@@ -1,4 +1,5 @@
 import { authFetch } from './authFetch';
+
 export async function apiGetSarifFilesList() {
     const response = await authFetch(`${process.env.BACKEND_URL}/sarif?action=get_filenames`, {
         method: 'GET',

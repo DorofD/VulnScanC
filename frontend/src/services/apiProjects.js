@@ -1,5 +1,7 @@
+import { authFetch } from './authFetch';
+
 export async function apiGetProjects() {
-    const response = await fetch(`${process.env.BACKEND_URL}/projects`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/projects`, {
         method: 'GET',
     })
     const projects = await response.json()
@@ -7,7 +9,7 @@ export async function apiGetProjects() {
 }
 
 export async function apiAddProject(name) {
-    const response = await fetch(`${process.env.BACKEND_URL}/projects`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/projects`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -19,7 +21,7 @@ export async function apiAddProject(name) {
 }
 
 export async function apiDeleteProject(id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/projects`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/projects`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -31,7 +33,7 @@ export async function apiDeleteProject(id) {
 }
 
 export async function apiChangeProject(id, name) {
-    const response = await fetch(`${process.env.BACKEND_URL}/projects`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/projects`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

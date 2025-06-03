@@ -41,5 +41,8 @@ export async function authFetch(url, options = {}) {
             window.location.href = '/login';
         }
     }
+    if (response.status === 403) {
+        throw new Error('Forbidden, check your role');
+    }
     return response;
 }

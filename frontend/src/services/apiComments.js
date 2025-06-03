@@ -1,5 +1,7 @@
+import { authFetch } from './authFetch';
+
 export async function apiGetComponentComments(component_id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/comments?type=component&component_id=${component_id}`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/comments?type=component&component_id=${component_id}`, {
         method: 'GET',
     })
     const comments = await response.json()
@@ -7,7 +9,7 @@ export async function apiGetComponentComments(component_id) {
 }
 
 export async function apiAddComponentComment(user_id, component_id, comment) {
-    const response = await fetch(`${process.env.BACKEND_URL}/comments`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -22,7 +24,7 @@ export async function apiAddComponentComment(user_id, component_id, comment) {
 }
 
 export async function apiDeleteComponentComment(comment_id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/comments`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -35,7 +37,7 @@ export async function apiDeleteComponentComment(comment_id) {
 }
 
 export async function apiChangeProject(id, name) {
-    const response = await fetch(`${process.env.BACKEND_URL}/projects`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/projects`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

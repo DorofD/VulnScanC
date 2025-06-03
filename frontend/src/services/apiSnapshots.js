@@ -1,5 +1,7 @@
+import { authFetch } from './authFetch';
+
 export async function apiGetProjectSnapshots(project_type, project_id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/snapshots?project_id=${project_id}&&project_type=${project_type}`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/snapshots?project_id=${project_id}&&project_type=${project_type}`, {
         method: 'GET',
     })
     const snapshots = await response.json()
@@ -7,7 +9,7 @@ export async function apiGetProjectSnapshots(project_type, project_id) {
 }
 
 export async function apiDeleteSnapshot(project_type, id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/snapshots`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/snapshots`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

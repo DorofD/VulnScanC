@@ -1,5 +1,7 @@
+import { authFetch } from './authFetch';
+
 export async function apiGetBitbakeProjects() {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake?action=get_projects`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake?action=get_projects`, {
         method: 'GET',
     })
     const projects = await response.json()
@@ -7,7 +9,7 @@ export async function apiGetBitbakeProjects() {
 }
 
 export async function apiAddBitbakeProject(name) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -19,7 +21,7 @@ export async function apiAddBitbakeProject(name) {
 }
 
 export async function apiAddBitbakeLicense(component_id, license_name, recipe_name) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -33,7 +35,7 @@ export async function apiAddBitbakeLicense(component_id, license_name, recipe_na
 }
 
 export async function apiDeleteBitbakeProject(id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -45,7 +47,7 @@ export async function apiDeleteBitbakeProject(id) {
 }
 
 export async function apiChangeBitbakeProject(id, name) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -58,7 +60,7 @@ export async function apiChangeBitbakeProject(id, name) {
 }
 
 export async function apiGetBitbakeProjectComponents(project_id, layer) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake?action=get_components&project_id=${project_id}&layer=${layer}`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake?action=get_components&project_id=${project_id}&layer=${layer}`, {
         method: 'GET',
     })
     const projects = await response.json()
@@ -66,7 +68,7 @@ export async function apiGetBitbakeProjectComponents(project_id, layer) {
 }
 
 export async function apiGetBitbakeComponentVulnerabilities(component_id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake?action=get_vulnerabilities&component_id=${component_id}`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake?action=get_vulnerabilities&component_id=${component_id}`, {
         method: 'GET',
     })
     const projects = await response.json()
@@ -74,7 +76,7 @@ export async function apiGetBitbakeComponentVulnerabilities(component_id) {
 }
 
 export async function apiDeleteBitbakeLicense(id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -86,7 +88,7 @@ export async function apiDeleteBitbakeLicense(id) {
 }
 
 export async function apiGetBitbakeComponentComments(component_id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake?action=get_component_comments&component_id=${component_id}`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake?action=get_component_comments&component_id=${component_id}`, {
         method: 'GET',
     })
     const comments = await response.json()
@@ -94,7 +96,7 @@ export async function apiGetBitbakeComponentComments(component_id) {
 }
 
 export async function apiAddBitbakeComponentComment(user_id, component_id, comment) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -108,7 +110,7 @@ export async function apiAddBitbakeComponentComment(user_id, component_id, comme
 }
 
 export async function apiDeleteBitbakeComponentComment(comment_id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -120,7 +122,7 @@ export async function apiDeleteBitbakeComponentComment(comment_id) {
 }
 
 export async function apiGetBitbakeVulnComments(vuln_id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake?action=get_vuln_comments&vuln_id=${vuln_id}`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake?action=get_vuln_comments&vuln_id=${vuln_id}`, {
         method: 'GET',
     })
     const comments = await response.json()
@@ -128,7 +130,7 @@ export async function apiGetBitbakeVulnComments(vuln_id) {
 }
 
 export async function apiAddBitbakeVulnComment(user_id, vuln_id, comment) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -142,7 +144,7 @@ export async function apiAddBitbakeVulnComment(user_id, vuln_id, comment) {
 }
 
 export async function apiDeleteBitbakeVulnComment(comment_id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bitbake`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bitbake`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

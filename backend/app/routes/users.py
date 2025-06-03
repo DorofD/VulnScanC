@@ -1,10 +1,14 @@
-from flask import Blueprint, request, current_app, jsonify
+from flask import Blueprint, request, jsonify
 from app.services.api_services.users import get_users, add_user, delete_user, change_user
+from flask_jwt_extended import jwt_required
+from app.routes import role_required
 
 users_bp = Blueprint('users', __name__)
 
 
 @users_bp.route('/users', methods=(['GET', 'POST']))
+@jwt_required()
+@role_required('admin')
 def users():
     if request.method == 'GET':
         result = jsonify(get_users())

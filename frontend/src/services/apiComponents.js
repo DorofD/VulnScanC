@@ -1,5 +1,7 @@
+import { authFetch } from './authFetch';
+
 export async function apiGetProjectComponents(project_id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/components?project_id=${project_id}`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/components?project_id=${project_id}`, {
         method: 'GET',
     })
     const projects = await response.json()
@@ -7,7 +9,7 @@ export async function apiGetProjectComponents(project_id) {
 }
 
 export async function apiChangeComponentStatus(id, status) {
-    const response = await fetch(`${process.env.BACKEND_URL}/components`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/components`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -20,7 +22,7 @@ export async function apiChangeComponentStatus(id, status) {
 }
 
 export async function apiAddProject(name) {
-    const response = await fetch(`${process.env.BACKEND_URL}/projects`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/projects`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

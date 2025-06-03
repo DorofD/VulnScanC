@@ -1,5 +1,7 @@
+import { authFetch } from './authFetch';
+
 export async function apiGetSvacerProjects() {
-    const response = await fetch(`${process.env.BACKEND_URL}/svacer?action=get_projects`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/svacer?action=get_projects`, {
         method: 'GET',
     })
     const projects = await response.json()
@@ -10,7 +12,7 @@ export async function apiGetSvacerProjects() {
 }
 
 export async function apiGetSvacerSnapshots(project_id, branch_id) {
-    const response = await fetch(`${process.env.BACKEND_URL}/svacer?action=get_snapshots&project_id=${project_id}&branch_id=${branch_id}`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/svacer?action=get_snapshots&project_id=${project_id}&branch_id=${branch_id}`, {
         method: 'GET',
     })
     const projects = await response.json()

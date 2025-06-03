@@ -22,7 +22,7 @@ def create_app():
     app.config["JWT_TOKEN_LOCATION"] = ['headers', 'cookies']
     app.config["JWT_HEADER_NAME"] = "Authorization"
     app.config["JWT_HEADER_TYPE"] = ""
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(seconds=30)
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=15)
     app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(minutes=180)
     app.config['JWT_REFRESH_COOKIE_PATH'] = '/'
     app.config['JWT_COOKIE_CSRF_PROTECT'] = False
@@ -53,18 +53,31 @@ def create_app():
     app.logger.addHandler(handler)
     app.logger.setLevel(logging.INFO)
 
-    from app.routes.routes import main as main_blueprint
-    app.register_blueprint(main_blueprint)
+    from app.routes.base_routes import main as main_blueprint
     from app.routes.login import login_bp
-    app.register_blueprint(login_bp)
     from app.routes.users import users_bp
-    app.register_blueprint(users_bp)
     from app.routes.logs import logs_bp
-    app.register_blueprint(logs_bp)
     from app.routes.bitbake import bitbake_bp
-    app.register_blueprint(bitbake_bp)
     from app.routes.reports import reports_bp
+    from app.routes.sarif import sarif_bp
+    from app.routes.svacer import svacer_bp
+    from app.routes.dependency_track import dependency_track_bp
+    from app.routes.bdu import bdu_bp
+    from app.routes.licenses import licenses_bp
+    from app.routes.snapshots import snapshots_bp
+
+    app.register_blueprint(main_blueprint)
+    app.register_blueprint(login_bp)
+    app.register_blueprint(users_bp)
+    app.register_blueprint(logs_bp)
+    app.register_blueprint(bitbake_bp)
     app.register_blueprint(reports_bp)
+    app.register_blueprint(sarif_bp)
+    app.register_blueprint(svacer_bp)
+    app.register_blueprint(dependency_track_bp)
+    app.register_blueprint(bdu_bp)
+    app.register_blueprint(licenses_bp)
+    app.register_blueprint(snapshots_bp)
     print(app.url_map)
     create_db()
     users = get_users()

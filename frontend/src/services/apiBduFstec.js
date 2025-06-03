@@ -1,5 +1,7 @@
+import { authFetch } from './authFetch';
+
 export async function apiGetBduInfo() {
-    const response = await fetch(`${process.env.BACKEND_URL}/bdu?action=get_info`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bdu?action=get_info`, {
         method: 'GET',
     })
     const projects = await response.json()
@@ -7,7 +9,7 @@ export async function apiGetBduInfo() {
 }
 
 export async function apiGetBduComponentVulns(component_id, component_type) {
-    const response = await fetch(`${process.env.BACKEND_URL}/bdu?action=get_component_vulns&component_id=${component_id}&component_type=${component_type}`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bdu?action=get_component_vulns&component_id=${component_id}&component_type=${component_type}`, {
         method: 'GET',
     })
     const projects = await response.json()
@@ -15,7 +17,7 @@ export async function apiGetBduComponentVulns(component_id, component_type) {
 }
 
 export async function apiUpdateBdu() {
-    const response = await fetch(`${process.env.BACKEND_URL}/bdu`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bdu`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -26,7 +28,7 @@ export async function apiUpdateBdu() {
 }
 
 export async function apiUpdateBduVulns() {
-    const response = await fetch(`${process.env.BACKEND_URL}/bdu`, {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bdu`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

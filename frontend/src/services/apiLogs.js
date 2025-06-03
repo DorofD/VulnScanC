@@ -10,7 +10,7 @@ export async function apiGetLogsJson() {
 
 export async function apiGetLogsFile() {
     try {
-        const response = await fetch(`${process.env.BACKEND_URL}/logs?action=get_file`, {
+        const response = await authFetch(`${process.env.BACKEND_URL}/logs?action=get_file`, {
             method: 'GET',
         });
 
