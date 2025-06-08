@@ -15,4 +15,4 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=node_build /app/dist /www/dist
-COPY ./docker/sec_dev_service.conf /etc/nginx/conf.d/default.conf
+COPY ./docker/vsc.conf /etc/nginx/conf.d/default.conf
