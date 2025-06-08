@@ -458,7 +458,7 @@ export default function Components() {
                             </div>
                         </div>
                         <div className="changeModalComponentVulnerabilitiesButton">
-                            <Button style={"componentVulnerabilities"} onClick={() => { setShowedVunls('osv'); showComponentVulnerabilities() }}> Показать уязвимости OSV </Button>
+                            <Button style={"componentVulnerabilities"} onClick={() => { setShowedVunls('osv'); showComponentVulnerabilities() }}> Показать уязвимости CVE </Button>
                         </div>
                         <div className="changeModalComponentVulnerabilitiesButton">
                             <Button style={"componentVulnerabilities"} onClick={() => { setShowedVunls('bdu'); showComponentVulnerabilitiesBdu() }}> Показать уязвимости БДУ </Button>
@@ -559,7 +559,7 @@ export default function Components() {
             <Modal isOpen={isVulnerabilityModalOpen} onClose={closeVulnerabilityModal}>
                 {pickedVulnerability && showedVunls == 'osv' && <div className="vulnerabilityModal">
                     <div className="vulnerabilityModalInfo">
-                        <p> <b>OSV id: </b>{pickedVulnerability.full_data.id}</p>
+                        <p> <b>CVE id: </b>{pickedVulnerability.full_data.id}</p>
                         <p> <b>Описание: </b>{pickedVulnerability.full_data.details}</p>
                         {pickedVulnerability.full_data.severity && <p><b>Severity: </b>
                             <br /> base_severity: {pickedVulnerability.full_data.severity[0].calculated_severities.base_severity}
