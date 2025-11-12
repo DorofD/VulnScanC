@@ -1,11 +1,20 @@
+
 import requests
+from cvss import CVSS3, CVSS4
+from cvss import exceptions as cvss_exceptions
 import copy
-from cvss import CVSS3
+print('sas')
 
 
 def calculate_severities(vector):
-    c = CVSS3(vector)
-    return {'base_severity': c.severities()[0], 'temporal_severity': c.severities()[1], 'environmental_severity': c.severities()[2]}
+
+    try:
+        c = CVSS3(vector)
+        return {'base_severity': c.severities()[0], 'temporal_severity': c.severities()[1], 'environmental_severity': c.severities()[2]}
+    except cvss_exceptions.CVSS3MalformedError:
+        c = CVSS4(vector)
+        return {'base_severity': c.severity, 'temporal_severity': c.severity, 'environmental_severity': c.severity}
+    # print(c.severities())
 
 
 def search_vulnerabilities(dirs_matches: list):
