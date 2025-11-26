@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import "./Projects.css";
-import Button from "../Button/Button";
 import { apiAddProject, apiGetProjects, apiDeleteProject, apiChangeProject } from "../../services/apiProjects";
 import { apiAddBitbakeProject, apiGetBitbakeProjects, apiDeleteBitbakeProject, apiChangeBitbakeProject } from "../../services/apiBitbake";
 import ProjectCard from "./ProjectCard/ProjectCard";
@@ -156,41 +155,58 @@ export default function Projects() {
 
     return (
         <>
-            <div className="mainProjects">
-                <p className="projectsTitle">Обычные проекты</p>
-                <ProjectCard id={0}
-                    name={'Добавить проект'}
-                    picked={(pickedProject.type === 'common' && pickedProject.id === 0) ? true : false}
-                    onClick={() => { setPickedProject({ id: 0, name: '', type: 'common' }); setIsAddModalOpen(true) }}>
-                </ProjectCard>
-                {loadingProjects === 'loading' && <Loader />}
-                {loadingProjects === 'error' && <p> бекенд отвалился</p>}
-                {loadingProjects === 'loaded' && <>
-                    {projects.map(project =>
-                        <ProjectCard id={project.id}
-                            name={project.name}
-                            picked={(pickedProject.type === 'common' && pickedProject.id === project.id) ? true : false}
-                            onClick={() => { setPickedProject({ id: project.id, name: project.name, type: 'common' }); setIsChangeModalOpen(true) }}>
-                        </ProjectCard>)}
-                </>}
-            </div>
-            <div className="mainProjects">
-                <p className="projectsTitle">Проекты BitBake</p>
-                <ProjectCard id={0}
-                    name={'Добавить проект'}
-                    picked={(pickedProject.type === 'bitbake' && pickedProject.id === 0) ? true : false}
-                    onClick={() => { setPickedProject({ id: 0, name: '', type: 'bitbake' }); setIsAddModalOpen(true) }}>
-                </ProjectCard>
-                {loadingProjects === 'loading' && <Loader />}
-                {loadingProjects === 'error' && <p> бекенд отвалился</p>}
-                {loadingProjects === 'loaded' && <>
-                    {bitbakeProjects.map(project =>
-                        <ProjectCard id={project.id}
-                            name={project.name}
-                            picked={(pickedProject.type === 'bitbake' && pickedProject.id === project.id) ? true : false}
-                            onClick={() => { setPickedProject({ id: project.id, name: project.name, type: 'bitbake' }); setIsChangeModalOpen(true) }}>
-                        </ProjectCard>)}
-                </>}
+            <div className="projects">
+                <div className="projectsLeft">
+                    <div className="projectsLeft1">
+
+                        Обычные проекты
+                        <br />
+                        <button
+                            onClick={() => { setPickedProject({ id: 0, name: '', type: 'common' }); setIsAddModalOpen(true) }}>
+                            Добавить
+                        </button>
+                    </div>
+                    <div className="projectsLeft2">
+
+                        {loadingProjects === 'loading' && <Loader />}
+                        {loadingProjects === 'error' && <p> бекенд отвалился</p>}
+                        {loadingProjects === 'loaded' && <>
+                            {projects.map(project =>
+                                <ProjectCard id={project.id}
+                                    name={project.name}
+                                    picked={(pickedProject.type === 'common' && pickedProject.id === project.id) ? true : false}
+                                    onClick={() => { setPickedProject({ id: project.id, name: project.name, type: 'common' }); setIsChangeModalOpen(true) }}>
+                                </ProjectCard>)}
+                        </>}
+                    </div>
+                </div>
+                <div className="projectsLeft">
+                    <div className="projectsLeft1">
+                        Проекты BitBake
+                        <button
+                            onClick={() => { setPickedProject({ id: 0, name: '', type: 'bitbake' }); setIsAddModalOpen(true) }}>
+                            Добавить
+                        </button>
+                    </div>
+                    <div className="projectsLeft2">
+
+                        {loadingProjects === 'loading' && <Loader />}
+                        {loadingProjects === 'error' && <p> бекенд отвалился</p>}
+                        {loadingProjects === 'loaded' && <>
+                            {bitbakeProjects.map(project =>
+                                <ProjectCard id={project.id}
+                                    name={project.name}
+                                    picked={(pickedProject.type === 'bitbake' && pickedProject.id === project.id) ? true : false}
+                                    onClick={() => { setPickedProject({ id: project.id, name: project.name, type: 'bitbake' }); setIsChangeModalOpen(true) }}>
+                                </ProjectCard>)}
+                        </>}
+                    </div>
+                </div>
+
+                <div className="projectsRight">
+                    |
+
+                </div>
             </div>
             <Modal isOpen={isChangeModalOpen} onClose={closeChangeModal}>
                 <div className="changeModalProjects">
@@ -203,9 +219,9 @@ export default function Projects() {
                             onChange={changeProjectName}> </textarea>
                     </div>
                     <div className="changeModalProjectsButtons">
-                        <Button style={"projectAccept"} onClick={() => openAcceptModalWithAction(changeProject)}> Изменить </Button>
-                        <Button style={"projectReject"} onClick={() => openAcceptModalWithAction(deleteProject)}> Удалить </Button>
-                        <Button style={"projectClose"} onClick={closeChangeModal}> Закрыть </Button>
+                        <button onClick={() => openAcceptModalWithAction(changeProject)}> Изменить </button>
+                        <button onClick={() => openAcceptModalWithAction(deleteProject)}> Удалить </button>
+                        <button onClick={closeChangeModal}> Закрыть </button>
                     </div>
                 </div>
             </Modal>
@@ -213,7 +229,7 @@ export default function Projects() {
             <Modal isOpen={isAddModalOpen} onClose={closeAddModal}>
                 <div className="changeModalProjects">
                     <div className="changeModalProjectsName">
-                        <textarea name="projectName"
+                        <textarea name="changeModalProjects"
                             id={pickedProject['id']}
                             placeholder='Название проекта'
                             className="projects"
@@ -221,20 +237,20 @@ export default function Projects() {
                             onChange={changeProjectName}> </textarea>
                     </div>
                     <div className="changeModalProjectsButtons">
-                        <Button style={"projectAccept"} onClick={() => addProject()}> Добавить </Button>
-                        <Button style={"projectClose"} onClick={closeAddModal}> Закрыть </Button>
+                        <button onClick={() => addProject()}> Добавить </button>
+                        <button onClick={closeAddModal}> Закрыть </button>
                     </div>
                 </div>
             </Modal>
 
             <AcceptModal isOpen={isAcceptModalOpen} onClose={closeAcceptModal}>
-                <div className="acceptModalProjects">
-                    <div className="acceptModalProjectsText">
+                <div className="acceptModal">
+                    <div className="acceptModalText">
                         Вы уверены?
                     </div>
-                    <div className="acceptModalProjectsButtons">
-                        <Button style={"projectAccept"} onClick={() => { actionFunction(); closeAcceptModal(); }}> Да </Button>
-                        <Button style={"projectReject"} onClick={closeAcceptModal}> Нет </Button>
+                    <div className="acceptModalButtons">
+                        <button className="positive acceptModal" onClick={() => { actionFunction(); closeAcceptModal(); }}> Да </button>
+                        <button className="critical acceptModal" onClick={closeAcceptModal}> Нет </button>
                     </div>
                 </div>
             </AcceptModal>

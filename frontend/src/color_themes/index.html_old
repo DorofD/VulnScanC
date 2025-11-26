@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <link rel="icon" href="icon.png" type="image/x-icon">
+  <meta charset="utf-8">
+  <title>Stand Planner</title>
+</head>
+
+<body
+  style="margin: 0%;
+      font-family: Arial; font-size: 18px; width: 100vw; height: 100vh; background-color: var(--main-background-color); box-sizing: border-box;">
+  <div id="root" style="height: 100%; width: 100%; box-sizing: border-box; display: flex; flex-direction: column;">
+  </div>
+</body>
+
+</html>

@@ -2,16 +2,11 @@ import React, { Component } from "react";
 import "./UserCard.css";
 
 
-export default function UserCard({id, login, authType, role, onClick, picked = false}) {
-    if (!picked) {
-        picked = "userCard"
-    } else {
-        picked = "userCardPicked"
-    }
+export default function UserCard({ id, login, authType, role, onClick, picked = false }) {
 
     return (
         <>
-            <div id={id} className={picked} onClick={onClick}>
+            <div id={id} className={!picked && "card users" || "card users picked"} onClick={onClick}>
 
                 <p className="userName">{login}</p>
                 <div className="componentStatus">

@@ -5,14 +5,11 @@ import Projects from "./Projects/Projects"
 import Components from "./Components/Components";
 import Snapshots from "./Snapshots/Snapshots";
 import BduFstec from "./BduFstec/BduFstec";
-import Svacer from "./Svacer/Svacer";
 import DependencyTrack from "./DependencyTrack/DependencyTrack";
 import Admin from "./Admin/Admin"
 import About from "./About/About"
 import Users from "./Users/Users";
 import Logs from "./Logs/Logs";
-import Ldap from "./Ldap/Ldap";
-import SvacerAdmin from "./SvacerAdmin/SvacerAdmin";
 import MarkdownViewer from "./MarkdownViewer/MarkdownViewer";
 import Binary from "./Binary/Binary";
 import SarifViewer from "./Sarif/Sarif";
@@ -20,7 +17,9 @@ import Bitbake from "./Bitbake/Bitbake";
 import Login from "./Login/Login";
 import { PrivateRoute } from "./PrivateRoute/PrivateRoute";
 import { useAuthContext } from "../hooks/useAuthContext";
-
+import "./App.css";
+import "./Button/Button.css";
+import '../color_themes/App-themes-links.css';
 export default function App() {
     const { userRole } = useAuthContext()
     return (
@@ -34,15 +33,12 @@ export default function App() {
                         <Route path="/bdu_fstec" element={<BduFstec />} />
                         <Route path="/snapshots" element={<Snapshots />} />
                         <Route path="/bitbake" element={<Bitbake />} />
-                        <Route path="/svacer" element={<Svacer />} />
                         <Route path="/dependencyTrack" element={<DependencyTrack />} />
                         <Route path="/sarif" element={<SarifViewer />} />
                         {userRole === 'admin' && <Route path="/admin" element={<Admin />}>
                             <Route path="/admin/users" element={<Users />} />
                             <Route path="/admin/binary" element={<Binary />} />
                             <Route path="/admin/logs" element={<Logs />} />
-                            <Route path="/admin/svacer" element={<SvacerAdmin />} />
-                            <Route path="/admin/ldap" element={<Ldap />} />
                         </Route>}
 
                         <Route path="/about" element={<About />} />

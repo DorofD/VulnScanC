@@ -1,0 +1,32 @@
+div.filterContainer {
+    box-sizing: border-box;
+    height: 10%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px
+}
+
+
+input.filter {
+    width: 20%;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+input.mainStandsFilter {
+    width: 40%;
+}
+
+select.filter {
+    width: 20%;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+select.filter.adaptive {
+    width: auto;
+    padding: 4px;
+    border-radius: 10px;
+}

@@ -1,19 +1,22 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import "./Login.css";
-import Button from "../Button/Button";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { useNotificationContext } from "../../hooks/useNotificationContext";
+// // import { useNotificationContext } from "../../hooks/useNotificationContext";
+import { useTimedMessagesContext } from "../../hooks/useTimedMessagesContext";
 import { useNavigate } from 'react-router-dom';
 import { apiAuth } from "../../services/apiLogin";
 
 export default function Login() {
-    const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
+    const { messages, addMessage } = useTimedMessagesContext();
+
     const { isAuthenticated, toogleAuth } = useAuthContext()
     const { userName, setUserName } = useAuthContext()
     const { userRole, setUserRole } = useAuthContext()
     const { userId, setUserId } = useAuthContext()
     const { accessToken, setaccessToken } = useAuthContext()
+    const { userAuthType, setUserAuthType } = useAuthContext()
+    const { userLdapInfo, setUserLdapInfo } = useAuthContext()
     const [status, setStatus] = useState('')
     const navigate = useNavigate();
     async function getAuth(e) {
@@ -32,11 +35,24 @@ export default function Login() {
                 setUserName(user.body.login)
                 setUserRole(user.body.role)
                 setUserId(user.body.id)
+                setUserAuthType(user.body.auth_type)
+                if (user.body.auth_type === 'ldap') {
+                    // console.log(user.body.auth_type)
+                    // console.log(user.body.displayName)
+                    // console.log(user.body.givenName)
+                    // console.log(user.body.sn)
+                    // console.log(user.body.mail)
+                    setUserLdapInfo({
+                        displayName: user.body.displayName,
+                        givenName: user.body.givenName,
+                        sn: user.body.sn,
+                        mail: user.body.mail,
+                    })
+                }
                 setaccessToken(user.access_token)
                 localStorage.setItem('accessToken', user.access_token);
+                // console.log(userLdapInfo)
                 toogleAuth()
-                setNotificationData({ message: '', type: 'success' })
-                toggleNotificationFunc()
                 navigate('/');
             } else {
                 setStatus('error')
@@ -60,12 +76,12 @@ export default function Login() {
         <>
             <div className="login">
                 <form className="login" onSubmit={getAuth}>
-                    <input type="text" name="username" placeholder="username" />
-                    <input type="password" name="password" placeholder="password" autoComplete="on" />
-                    <Button style={"login"} type={"submit"}> Войти</Button>
+                    <input className="login" type="text" name="username" placeholder="username" />
+                    <input className="login" type="password" name="password" placeholder="password" autoComplete="on" />
+                    <button className="login" type="submit">Войти</button>
 
                     {status === 'loading' && <div className="loading"> Ожидайте </div>}
-                    {status === 'error' && <div className="error"> Не удалось войти </div>}
+                    {status === 'error' && <div className="loginError"> Не удалось войти </div>}
                 </form>
             </div>
         </>

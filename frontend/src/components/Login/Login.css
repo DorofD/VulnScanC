@@ -1,40 +1,47 @@
 div.login {
-    width: 360px;
-    padding: 8% 0 0;
-    margin: auto;
+  width: 360px;
+  padding: 8% 0 0;
+  margin: auto;
+  background-color: var(--main-background-color);
 }
 
 form.login {
-    position: relative;
-    z-index: 1;
-    background: #FFFFFF;
-    max-width: 360px;
-    margin: 0 auto 100px;
-    padding: 45px;
-    text-align: center;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-  }
-
-form.login input {
-    outline: 0;
-    background: #f1f1f1;
-    width: 100%;
-    border: 0;
-    margin: 0 0 15px;
-    padding: 15px;
-    box-sizing: border-box;
-    font-size: 14px;
-  }
-
-div.loading{
-    background-color: #f1f1f1;
-    margin: 15px 0 0;
-    padding: 15px;
+  position: relative;
+  z-index: 1;
+  background-color: var(--navbar-color);
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
-div.error{
-    margin: 15px 0 0;
-    padding: 15px;
-    color: white;
-    background-color: #6e8399e3;
+input.login {
+  background-color: var(--main-background-color);
+}
+
+form.login input {
+  outline: 0;
+  background-color: var(--main-background-color);
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+  border-radius: 0;
+}
+
+div.loading {
+  background-color: var(--info-background);
+  color: var(--info-text-color);
+  margin: 15px 0 0;
+  padding: 15px;
+}
+
+div.loginError {
+  margin: 15px 0 0;
+  padding: 15px;
+  color: var(--warning-text-color);
+  background-color: var(--warning-background);
 }

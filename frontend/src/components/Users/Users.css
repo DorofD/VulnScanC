@@ -1,19 +1,33 @@
-div.users {
+div.usersContainer {
     height: 100%;
     width: 70%;
-    overflow: auto;
+
 }
 
 div.usersHeader {
-    align-items: left;
-    margin: 20px;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+
+div.usersNotes {
+    box-sizing: border-box;
+    overflow: auto;
+    height: 80%;
+    width: 100%;
+    border-top: solid 3px var(--border-color);
+    border-bottom: solid 3px var(--border-color);
 }
 
 div.addModalUsers {
-    padding: 5px;
-    width: 380px;
-    height: 350px;
+    padding: 20px;
+    /* width: 385px;
+    height: 355px;
     text-align: center;
+    background-color: var(--main-background-color); */
 
 }
 
@@ -37,66 +51,38 @@ div.addModalUsersHeader {
 input.addModalUsers {
     height: 20px;
     margin: 8px;
-    font-family: Arial;
     font-size: large;
     width: 300px;
     height: 32px;
     padding: 4px;
-    border: solid 3px #afafaf;
+    /* border: solid 3px var(--border-color); */
     border-radius: 10px;
 }
 
 input.addModalUsers:disabled {
-    background-color: #f1f1f1;
+    background-color: var(--disabled-color);
 }
 
 select.addModalUsers {
     height: 35px;
     margin: 8px;
-    font-family: Arial;
     font-size: large;
     width: 180px;
     padding: 4px;
-    border: solid 3px #afafaf;
+    /* border: solid 3px var(--border-color); */
     border-radius: 10px;
+    /* background-color: var(--main-background-color); */
 }
 
-select.addModalUsers:focus {
-    border: solid 3px #646464;
-}
-
-select.addModalUsers:hover {
-    border: solid 3px #646464;
-    cursor: pointer;
+select.addModalUsers:disabled {
+    background-color: var(--disabled-color);
 }
 
 div.addModalUsersButtons {
+    box-sizing: border-box;
     display: flex;
-    justify-content: center;
     align-items: center;
-}
-
-
-div.usersFilterContainer {
-    text-align: center;
-}
-
-div.filterLogo {
-    display: inline;
-}
-
-img.filterLogo {
-    width: 30px;
-    vertical-align: middle;
-}
-
-input.usersFilter {
-    font-family: Arial;
-    font-size: large;
-    width: 130px;
-    padding: 4px;
-    margin-left: 10px;
-    margin-bottom: 15px;
-    border: solid 3px #afafaf;
-    border-radius: 10px;
+    justify-content: center;
+    gap: 6%;
+    margin: 10px;
 }

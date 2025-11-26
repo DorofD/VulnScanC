@@ -1,0 +1,36 @@
+[data-theme="dark-red"] {
+    --accent-color: #e94f37;
+    --text-accent-color: #ffffff;
+
+    --hover-color: #43477a;
+    --text-hover-color: #ffffff;
+
+    --navbar-color: #23254a;
+    --main-background-color: #1a1c36;
+    --text-main-color: #ffffff;
+
+    --neutral-button-color: #44476a;
+    --text-button-color: #ffffff;
+
+    --card-background-color: #23254a;
+    --card-background-hover-color: #e94f3744;
+    --card-background-picked-color: #e94f3718;
+    --text-secondary-color: #b0b6b8;
+    --border-color: #43477a;
+    --border-picked-color: #e94f37;
+
+    --error-background: #c62828;
+    --error-text-color: #ffbdbd;
+    --warning-background: #b89d36;
+    --warning-text-color: #fffbe3;
+    --info-background: #3b4d6b;
+    --info-text-color: #d0e4ff;
+    --success-background: #357237;
+    --success-text-color: #d8ffd8;
+
+    --strong-text-color: #e94f37;
+    --disabled-color: #43477a;
+    --scrollbar-thumb-color: #23254a;
+    --scrollbar-thumb-hover-color: #e94f3744;
+    --scrollbar-thumb-active-color: #e94f37;
+}

@@ -1,109 +1,131 @@
-p.projectsTitle {
-    text-align: center;
-    font-family: Arial;
-    /* font-size: 24px; */
-    /* font-weight: 600; */
+div.projects {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
 }
 
-div.mainProjects {
+div.projectsRight {
+    width: 40%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+div.projectsLeft {
     height: 100%;
     width: 30%;
-    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
 }
 
-div.mainProjectDescription {
-    height: 100%;
-    width: 35%;
-    text-align: center;
+div.projectsLeft1 {
+    width: 100%;
+    height: 12%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
 
-
-textarea.mainProjects {
-    font-family: Arial;
-    font-size: 18px;
-    width: 95%;
-    height: 70%;
-    resize: none;
-    padding: 5px;
-    margin-bottom: 10px;
-    border: solid 4px #afafaf;
-    border-radius: 10px;
-    color: black;
+div.projectsLeft2 {
+    width: 100%;
+    height: 88%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+    overflow-y: auto;
+    border-top: solid 3px var(--border-color);
+    border-bottom: solid 3px var(--border-color);
 }
 
-
-textarea.projects {
-    font-family: Arial;
-    font-size: 18px;
-    width: 400px;
-    height: 36px;
-    resize: none;
-    border: solid 3px #afafaf;
-    border-radius: 10px;
-    overflow: hidden;
+div.projectsRight1 {
+    width: 100%;
+    height: 35%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-textarea.projects:focus {
-    border: solid 3px #646464;
-}
-
-textarea.projects:disabled {
-    background-color: #f1f1f1;
+div.projectsRight2 {
+    width: 100%;
+    height: 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
 }
 
 div.changeModalProjects {
-    padding: 5px;
-    width: 450px;
-    height: 95px;
+    padding: 20px;
+    /* width: 385px;
+    height: 355px;
+    text-align: center;
+    background-color: var(--main-background-color); */
 
 }
 
-div.changeModalProjectsName {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+div.changeModalProjectsParams {
+    display: inline-block;
     margin-bottom: 10px;
-    padding-top: 4px;
+    word-break: break-word;
+}
+
+div.changeModalProjectsParamsValues {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+div.changeModalProjectsHeader {
+    text-align: center;
+    margin: 10px;
+}
+
+input.changeModalProjects {
+    height: 20px;
+    margin: 8px;
+    font-size: large;
+    width: 400px;
+    height: 32px;
+    padding: 4px;
+    /* border: solid 3px var(--border-color); */
+    border-radius: 10px;
+}
+
+input.changeModalProjects:disabled {
+    background-color: var(--disabled-color);
+}
+
+select.changeModalProjects {
+    height: 35px;
+    margin: 8px;
+    font-size: large;
+    width: 180px;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+select.changeModalProjects:disabled {
+    background-color: var(--disabled-color);
 }
 
 div.changeModalProjectsButtons {
+    box-sizing: border-box;
     display: flex;
-    justify-content: center;
     align-items: center;
-}
-
-div.acceptModalProjects {
-    padding: 5px;
-    width: 350px;
-    height: 80px;
-
-}
-
-div.acceptModalProjectsName {
-    display: flex;
     justify-content: center;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-div.acceptModalProjectsButtons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-div.acceptModalProjectsButtons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-div.acceptModalProjectsText {
-    font-family: Arial;
-    font-size: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    gap: 6%;
+    margin: 10px;
 }

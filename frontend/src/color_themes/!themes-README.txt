@@ -1,0 +1,79 @@
+:root {
+   /* accent-color - ключевой, самый контрастный цвет приложения, используется только для ключевых или активных элементов */
+    --accent-color: #4CAF50;
+   /* text-accent-color - цвет текста элементов, использующих accent-color как background-color*/
+    --text-accent-color: #ffffff;
+
+   /* hover-color - задний цвет кнопок и ссылок, когда на них попадает курсор (:hover) */
+    --hover-color: #6e8399e3;
+   /* text-hover-color - цвет текста элементов, когда они :hover  */
+    --text-hover-color: #ffffff;
+
+   /* navbar-color - задний цвет навигационной панели */
+    --navbar-color: #f1f1f1;
+   /* main-background-color: цвет основного заднего фона контента приложения */
+    --main-background-color: #ffffff;
+   /* text-main-color - основной цвет текста приложения */
+    --text-main-color: #000000;
+
+   /* neutral-button-color - задний цвет обычных кнопок действий (закрыть, очистить фильтр, скачать и т.п.) */
+    --neutral-button-color: #c0c0c0;
+   /* text-button-color - цвет текста обычных кнопок*/
+    --text-button-color: #000000;
+
+   /* card-background-color - цвет заднего фона карточек сущностей */
+    --card-background-color: #ffffff;
+   /* card-background-hover-color - цвет заднего фона карточек при :hover */ 
+    --card-background-hover-color: #4caf4f77;
+   /* card-background-picked-color - цвет заднего фона карточки, когда она focused */
+    --card-background-picked-color: #4caf4f18;
+   /* text-secondary-color -цвет текста в карточках в названиях пунктов (например, надписи "Дата изменения:" или "Статус:") */
+    --text-secondary-color: #566474;
+   /* border-color - цвет границ карточек и таблиц */
+    --border-color: #b0b6b8;
+   /* border-picked-color - цвет границ карточек и элементов, когда они focused */
+    --border-picked-color: #316634;
+
+   /* error-background - задний цвет (оттенок красного) кнопок критических предупреждений (например, ошибка со стороны сервера)*/
+    --error-background: #F44336;
+   /* error-text-color - цвет текста компонентов с фоном critical-color*/
+    --error-text-color: #7e1710;
+   /* warning-background - задний цвет (оттенок желтого) немного негативных предупреждений (например, пользователь забыл заполнить поле) */
+    --warning-background: #e9d25a;
+   /* warning-text-color - цвет текста компонентов с фоном warning-color */
+    --warning-text-color: #72620e;
+   /* info-background - задний цвет (оттенок серого или светло-голубого) обычных информационных уведомлений */
+    --info-background: #7e8b8f;
+   /* info-text-color - цвет текста компонентов с фоном info-color */
+    --info-text-color: #122328;
+   /* success-background - задний цвет (оттенок зеленого) положительных уведомлений и кнопок подтверждения */
+    --success-background: #63bb66;
+   /* success-text-color - цвет текста компонентов с фоном positive-color */
+    --success-text-color: #183e1a;
+
+   /* strong-text-color - цвет жирного текста */
+    --strong-text-color: #357237;
+   /* disabled-color - цвет disabled элементов (например, отключенный input text или select) */
+    --disabled-color: #b0b6b8;
+   /* scrollbar-thumb-color - обычный цвет ползунка скроллбара */
+    --scrollbar-thumb-color: #f1f1f1;
+   /* scrollbar-thumb-hover-color - цвет ползунка скроллбара при наведении */
+    --scrollbar-thumb-hover-color: #4caf4f7c;
+   /* scrollbar-thumb-active-color - цвет ползунка скроллбара при взаимодействии */
+    --scrollbar-thumb-active-color: #4CAF50;
+}
+
+/*
+Необходимые соответствия цветов:
+- text-accent-color хорошо виден на фоне accent-color
+- text-hover-color хорошо виден на фоне hover-color
+- text-main-color хорошо виден на фоне main-background-color, card-background-color и card-background-picked-color 
+- text-button-color хорошо виден на фоне neutral-button-color
+- text-secondary-color немного приглушен (более прозрачный или блёклый) относительно text-main-color, хорошо виден на фоне  main-background-color, card-background-color и card-background-picked-color
+- border-picked-color - более выраженная версия border-color
+- error-text-color хорошо виден на фоне error-background
+- warning-text-color хорошо виден на фоне warning-background
+- info-text-color хорошо виден на фоне info-background
+- success-text-color хорошо виден на фоне success-background
+
+*/

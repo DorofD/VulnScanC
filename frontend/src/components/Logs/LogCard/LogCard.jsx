@@ -8,10 +8,10 @@ export default function LogCard({ id, datetime, status, note, picked, onClick })
     let contentStyle
 
     if (!picked) {
-        cardStyle = "logCard"
+        cardStyle = "card logs"
         contentStyle = "logContent"
     } else {
-        cardStyle = "logCardPicked"
+        cardStyle = "card logs picked"
         contentStyle = "logContentPicked"
     }
 
@@ -20,7 +20,7 @@ export default function LogCard({ id, datetime, status, note, picked, onClick })
         <div id={id} className={cardStyle} onClick={!picked && onClick || (() => { })}>
             {picked &&
                 <div className="logsCardClose">
-                    <Button style={"logsCardClose"} onClick={onClick}>X</Button>
+                    <button onClick={onClick}>Закрыть</button>
                 </div>}
             <p className="logDatetime">{datetime} {status === "ERROR" && <b>{status}</b> || <>{status}</>}</p>
             <div className={contentStyle}>{note}</div>

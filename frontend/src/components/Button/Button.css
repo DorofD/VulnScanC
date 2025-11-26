@@ -1,75 +1,38 @@
 button {
     border: 0;
+    outline: 0;
+    font-size: 15px;
     cursor: pointer;
     user-select: none;
-}
-
-button.login {
     text-transform: uppercase;
-    outline: 0;
-    background: #2190ffe3;
-    width: 100%;
-    padding: 15px;
-    color: #FFFFFF;
+    width: auto;
+    height: auto;
+    color: var(--text-button-color);
+    background-color: var(--neutral-button-color);
+    border-radius: 12px;
+    /* border-radius: 1em; */
+    padding: 7px 15px 7px 15px;
 }
 
+button:active {
+    color: var(--text-accent-color);
+    box-shadow: 0 2px 2px var(--accent-color), 0 1px 2px var(--text-accent-color);
+    transform: scale(0.97) translateY(1px);
+}
 
 button.logout {
-    width: 6%;
     height: 100%;
-    margin-left: 10px;
-    color: #000;
-    font-size: large;
+    background-color: var(--navbar-color);
+    border-radius: 0;
+    font-size: 18px;
     display: inline-block;
     text-align: center;
-}
-
-
-button.userChange {
-    font-family: Arial;
-    font-size: medium;
-    margin: 0 auto;
-    display: block;
-    text-transform: uppercase;
-    background: #4caf50;
-    width: 150px;
-    padding: 10px;
-    color: #FFFFFF;
-    border-radius: 10px;
-    margin-bottom: 6px;
-}
-
-button.UserAdd {
-    font-family: Arial;
-    font-size: medium;
-    display: block;
-    margin: 0 auto;
-    text-transform: uppercase;
-    background: #4CAF50;
-    width: 150px;
-    height: 40px;
-    color: #FFFFFF;
-    border-radius: 10px;
-}
-
-button.userDelete {
-    font-family: Arial;
-    font-size: medium;
-    margin: 0 auto;
-    display: block;
-    text-transform: uppercase;
-    background: #ff2020;
-    width: 150px;
-
-    padding: 10px;
-    color: #FFFFFF;
-
-    border-radius: 10px;
-    margin-top: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 button.reservationAdd {
-    font-family: Arial;
     font-size: medium;
     display: block;
     margin: 0 auto;
@@ -77,263 +40,89 @@ button.reservationAdd {
     background: #4CAF50;
     width: 120px;
     height: 40px;
-
+    border: 0;
     color: #FFFFFF;
-
+    cursor: pointer;
     border-radius: 10px;
 }
 
 button.reservationExit {
-    font-family: Arial;
     font-size: medium;
     display: block;
     margin: 0 auto;
     text-transform: uppercase;
-    background: #ff2020;
+    background: #F44336;
     width: 120px;
     height: 40px;
-
+    border: 0;
     color: #FFFFFF;
-
+    cursor: pointer;
     border-radius: 10px;
 }
 
 
-button.projectAccept {
-    user-select: none;
-    font-family: Arial;
-    font-size: 15px;
-    display: block;
-    margin: 0 auto;
-    text-transform: uppercase;
-    background: #4CAF50;
-    width: 8em;
-    height: 2em;
-    color: #FFFFFF;
-    border-radius: 10px;
+
+
+/* актуальные */
+button.critical {
+    background-color: var(--error-background);
+    color: var(--error-text-color);
 }
 
-button.projectReject {
-    user-select: none;
-    font-family: Arial;
-    font-size: 15px;
-    display: block;
-    margin: 0 auto;
-    text-transform: uppercase;
-    background: #ff2020;
-    width: 100px;
+button.positive {
+    background-color: var(--success-background);
+    color: var(--success-text-color);
+}
+
+button.acceptModal {
+    width: 80px;
     height: 30px;
-    color: #FFFFFF;
-    border-radius: 10px;
 }
 
-button.projectClose {
-    user-select: none;
-    font-family: Arial;
-    font-size: 15px;
-    display: block;
-    margin: 0 auto;
-    text-transform: uppercase;
-    background: #c0c0c0;
-    width: 8em;
-    height: 2em;
-    color: #000000;
-    border-radius: 10px;
+button.login {
+    border-radius: 0;
+    width: 100%;
+    padding: 15px;
+    background: var(--accent-color);
+    color: var(--text-accent-color);
 }
 
-button.clearFilter {
-    user-select: none;
-    font-family: Arial;
-    font-size: 15px;
-    display: inline;
-    margin: 0 auto;
-    margin-left: 20px;
-    text-transform: uppercase;
-    background: #c0c0c0;
-    width: 8em;
-    height: 2em;
-    color: #000000;
+button.sourcesSetType {
+    font-size: 18px;
+    margin: 4px;
+    width: 70%;
+    height: auto;
     border-radius: 10px;
+    text-transform: none;
 }
 
-button.bitbakeClearFilter {
-    user-select: none;
-    font-family: Arial;
-    font-size: 16px;
-    display: inline;
-    margin: 0 auto;
-    margin-left: 20px;
-    text-transform: uppercase;
-    background: #c0c0c0;
-    width: 110px;
-    height: 30px;
-    color: #000000;
-    border-radius: 10px;
+button.sourcesSetType.picked {
+
+    background: var(--accent-color);
+    color: var(--text-accent-color);
 }
 
 button.showHint {
-    user-select: none;
-    font-family: Arial;
-    font-size: 22px;
+    font-size: large;
+    font-weight: bold;
     display: inline;
-    margin: 0 auto;
+    padding: 5px;
     margin-left: 20px;
     text-transform: uppercase;
-    background: #c0c0c0;
-    width: 25px;
-    height: 25px;
-    color: #000000;
-    border-radius: 10px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    box-sizing: content-box;
 }
 
-button.showHintActivated {
-    user-select: none;
-    font-family: Arial;
-    font-size: 22px;
-    display: inline;
-    margin: 0 auto;
-    margin-left: 20px;
-    text-transform: uppercase;
-    background: #2190ffe3;
-    width: 25px;
-    height: 25px;
-    color: #ffffff;
-    border-radius: 10px;
-}
-
-button.componentVulnerabilities {
-    user-select: none;
-    font-family: Arial;
-    font-size: 15px;
-    display: block;
-    margin: 0 auto;
-    text-transform: uppercase;
-    background: #c0c0c0;
-    width: 240px;
-    height: 30px;
-    color: #000000;
-    border-radius: 10px;
-}
-
-button.componentVulnerabilities-disabled {
-    user-select: none;
-    font-family: Arial;
-    font-size: 15px;
-    display: block;
-    margin: 0 auto;
-    text-transform: uppercase;
-    background: #707070;
-    width: 220px;
-    height: 30px;
-    color: #000000;
-    border-radius: 10px;
-}
-
-button.logsDownload {
-    user-select: none;
-    font-family: Arial;
-    font-size: 15px;
-    display: inline;
-    margin: 0 auto;
-    text-transform: uppercase;
-    background: #c0c0c0;
-    width: 100px;
-    height: 30px;
-    color: #000000;
-    border-radius: 10px;
-    margin-left: 10px;
-}
-
-button.logsCardClose {
-    text-align: center;
-    user-select: none;
-    font-family: Arial;
-    font-size: 16px;
-    display: inline;
-    margin: 0 auto;
-    margin-left: 20px;
-    text-transform: uppercase;
-    background: #ffbbbb;
-    width: 50px;
-    height: 30px;
-    color: #000000;
-    border-radius: 10px;
-}
-
-button.commentsCardClose {
-    text-align: center;
-    user-select: none;
-    font-family: Arial;
-    font-size: 14px;
-    display: inline;
-    margin: 0 auto;
-    margin-left: 20px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    background: #ffbbbb;
-    width: 120px;
-    height: 30px;
-    color: #000000;
-    border-radius: 10px;
-}
-
-
-button.createUser {
-    user-select: none;
-    font-family: Arial;
-    font-size: 15px;
-    /* display: block; */
-    margin: 0 auto;
-    text-transform: uppercase;
-    background: #c0c0c0;
-    width: 230px;
-    height: 30px;
-    color: #000000;
-    border-radius: 10px;
-}
-
-button.buildBinary {
-    user-select: none;
-    font-family: Arial;
-    font-size: 15px;
-    display: inline;
-    margin: 0 auto;
-    text-transform: uppercase;
-    background: #c0c0c0;
-    width: 300px;
-    height: 30px;
-    color: #000000;
-    border-radius: 10px;
-    margin-left: 10px;
-}
-
-
-button.snapshotsProjectType {
-    user-select: none;
-    font-family: Arial;
-    font-size: 18px;
-    margin: 12px;
-    background: #c0c0c0;
-    width: 240px;
-    height: 30px;
-    color: #000000;
-    border-radius: 10px;
-}
-
-button.snapshotsProjectTypeActive {
-    user-select: none;
-    font-family: Arial;
-    font-size: 18px;
-    margin: 12px;
-    background: #2190ffe3;
-    width: 240px;
-    height: 30px;
-    color: #ffffff;
-    border-radius: 10px;
-
+button.showHint.picked {
+    /* background: var(--accent-color);
+    color: var(--text-accent-color); */
+    background: var(--info-background);
+    color: var(--info-text-color);
 }
 
 button:hover {
-    background-color: #6e8399e3;
-    color: white;
+    background-color: var(--hover-color);
+    color: var(--text-hover-color)
 }

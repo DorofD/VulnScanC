@@ -1,12 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <link rel="icon" href="icon.png" type="image/x-icon">
-    <meta charset="utf-8">
-    <title>VulnScanC</title>
-  </head>
-  <body style="margin: 0%; font-family: Arial; font-size: 18px;">
-    <div id="root" style="width: 100vw; height: 100vh; box-sizing: border-box;">
-    </div>
-  </body>
+
+<head>
+
+  <link rel="icon" href="icon.png" type="image/x-icon">
+  <meta charset="utf-8">
+  <title>VulnScanC</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+  </style>
+  <style>
+    html,
+    body,
+    #root {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: inherit;
+    }
+
+    body {
+      font-family: 'Manrope', 'Open Sans', 'Roboto', Arial, sans-serif;
+      font-size: 18px;
+      background-color: var(--main-background-color);
+    }
+
+    #root {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root">
+  </div>
+</body>
+
 </html>

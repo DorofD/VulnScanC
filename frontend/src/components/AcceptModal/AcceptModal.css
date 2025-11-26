@@ -1,20 +1,39 @@
 .overlayAccept {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(241, 241, 241, 0.7);
-    z-index: 2000;
-  }
-  
-.modalAccept {
-    border: solid 4px #afafaf;
-    border-radius: 10px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgb(255, 255, 255);
-    z-index: 2001;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 70%;
+  background-color: var(--main-background-color);
+  z-index: 2000;
+}
+
+div.acceptModal {
+  box-sizing: border-box;
+  border: solid 4px var(--border-picked-color);
+  border-radius: 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--main-background-color);
+  z-index: 2001;
+  width: auto;
+  height: auto;
+}
+
+div.acceptModalButtons {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15%;
+  margin: 10px;
+}
+
+div.acceptModalText {
+  box-sizing: border-box;
+  text-align: center;
+  margin: 10px;
 }

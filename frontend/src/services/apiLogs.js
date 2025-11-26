@@ -33,3 +33,14 @@ export async function apiGetLogsFile() {
         console.error('There was an error downloading log file:', error);
     }
 }
+
+export async function apiClearLogs() {
+    const response = await authFetch(`${process.env.BACKEND_URL}/logs`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'clear',
+        })
+    })
+    return response
+}

@@ -1,64 +1,47 @@
-.logCard { 
-    vertical-align: middle; 
-    padding: 10px; 
-    cursor: pointer;
-    user-select: none; 
-    border: solid 3px #afafaf; 
-    border-radius: 10px; 
-    margin: 20px; 
-    height: auto; /* Позволяет контейнеру адаптироваться к содержимому */
-    white-space: pre-wrap; /* Учитывает переносы строк и пробелы в тексте */
+.card.logs {
+    box-sizing: border-box;
+    /* user-select: none; */
+    padding: 10px;
+    margin: 20px;
+    height: auto;
+    width: auto;
+    white-space: pre-wrap;
+    display: block;
 }
 
-div.logsCardClose{
+div.logsCardClose {
     text-align: right;
 }
 
-.logCardPicked {
-    vertical-align: middle;
-    padding: 10px;
-    cursor: text;
-    border: solid 3px rgb(34, 34, 34);
-    border-radius: 10px;
-    margin: 20px;
-    height: auto;
-    background-color: #e4e4e4;
-}
-
-.logCard:hover {
-    background-color: #f1f1f1;
-    border: solid 3px #474747;
-}
-
-.logCardPicked:hover {
-    background-color: #f1f1f1;
-    border: solid 3px #474747;
-}
-
-p.logDatetime { 
-    font-size: 16px; 
-    font-weight: 500; 
-    margin-top: 0; 
-    margin-bottom: 0px; 
-    text-align: left; 
+p.logDatetime {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: left;
 }
 
 .logContent {
-    white-space: pre-wrap; /* Учитывает переносы строк и пробелы в тексте */
+    white-space: pre-wrap;
+    /* Учитывает переносы строк и пробелы в тексте */
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 1; /* Показывать только одну строку */
+    -webkit-line-clamp: 1;
+    /* Показывать только одну строку */
     -webkit-box-orient: vertical;
     transition: -webkit-line-clamp 0.3s ease;
 }
 
 .logContentPicked {
-    white-space: pre-wrap; /* Учитывает переносы строк и пробелы в тексте */
+    white-space: pre-wrap;
+    user-select: text;
+    /* Учитывает переносы строк и пробелы в тексте */
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     transition: -webkit-line-clamp 0.3s ease;
-    -webkit-line-clamp: unset; /* Убирает ограничение по строкам при наведении */
+    -webkit-line-clamp: unset;
+    /* Убирает ограничение по строкам при наведении */
 }

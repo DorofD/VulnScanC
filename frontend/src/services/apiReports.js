@@ -126,34 +126,6 @@ export async function apiGetBitbakeBduReport(snapshot_id, severities, layers, pr
     }
 }
 
-export async function apiGetSvacerReport(project_name, project_id, branch_id, snapshot_id, snapshot_name) {
-    try {
-        const response = await authFetch(`${process.env.BACKEND_URL}/reports?report_type=svacer&project_name=${project_name}&project_id=${project_id}&branch_id=${branch_id}&snapshot_id=${snapshot_id}`, {
-            method: 'GET',
-        });
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        const contentDisposition = response.headers.get('Content-Disposition');
-        console.log(response.headers)
-        a.download = snapshot_name;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        // document.body.removeChild(a); 
-        window.URL.revokeObjectURL(url);
-    } catch (error) {
-        console.error('There was an error downloading the report:', error);
-        throw new Error('There was an error downloading the report:', error);
-    }
-}
 
 export async function apiGetDependencyTrackReport(project_uuid, project_name) {
     try {

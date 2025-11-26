@@ -2,17 +2,14 @@ import React, { Component } from "react";
 import "./ProjectCard.css";
 
 
-export default function ProjectCard({id, name, onClick, picked = false}) {
-    if (!picked) {
-        picked = "projectCard"
-    } else {
-        picked = "projectCardPicked"
-    }
+export default function ProjectCard({ id, name, onClick, picked = false }) {
 
     return (
         <>
-            <div id={id} className={picked} onClick={onClick}>
-                <p className="name">{name}</p>
+            <div id={id} className={picked && "card project picked" || "card project"} onClick={onClick}>
+                <div className="projectCardHeader">
+                    <p className="projectCardName">{name}</p>
+                </div>
             </div>
         </>
     )

@@ -1,12 +1,20 @@
 import React, { Component, useState, useEffect } from "react";
 import "./Base.css";
 import { NavLink as NavLinkBase, Outlet, useLocation } from "react-router-dom";
-import Button from "../Button/Button";
-import Notification from "../Notification/Notification";
-import { useNotificationContext } from "../../hooks/useNotificationContext";
+import TimedMessages from "../TimedMessages/TimedMessages";
+import { useTimedMessagesContext } from "../../hooks/useTimedMessagesContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import Loader from "../Loader/Loader";
-
+import { useSidebarState } from "../../hooks/useSidebarStateContext";
+import ColorSchemeSelector from "../ColorSchemeSelector/ColorSchemeSelector";
+import HomeIcon from "../../svg_images/Home.svg"
+import ScheduleIcon from "../../svg_images/Schedule.svg"
+import GearIcon from "../../svg_images/Gear.svg"
+import ManualIcon from "../../svg_images/Manual.svg"
+import ExpandRightIcon from "../../svg_images/ExpandRight.svg"
+import ExpandLeftIcon from "../../svg_images/ExpandLeft.svg"
+import LogoutIcon from "../../svg_images/Logout.svg"
+import UserIcon from "../../svg_images/User.svg"
+import BareMetalIcon from "../../svg_images/BareMetal.svg"
 const NavLink = React.forwardRef((props, ref) => {
     return (
         <NavLinkBase
@@ -16,138 +24,143 @@ const NavLink = React.forwardRef((props, ref) => {
     );
 });
 
+
 export default function Base() {
     const { isAuthenticated, toogleAuth } = useAuthContext();
-    const { userName, userRole, accessToken } = useAuthContext();
-    const { notificationData } = useNotificationContext();
-    const location = useLocation();
+    const { userName, userRole, userId, userAuthType, userLdapInfo, accessToken } = useAuthContext();
+    const { messages, addMesage } = useTimedMessagesContext();
+    const { sidebarCollapsed, setSidebarCollapsed } = useSidebarState();
+    const [userHintActive, setUserHintActive] = useState(false);
+    // const location = useLocation();
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(min-width: 992px)');
+
+        const handleMediaChange = (e) => {
+            if (!e.matches) {
+                localStorage.setItem("sidebar-state", 'collapsed')
+                setSidebarCollapsed(true)
+            }
+
+        };
+
+        handleMediaChange(mediaQuery);
+
+        mediaQuery.addEventListener('change', handleMediaChange);
+
+        return () => {
+            mediaQuery.removeEventListener('change', handleMediaChange);
+        };
+    }, []);
 
     return (
         <>
             <div className="baseHeader" id="modal-root">
-                {userName}
-                <Button style={"logout"} type={"submit"} onClick={toogleAuth}> Выйти </Button>
+                <ColorSchemeSelector></ColorSchemeSelector>
+                <div className={userHintActive && "baseUserIconContainer activated" || "baseUserIconContainer"}>
+                    <UserIcon className="baseUserIconStyle" onClick={() => setUserHintActive((prev) => !prev)} />
+                </div>
+                <div className="baseUserName">
+                    {userAuthType === 'ldap' && `${userLdapInfo.givenName} ${userLdapInfo.sn[0]}.` || userName}
+                </div>
+                {userHintActive && userAuthType === 'ldap' && <div className="baseUsernameTooltip">
+                    <b>{userLdapInfo.displayName}</b>
+                    <div className="base-param-row">
+                        <div className="base-param-key">Логин</div>
+                        <div>{userName}</div>
+                    </div>
+                    <div className="base-param-row">
+                        <div className="base-param-key">E-mail</div>
+                        <div>{userLdapInfo.mail}</div>
+                    </div>
+                    <div className="base-param-row">
+                        <div className="base-param-key">Аутентификация</div>
+                        <div>LDAP</div>
+                    </div>
+                    <div className="base-param-row">
+                        <div className="base-param-key">Роль</div>
+                        <div>{userRole}</div>
+                    </div>
+                    <div className="base-param-row">
+                        <div className="base-param-key">ID в сервисе</div>
+                        <div>{userId}</div>
+                    </div>
+                </div>}
+                {userHintActive && userAuthType === 'local' && <div className="baseUsernameTooltip">
+                    <b>{userName}</b>
+                    <div className="base-param-row">
+                        <div className="base-param-key">Логин</div>
+                        <div>{userName}</div>
+                    </div>
+                    <div className="base-param-row">
+                        <div className="base-param-key">E-mail</div>
+                        <div>Отсутствует</div>
+                    </div>
+                    <div className="base-param-row">
+                        <div className="base-param-key">Аутентификация</div>
+                        <div>Локальная</div>
+                    </div>
+                    <div className="base-param-row">
+                        <div className="base-param-key">Роль</div>
+                        <div>{userRole}</div>
+                    </div>
+                    <div className="base-param-row">
+                        <div className="base-param-key">ID в сервисе</div>
+                        <div>{userId}</div>
+                    </div>
+                </div>}
+                <div className="baseLogoutIconContainer" onClick={toogleAuth}><LogoutIcon className='baseLogoutIconStyle '></LogoutIcon></div>
             </div>
-            <div className="baseSidebar">
-                <nav className="baseSidebar">
-                    <Notification data={notificationData} />
-                    <ul className="base">
-                        <li>
-                            <NavLink to="/" className={({ isActive }) => isActive ? 'activeBaseHref' : 'baseHref'}>
-                                Проекты
+            <div className="baseBody">
+                <div className={!sidebarCollapsed && "baseSidebar" || "baseSidebar collapsed"}>
+                    <TimedMessages data={messages} />
+                    <nav className={!sidebarCollapsed && "baseSidebar" || "baseSidebar collapsed"}>
+                        <NavLink to="/" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'}>
+                            {!sidebarCollapsed &&
+                                <div className="baseHrefText">Проекты</div>
+                                ||
+                                <HomeIcon className="baseSidebarIcon"></HomeIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Проекты</div>}
+                        </NavLink>
+                        <NavLink to="/components" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'} aria-current="page">
+                            {!sidebarCollapsed &&
+                                <div className="baseHrefText">Компоненты</div>
+                                ||
+                                <BareMetalIcon className="baseSidebarIcon"></BareMetalIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Компоненты</div>}
+                        </NavLink>
+                        <NavLink to="/snapshots" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'} aria-current="page">
+                            {!sidebarCollapsed &&
+                                <div className="baseHrefText">Снапшоты</div>
+                                ||
+                                <ScheduleIcon className="baseSidebarIcon"></ScheduleIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Снапшоты</div>}
+                        </NavLink>
+                        {userRole === 'admin' && (<>
+                            <NavLink to="/admin" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'}>
+                                {!sidebarCollapsed &&
+                                    <div className="baseHrefText">Администрирование</div>
+                                    ||
+                                    <GearIcon className="baseSidebarIcon"></GearIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Администрирование</div>}
                             </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/components" className={({ isActive }) => isActive ? 'activeBaseHref' : 'baseHref'}>
-                                Компоненты
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/snapshots" className={({ isActive }) => isActive ? 'activeBaseHref' : 'baseHref'}>
-                                Снапшоты
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/bdu_fstec" className={({ isActive }) => isActive ? 'activeBaseHref' : 'baseHref'}>
-                                БДУ ФСТЭК
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/bitbake" className={({ isActive }) => isActive ? 'activeBaseHref' : 'baseHref'}>
-                                Bitbake
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/svacer" className={({ isActive }) => isActive ? 'activeBaseHref' : 'baseHref'}>
-                                Svacer
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/dependencyTrack" className={({ isActive }) => isActive ? 'activeBaseHref' : 'baseHref'}>
-                                Dependency-Track
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/sarif" className={({ isActive }) => isActive ? 'activeBaseHref' : 'baseHref'}>
-                                Sarif Viewer
-                            </NavLink>
-                        </li>
-                        {userRole === 'admin' && (
-                            <li>
-                                <NavLink to="/admin" className={({ isActive }) => isActive ? 'activeBaseHref' : 'baseHref'}>
-                                    Администрирование
-                                </NavLink>
-                            </li>
-                        )}
-                        <li>
-                            <NavLink
-                                to="/about"
-                                className={({ isActive }) =>
-                                    isActive || location.pathname.startsWith('/docs') ||
-                                        location.pathname.startsWith('/ui_instructions') ||
-                                        location.pathname.startsWith('/web_ui') ||
-                                        location.pathname.startsWith('/executable_module') ||
-                                        location.pathname.startsWith('/README')
-                                        ? 'activeBaseHref'
-                                        : 'baseHref'
-                                }
-                            >
-                                О приложении
-                            </NavLink>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div className="baseContent">
-                <Outlet />
+                        </>)}
+                        <NavLink to="/about" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'}>
+                            {!sidebarCollapsed &&
+                                <div className="baseHrefText">О приложении</div>
+                                ||
+                                <ManualIcon className="baseSidebarIcon"></ManualIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">О приложении</div>}
+                        </NavLink>
+                    </nav>
+                    {!sidebarCollapsed &&
+                        <div className="baseSidebarExpandContainer" onClick={() => { localStorage.setItem("sidebar-state", 'collapsed'); setSidebarCollapsed(true) }}>
+                            <ExpandLeftIcon className="baseSidebarExpandIcon" ></ExpandLeftIcon>
+                        </div>
+                        ||
+                        <div className="baseSidebarExpandContainer" onClick={() => { localStorage.setItem("sidebar-state", 'default'); setSidebarCollapsed(false) }}>
+                            <ExpandRightIcon className="baseSidebarExpandIcon" ></ExpandRightIcon>
+                        </div>
+                    }
+                </div>
+                <div className={!sidebarCollapsed && "baseContent" || "baseContent collapsed"}>
+                    <Outlet />
+                </div>
             </div>
         </>
     );
 }
-
-
-// const NavLink = React.forwardRef((props, ref) => {
-//     return (
-//       <NavLinkBase
-//         ref={ref}
-//         {...props}
-//         className={({ isActive }) =>
-//           isActive ? 'activeBaseHref' : 'baseHref'
-//         }
-//       />
-//     );
-//   });
-
-// export default function Base() {
-//     const { isAuthenticated, toogleAuth} = useAuthContext()
-//     const {userName, userRole} = useAuthContext()
-//     const {notificationData} = useNotificationContext()
-
-
-//     return (
-//         <>
-//             <div className="baseHeader" id="modal-root">
-//                 {userName}
-//                 <Button style={"logout"} type={"submit"} onClick={toogleAuth}> Выйти </Button>
-//             </div>
-//             <div className="baseSidebar">
-//                 <nav className="baseSidebar">
-//                 <Notification data={notificationData}/>
-//                     <ul className="base">
-//                         <li > <NavLink to="/" >Проекты</NavLink></li>
-//                         <li> <NavLink to="/components" >Компоненты</NavLink></li>
-//                         <li> <NavLink to="/snapshots" >Снапшоты</NavLink></li>
-//                         <li> <NavLink to="/svacer" >Svacer</NavLink></li>
-//                         {userRole === 'admin' && <>
-//                         <li> <NavLink to="/admin" >Администрирование</NavLink></li>
-//                         </>}
-//                         <li> <NavLink to="/about">О приложении</NavLink></li>
-//                     </ul>
-//                 </nav>
-//             </div>
-//             <div className="baseContent">
-//                 <Outlet />
-//             </div>
-//         </>
-//     );
-// }

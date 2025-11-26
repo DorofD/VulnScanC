@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import
 import "./AcceptModal.css";
 
 export default function AcceptModal({ isOpen, children, onClose }) {

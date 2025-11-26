@@ -1,0 +1,69 @@
+@keyframes fadeInOut {
+
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    10%,
+    90% {
+        opacity: 1;
+    }
+}
+
+@keyframes progressBar {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
+}
+
+.tmc-messages {
+    position: absolute;
+    bottom: 0;
+    left: 70%;
+    width: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    top: 95%;
+    right: 5%;
+    padding: 10px;
+    visibility: hidden;
+
+}
+
+.tmc-message {
+    visibility: visible;
+    animation-name: fadeInOut;
+    animation-duration: var(--animation-duration, 3000ms);
+    margin-bottom: 8px;
+    padding: 8px;
+    background: var(--info-background);
+    border-radius: 4px;
+    transition: all 300ms;
+    z-index: 2001;
+
+}
+
+div.tmc-message.error {
+    color: var(--error-text-color);
+    background-color: var(--error-background);
+}
+
+div.tmc-message.warning {
+    color: var(--warning-text-color);
+    background-color: var(--warning-background);
+}
+
+div.tmc-message.info {
+    color: var(--info-text-color);
+    background-color: var(--info-background);
+}
+
+div.tmc-message.success {
+    color: var(--success-text-color);
+    background-color: var(--success-background);
+}

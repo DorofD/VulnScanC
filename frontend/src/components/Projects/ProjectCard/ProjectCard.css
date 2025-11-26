@@ -1,51 +1,72 @@
-.projectCard {
-    vertical-align: middle;
-    padding: 10px;
-    cursor: pointer;
+.card.project {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
     user-select: none;
-    border: solid 3px #afafaf;
-    border-radius: 10px;
-    margin: 20px;
-    height: 30px;
-}
-
-.projectCardPicked {
-    vertical-align: middle;
     padding: 10px;
-    cursor: pointer;
-    user-select: none;
-    border: solid 3px rgb(34, 34, 34);
-    border-radius: 10px;
-    margin: 20px;
-    height: 30px;
-    background-color: #e4e4e4;
+    margin: 0;
+    height: auto;
+    width: 100%;
 }
 
-.projectCard:hover {
-    background-color: #f1f1f1;
-    border: solid 3px #474747;
+p.projectCardStatusFaded {
+    box-sizing: border-box;
+    display: inline;
+    color: var(--text-secondary-color);
 }
 
-.projectCardPicked:hover {
-    background-color: #f1f1f1;
-    border: solid 3px #474747;
+p.projectCardValueFaded {
+    display: inline;
+    color: var(--text-secondary-color);
 }
 
-div.userContent {
+div.projectCardBottom {
     display: block;
-    width: 75%;
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+    overflow-wrap: break-word;
 }
 
-div.userButtons {
-    display: block;
-    width: 25%;
-    align-items: center;
+
+div.projectCardHeader {
+
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    text-align: left;
+    display: inline;
 }
 
-p.name {
-    font-size: 22px;
+
+p.projectCardName {
+    font-size: 18px;
     font-weight: 600;
     margin-top: 0;
     margin-bottom: 0px;
+    white-space: pre-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+div.projectCardParams {
+    display: flex;
+    flex-direction: row;
+    /* width: 85%; */
     text-align: left;
+    display: inline;
+}
+
+
+div.projectCardParamValue2 {
+    display: flex;
+    box-sizing: content-box;
+    align-items: center;
+    flex-direction: row;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
 }
