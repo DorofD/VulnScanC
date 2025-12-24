@@ -2,7 +2,7 @@ import subprocess
 
 
 def build_binary():
-    build_log_file = '/binary/build.log'
+    build_log_file = 'data/build.log'
 
     command = [
         'pyinstaller',

@@ -1,8 +1,3 @@
-div.logs {
-    height: 100%;
-    width: 100%;
-    display: flex;
-}
 
 div.logsLeft {
     width: 65%;
@@ -15,6 +10,8 @@ div.logsRight {
 }
 
 div.logsNotes {
+    display: flex;
+    flex-direction: column;
     box-sizing: border-box;
     overflow: auto;
     height: 90%;
@@ -22,7 +19,6 @@ div.logsNotes {
     border-top: solid 3px var(--border-color);
     border-bottom: solid 3px var(--border-color);
 }
-
 div.logsInfo {
     display: block;
     flex-direction: column;

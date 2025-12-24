@@ -134,18 +134,25 @@ export default function Users() {
     }
 
     async function changeUser(changesDict) {
-        const response = await apiChangeUser(pickedUser.id, changesDict)
-        if (response.status == 200) {
-            getUsers()
-            closeAcceptModal()
-            closeChangeModal()
-            addMessage('Пользователь изменен', 'success', 3000)
-            setAdditionalText([])
+        try {
 
-        } else {
-            closeAcceptModal()
-            addMessage('Не удалось изменить пользователя', 'warning', 3000)
-            setAdditionalText([])
+            const response = await apiChangeUser(pickedUser.id, changesDict)
+            if (response.status == 200) {
+                getUsers()
+                closeAcceptModal()
+                closeChangeModal()
+                addMessage('Пользователь изменен', 'success', 3000)
+                setAdditionalText([])
+                
+            } else {
+                closeAcceptModal()
+                addMessage('Не удалось изменить пользователя', 'warning', 3000)
+                setAdditionalText([])
+            }
+        }catch (err) {
+            setLoaderActive(false)
+            console.log(err)
+            addMessage(`Что-то пошло не так: ${err.message}`, 'error', 5000)
         }
     }
 
@@ -156,11 +163,11 @@ export default function Users() {
             getUsers()
             closeAcceptModal()
             closeChangeModal()
-            addMessage('Пользователь изменен', 'success', 3000)
+            addMessage('Пользователь удалён', 'success', 3000)
 
         } else {
             closeAcceptModal()
-            addMessage('Не удалось изменить пользователя', 'error', 3000)
+            addMessage('Не удалось удалить пользователя', 'error', 3000)
         }
     }
 

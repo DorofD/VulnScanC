@@ -1,10 +1,10 @@
 div.card.users {
     box-sizing: border-box;
     vertical-align: middle;
-    padding: 10px;
-    user-select: none;
-    margin: 20px;
-    height: auto;
+    /* padding: 10px; */
+    /* user-select: none; */
+    /* margin: 20px; */
+    /* height: auto; */
 }
 
 

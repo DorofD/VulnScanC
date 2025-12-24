@@ -1,9 +1,7 @@
 import React from "react";
 import { useState, useEffect, useContext} from "react";
 import { apiGetBinaryInfo, apiBuildBinary, apiGetBinaryFile } from "../../services/apiBinary";
-import Button from "../Button/Button";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
-import BinaryCard from "./BinaryCard/BinaryCard";
 import "./Binary.css"
 import Loader from "../Loader/Loader";
 
@@ -65,34 +63,27 @@ export default function Binary() {
     }, [])
 
     return (
-    <>
-        <div className="logs">
-
-            <div className="logsHeader">
-                <Button style={"buildBinary"} onClick={() => buildBinary()}> Собрать исполняемый модуль </Button>
-                <Button style={"buildBinary"} onClick={() => getBinaryFile()}> Загрузить исполняемый модуль </Button>
-            {buildInProcess && <><p>Выполняется сборка исполняемого модуля...</p> <Loader /></>}
+    <>      
+            {buildInProcess &&  <Loader />}
+            <div className="binaryContainer">
+            <div className="binaryHeader">
+                <button onClick={() => buildBinary()}> Собрать исполняемый модуль </button>
+                <button onClick={() => getBinaryFile()}> Загрузить исполняемый модуль </button>
             </div>
             {loading === 'loading' && <Loader />}
             {loading === 'error' && <p> бекенд отвалился</p>}
             {loading === 'loaded' && <>
+                <div className="binaryBottom">
 
-                        <BinaryCard
-                        id={0}
-                        file={binaryInfo.binary_file && binaryInfo.binary_file || "Модуль не найден"}
-                        datetime={binaryInfo.change_time && binaryInfo.change_time || "Модуль не найден"}
-                        note={binaryInfo.build_log_data && binaryInfo.build_log_data  || "Сборочный лог не найден"}
-                        picked={isPicked}
-                        onClick={() => {
-                          if (!isPicked) {
-                            setIsPicked(true);
-                          } else {
-                            setIsPicked(false);
-                          }
-                        }}
-                      />
+                      <p className="binaryFaded">Файл: </p> {binaryInfo.binary_file && binaryInfo.binary_file || "Модуль не найден"}
+                      <p className="binaryFaded">Время сборки: </p> {binaryInfo.change_time && binaryInfo.change_time || "Модуль не найден"}
+                        <p>Лог сборки: </p>
+            
+                        <div className="binaryContent">{binaryInfo.build_log_data && binaryInfo.build_log_data  || "Сборочный лог не найден"}</div>
+                </div>
                     </>}
         </div>
     </>
+    
     );
 }

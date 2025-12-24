@@ -96,7 +96,6 @@ export default function Logs() {
 
     return (
         <>
-            <div className="logs">
                 <div className="logsLeft">
                     <Filter onClick={() => setFilterLogs({ datetime: '', status: '', note: '' })}>
                         <input type="text" className="filter" placeholder="Время" onChange={e => setFilterLogs({ ...filterLogs, datetime: e.target.value })} value={filterLogs.datetime} />
@@ -107,6 +106,7 @@ export default function Logs() {
                         </select>
                         <input type="text" className="filter" placeholder="Текст записи" onChange={e => setFilterLogs({ ...filterLogs, note: e.target.value })} value={filterLogs.note} />
                     </Filter>
+                    {/* </div> */}
                     {loadingLogs === 'loading' && <Loader />}
                     {loadingLogs === 'error' && <p> бекенд отвалился</p>}
                     {loadingLogs === 'loaded' && <>
@@ -146,7 +146,7 @@ export default function Logs() {
                         <button onClick={() => openAcceptModalWithAction(clearLogs)}>Очистить логи</button>
                     </div>
                 </div>
-            </div>
+            {/* </div> */}
             <AcceptModal isOpen={isAcceptModalOpen} onClose={closeAcceptModal}>
                 <div className="acceptModal">
                     <div className="acceptModalText">

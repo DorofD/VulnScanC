@@ -14,8 +14,9 @@ div.baseSidebar.collapsed {
 }
 
 div.baseContent {
-    box-sizing: border-box;
+    box-sizing: border-box; 
     display: flex;
+    flex-direction: row;
     height: 100%;
     padding-left: 1px;
     background-color: var(--main-background-color);

@@ -1,41 +1,43 @@
 :root {
-
     --accent-color: #379afd;
     --text-accent-color: #ffffff;
-
-    --hover-color: #6e8399;
+    --hover-color: #6e8399e3;
     --text-hover-color: #ffffff;
-
     --navbar-color: #f1f1f1;
     --main-background-color: #ffffff;
     --text-main-color: #000000;
-
     --neutral-button-color: #c0c0c0;
     --text-button-color: #000000;
-
     --card-background-color: #ffffff;
-    --card-background-hover-color: #d6d9dde3;
-    --card-background-picked-color: #4caf4f18;
+    --card-background-hover-color: #4a90e277;
+    --card-background-picked-color: #4a90e218;
     --text-secondary-color: #566474;
     --border-color: #b0b6b8;
-    --border-picked-color: #316634;
-
-    --error-background: #e25d53;
-    --error-text-color: #3b0404;
-    --warning-background: #e9d051;
-    --warning-text-color: #201c03;
-    --info-background: #7195a0;
-    --info-text-color: #ffffff;
-    --success-background: #a8fca9;
-    --success-text-color: #000000;
-
-    --strong-text-color: #357237;
+    --border-picked-color: #3167b3;
+    --error-background: #f87269;
+    --error-text-color: #5e130e;
+    --warning-background: #e9d25a;
+    --warning-text-color: #3f3609;
+    --info-background: #8aadb8;
+    --info-text-color: #15262b;
+    --success-background: #a2fac7;
+    --success-text-color: #183e4c;
+    --strong-text-color: #3572b3;
     --disabled-color: #b0b6b8;
-    --scrollbar-thumb-color: #acacac;
-    --scrollbar-thumb-hover-color: #4caf4f7c;
-    --scrollbar-thumb-active-color: #4CAF50;
+    --scrollbar-thumb-color: #f1f1f1;
+    --scrollbar-thumb-hover-color: #4a90e27c;
+    --scrollbar-thumb-active-color: #4A90E2;
 
 }
+
+* {
+    caret-color: transparent !important;
+}
+input:focus,
+textarea:focus {
+    caret-color: auto !important;
+}
+
 
 *:not(svg *) {
     color: var(--text-main-color);
@@ -156,7 +158,7 @@ textarea:focus {
 
 .card:active {
     box-shadow: 0 2px 6x rgba(0, 0, 0, 0.10), 0 1px 3px var(--accent-color);
-    transform: scale(0.99);
+    transform: scale(0.995);
     box-sizing: border-box;
 }
 

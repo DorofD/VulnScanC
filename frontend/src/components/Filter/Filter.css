@@ -5,7 +5,8 @@ div.filterContainer {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 16px
+    gap: 16px;
+    user-select: none;
 }
 
 
@@ -13,10 +14,6 @@ input.filter {
     width: 20%;
     padding: 4px;
     border-radius: 10px;
-}
-
-input.mainStandsFilter {
-    width: 40%;
 }
 
 select.filter {

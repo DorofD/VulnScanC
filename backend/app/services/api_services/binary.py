@@ -7,8 +7,8 @@ from app.services.sec_dev_scanner.builder import build_binary
 def get_binary_info():
     info_dict = {'binary_file': False,
                  'build_log_data': False, 'change_time': False}
-    if os.path.exists("/binary/build.log"):
-        with open("/binary/build.log", 'r') as file:
+    if os.path.exists("data/build.log"):
+        with open("data/build.log", 'r') as file:
             log_data = file.read()
         info_dict['build_log_data'] = log_data
 
