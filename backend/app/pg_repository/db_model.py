@@ -52,7 +52,7 @@ def create_db():
         """)
 
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS llama_instances (
+        CREATE TABLE IF NOT EXISTS llama_hosts (
         id bigserial PRIMARY KEY,
         uuid uuid NOT NULL DEFAULT gen_random_uuid(),
         name text,
@@ -61,19 +61,19 @@ def create_db():
         description text,
         created_at timestamptz NOT NULL DEFAULT now(),
 
-        CONSTRAINT llama_instances_model_type_chk
+        CONSTRAINT llama_hosts_model_type_chk
         CHECK (model_type IN ('chat', 'embedding'))
         );
                    """)
 
     cursor.execute("""
-        CREATE UNIQUE INDEX IF NOT EXISTS llama_instances_uuid_uniq
-        ON llama_instances (uuid);
+        CREATE UNIQUE INDEX IF NOT EXISTS llama_hosts_uuid_uniq
+        ON llama_hosts (uuid);
                    """)
 
     cursor.execute("""
-        CREATE UNIQUE INDEX IF NOT EXISTS llama_instances_api_url_uniq
-        ON llama_instances (api_url);
+        CREATE UNIQUE INDEX IF NOT EXISTS llama_hosts_api_url_uniq
+        ON llama_hosts (api_url);
                    """)
 
     cursor.close()

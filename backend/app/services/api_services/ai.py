@@ -1,5 +1,6 @@
 from app.services.llm_provider.llama_api import Llama
 from app.services.llm_provider.chunk_handler import ChunkHandler
+from app.pg_repository.queries.llama_hosts import DBLlamaHosts
 
 
 def send_messages(messages):
@@ -29,3 +30,38 @@ def send_messages(messages):
             return response
         return False
     return False
+
+
+def get_llama_hosts():
+    result = DBLlamaHosts().get_hosts()
+    return result
+
+
+def add_llama_host(values):
+    api_url = values['api_url']
+    model_type = values['model_type']
+    try:
+        name = values['name']
+    except KeyError:
+        name = ''
+    try:
+        description = values['description']
+    except KeyError:
+        description = ''
+    result = DBLlamaHosts().add_host(api_url, model_type, name, description)
+    print(result)
+    return result
+
+
+def change_llama_host(id, fields_to_change: dict):
+    # fields_to_change is a dict of field -> value; update each field
+    db = DBLlamaHosts()
+    last = None
+    for field, value in fields_to_change.items():
+        last = db.update_host_field(id, field, value)
+    return last
+
+
+def delete_llama_host(id):
+    result = DBLlamaHosts().delete_host(id)
+    return result

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from app.routes import role_required
-from app.services.api_services.ai import send_messages
+from app.services.api_services.ai import get_llama_hosts, add_llama_host, change_llama_host, delete_llama_host, send_messages
 
 
 ai_bp = Blueprint("ai", __name__, url_prefix="/ai")
@@ -39,30 +39,26 @@ def completions():
         ]
     })
 
-# body: JSON.stringify({
-#             model: "local",
-#           messages: nextMessages,
-#           temperature: 0.2,
-#           max_tokens: 300,
-#           stream: false
-#         })
 
-
-# -------------------------
-# MODELS (CRUD)
-# -------------------------
-
-@ai_bp.route("/models", methods=["GET", "POST"])
+@ai_bp.route("/llama_hosts", methods=["GET", "POST"])
 @jwt_required()
 @role_required("admin")
-def models():
+def llama_hosts():
     if request.method == "GET":
-        print("List model configs")
-        return jsonify({"models": []})
-
-    data = request.get_json(silent=True) or {}
-    print(f"Create model config: {data}")
-    return jsonify({"model_id": "new_model_id"}), 201
+        hosts = get_llama_hosts()
+        return jsonify({"llama_hosts": hosts})
+    if request.method == "POST":
+        data = request.get_json()
+        if data['action'] == 'add':
+            result = add_llama_host(data['values'])
+            return jsonify(result)
+        if data['action'] == 'change':
+            result = change_llama_host(
+                data['id'], data.get('fields_to_change', {}))
+            return jsonify(result)
+        if data['action'] == 'delete':
+            result = delete_llama_host(data['id'])
+            return jsonify(result)
 
 
 @ai_bp.route("/models/<string:model_id>", methods=["GET", "PATCH", "DELETE"])

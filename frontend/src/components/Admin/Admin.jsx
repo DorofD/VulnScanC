@@ -54,6 +54,13 @@ export default function Admin() {
               <CatalogIcon className="baseSidebarIcon"></CatalogIcon>}
             {sidebarCollapsed && <div className="baseSidebarTextDiv">Логи</div>}
           </NavLink>
+          <NavLink to="/admin/llama_hosts" >
+            {!sidebarCollapsed &&
+              <div className="baseHrefText">Llama Hosts</div>
+              ||
+              <CatalogIcon className="baseSidebarIcon"></CatalogIcon>}
+            {sidebarCollapsed && <div className="baseSidebarTextDiv">Llama Hosts</div>}
+          </NavLink>
         </nav>
       </div>
       <div className={!sidebarCollapsed && "baseContent" || "baseContent collapsed"}>

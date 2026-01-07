@@ -20,6 +20,7 @@ import Binary from "./Binary/Binary";
 import SarifViewer from "./Sarif/Sarif";
 import Bitbake from "./Bitbake/Bitbake";
 import Login from "./Login/Login";
+import LlamaHosts from "./LlamaHosts/LlamaHosts";
 import { PrivateRoute } from "./PrivateRoute/PrivateRoute";
 import { useAuthContext } from "../hooks/useAuthContext";
 import "./App.css";
@@ -50,6 +51,7 @@ export default function App() {
                             <Route path="/admin/users" element={<Users />} />
                             <Route path="/admin/binary" element={<Binary />} />
                             <Route path="/admin/logs" element={<Logs />} />
+                            <Route path="/admin/llama_hosts" element={<LlamaHosts />} />
                         </Route>}
 
                         <Route path="/about" element={<About />} />

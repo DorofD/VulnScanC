@@ -7,8 +7,8 @@ import requests
 class Llama:
     def __init__(self):
         self.embed_url = "http://192.168.1.133:8081/v1/embeddings"
-        # self.chat_url = "http://192.168.1.133:8080/v1/chat/completions"
-        self.chat_url = "http://192.168.5.226:8080/v1/chat/completions"
+        self.chat_url = "http://192.168.1.133:8080/v1/chat/completions"
+        # self.chat_url = "http://192.168.5.226:8080/v1/chat/completions"
 
     def get_embedding(self, text: str, retries: int = 3, sleep_s: float = 1.0) -> List[float]:
         """
