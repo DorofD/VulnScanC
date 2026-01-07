@@ -1,18 +1,14 @@
 import requests
-from app.pg_repository.queries.rag import PostgresRAG
-import json
 import time
-from typing import List, Dict, Any, Optional
+from typing import List, Optional
 import requests
-
-LLAMA_EMBEDDINGS_URL = "http://192.168.1.133:8081/v1/embeddings"
-LLAMA_CHAT_URL = "http://192.168.1.133:8080/v1/chat/completions"
 
 
 class Llama:
     def __init__(self):
         self.embed_url = "http://192.168.1.133:8081/v1/embeddings"
-        self.chat_url = "http://192.168.1.133:8080/v1/chat/completions"
+        # self.chat_url = "http://192.168.1.133:8080/v1/chat/completions"
+        self.chat_url = "http://192.168.5.226:8080/v1/chat/completions"
 
     def get_embedding(self, text: str, retries: int = 3, sleep_s: float = 1.0) -> List[float]:
         """
@@ -24,7 +20,7 @@ class Llama:
         for _ in range(retries):
             try:
                 r = requests.post(
-                    self.embed_url, json=payload, timeout=240)
+                    self.embed_url, json=payload, timeout=840)
                 r.raise_for_status()
                 data = r.json()
                 # Ожидаем формат: {"data":[{"embedding":[...]}], ...}
@@ -51,19 +47,11 @@ class Llama:
         headers = {
             'Content-Type': 'application/json',
         }
-        # body: JSON.stringify({
-        #             model: "local",
-        #           messages: nextMessages,
-        #           temperature: 0.2,
-        #           max_tokens: 300,
-        #           stream: false
-        #         })
         try:
             r = requests.post(self.chat_url, json=payload,
-                              headers=headers, timeout=240)
+                              headers=headers, timeout=840)
             r.raise_for_status()
             data = r.json()
-            # print(data)
             return data
         except Exception as exc:
             print('Error:', exc)

@@ -1,13 +1,8 @@
 from app.pg_repository.queries.rag import PostgresRAG
 from app.services.llm_provider.llama_api import Llama
 import json
-import time
 from typing import List, Dict, Any, Optional
-import requests
 
-
-# LLAMA_EMBEDDINGS_URL = "http://192.168.1.133:8081/v1/embeddings"
-# LLAMA_CHAT_URL = "http://192.168.1.133:8080/v1/chat/completions"
 
 class ChunkHandler:
     def __init__(self):
@@ -68,10 +63,28 @@ class ChunkHandler:
             )
         return results
 
+    def build_context_content(self, chunks: list[dict], *, sort_by_chunk_number: bool = False) -> str:
+        if sort_by_chunk_number:
+            chunks = sorted(chunks, key=lambda c: c.get("chunk_number", 0))
+
+        lines = []
+        for c in chunks:
+            chunk_number = c.get("chunk_number", "?")
+            source = c.get("source_document_name", "unknown")
+            raw_text = (c.get("raw_text") or "").strip()
+
+            # при желании можно чистить переводы строк внутри чанка:
+            raw_text = " ".join(raw_text.split())
+
+            lines.append(
+                f"[chunk_number: {chunk_number} | source_document_name: {source}] {raw_text}")
+
+        return "CONTEXT:\n" + "\n".join(lines)
+
 
 # print(ChunkHandler().get_embedding_dimension())
 # Посчитать эмбеддинги для чанков и сохранить результат
-# process_chunks('data/small_output.json', meta_keys=[])
+# ChunkHandler().process_chunks('data/output2.json', meta_keys=[])
 
 # Найти топ близких к запросу чанков
 # top_chunks = search_topk(

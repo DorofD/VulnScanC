@@ -1,6 +1,4 @@
 import json
-from psycopg2 import sql
-from pgvector.psycopg2 import register_vector
 from pgvector import Vector
 from typing import List, Dict, Any, Optional
 from app.pg_repository.queries.base_query import execute_query

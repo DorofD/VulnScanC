@@ -18,18 +18,16 @@ def create_db():
     conn.autocommit = True
     cursor = conn.cursor()
 
-    query = """
-        CREATE TABLE IF NOT EXISTS users (
+    cursor.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+
+    cursor.execute(f"""
+            CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
             login TEXT NOT NULL UNIQUE,
             auth_type TEXT NOT NULL,
             role TEXT NOT NULL,
-            password TEXT
-        );
-    """
-    cursor.execute(query)
-
-    cursor.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+            password TEXT);
+        """)
 
     cursor.execute(f"""
         CREATE TABLE IF NOT EXISTS rag_chunks (
@@ -52,5 +50,31 @@ def create_db():
         ON rag_chunks
         USING hnsw (embedding vector_cosine_ops);
         """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS llama_instances (
+        id bigserial PRIMARY KEY,
+        uuid uuid NOT NULL DEFAULT gen_random_uuid(),
+        name text,
+        api_url text NOT NULL,
+        model_type text NOT NULL,
+        description text,
+        created_at timestamptz NOT NULL DEFAULT now(),
+
+        CONSTRAINT llama_instances_model_type_chk
+        CHECK (model_type IN ('chat', 'embedding'))
+        );
+                   """)
+
+    cursor.execute("""
+        CREATE UNIQUE INDEX IF NOT EXISTS llama_instances_uuid_uniq
+        ON llama_instances (uuid);
+                   """)
+
+    cursor.execute("""
+        CREATE UNIQUE INDEX IF NOT EXISTS llama_instances_api_url_uniq
+        ON llama_instances (api_url);
+                   """)
+
     cursor.close()
     conn.close()

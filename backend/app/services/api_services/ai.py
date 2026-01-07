@@ -16,8 +16,7 @@ def send_messages(messages):
             print(i['chunk_number'], i['cosine_similarity'])
 
         system_prompt_str = "Ты специалист по ИБ, отвечай строго на основе CONTEXT, если в CONTEXT нет ответа - так и скажи"
-        context_str = build_context_content(topk_chunks)
-        # print(context_str)
+        context_str = ch.build_context_content(topk_chunks)
 
         final_messages = [
             {"role": "system", "content": system_prompt_str},
@@ -30,22 +29,3 @@ def send_messages(messages):
             return response
         return False
     return False
-
-
-def build_context_content(chunks: list[dict], *, sort_by_chunk_number: bool = False) -> str:
-    if sort_by_chunk_number:
-        chunks = sorted(chunks, key=lambda c: c.get("chunk_number", 0))
-
-    lines = []
-    for c in chunks:
-        chunk_number = c.get("chunk_number", "?")
-        source = c.get("source_document_name", "unknown")
-        raw_text = (c.get("raw_text") or "").strip()
-
-        # при желании можно чистить переводы строк внутри чанка:
-        raw_text = " ".join(raw_text.split())
-
-        lines.append(
-            f"[chunk_number: {chunk_number} | source_document_name: {source}] {raw_text}")
-
-    return "CONTEXT:\n" + "\n".join(lines)
