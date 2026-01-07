@@ -6,7 +6,12 @@ import Components from "./Components/Components";
 import Snapshots from "./Snapshots/Snapshots";
 import BduFstec from "./BduFstec/BduFstec";
 import DependencyTrack from "./DependencyTrack/DependencyTrack";
+import AiChat from "./AiChat/AiChat";
 import Admin from "./Admin/Admin"
+import AiBase from "./AiBase/AiBase";
+import AiSummary from "./AiSummary/AiSummary";
+import AiChatRag from "./AiChatRag/AiChatRag";
+import AiRagConf from "./AiRagConf/AiRagConf";
 import About from "./About/About"
 import Users from "./Users/Users";
 import Logs from "./Logs/Logs";
@@ -35,6 +40,12 @@ export default function App() {
                         <Route path="/bitbake" element={<Bitbake />} />
                         <Route path="/dependencyTrack" element={<DependencyTrack />} />
                         <Route path="/sarif" element={<SarifViewer />} />
+                        <Route path="/ai" element={< AiBase/>} >
+                            <Route path="/ai/summary" element={< AiSummary/>} />
+                            <Route path="/ai/direct_llm" element={< AiChat/>} />
+                            <Route path="/ai/rag_llm" element={< AiChatRag/>} />
+                            <Route path="/ai/rag_conf" element={< AiRagConf/>} />
+                        </Route>
                         {userRole === 'admin' && <Route path="/admin" element={<Admin />}>
                             <Route path="/admin/users" element={<Users />} />
                             <Route path="/admin/binary" element={<Binary />} />

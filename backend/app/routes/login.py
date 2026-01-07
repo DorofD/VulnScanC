@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from flask import Blueprint, current_app, request, jsonify, make_response
 from flask_jwt_extended import create_access_token, create_refresh_token, set_refresh_cookies, jwt_required, get_jwt_identity, get_jwt
-from app.services.api_services.users import signin
+from app.services.users import signin
 
 login_bp = Blueprint('login', __name__)
 
@@ -18,18 +18,17 @@ def login():
 
     user = request.json
     auth_result = signin(user['login'], user['password'])
-    if auth_result:
+    if auth_result['success']:
         user_claims = {
-            "role": auth_result['role']
+            "role": auth_result['user_data']['role']
         }
         access_token = create_access_token(
             identity=user['login'], additional_claims=user_claims)
         refresh_token = create_refresh_token(
             identity=user['login'], additional_claims=user_claims)
-        current_app.logger.info(f"User is logged in: {user['login']}")
-
+        current_app.logger.info(f"User logged in: {user['login']}")
         response = jsonify(
-            {'success': True, 'body': auth_result, 'access_token': access_token})
+            {'success': True, 'body': auth_result['user_data'], 'access_token': access_token})
 
         response.set_cookie(  # поправить под http/https
             'refresh_token',
@@ -40,7 +39,8 @@ def login():
         )
         return response, 200
 
-    current_app.logger.error(f"User failed to log in: {user['login']}")
+    current_app.logger.error(
+        f"User failed to log in: {user['login']}, detailed: \n {auth_result['error']}")
     return jsonify({'success': False}), 401
 
 

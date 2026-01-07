@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-// import "./Admin.css"
-import { NavLink as NavLinkAdmin, Outlet } from "react-router-dom";
+import { NavLink as NavLinkAi, Outlet } from "react-router-dom";
 
 import { useColorScheme } from "../../hooks/useColorThemeContext";
 import { useSidebarState } from "../../hooks/useSidebarStateContext";
@@ -9,23 +8,20 @@ import UsersGearIcon from "../../svg_images/UsersGear.svg"
 import ConfluenceIcon from "../../svg_images/Confluence.svg"
 // import BareMetalIcon from "../../svg_images/BareMetal.svg"
 import CatalogIcon from "../../svg_images/Catalog.svg"
-import PythonGearIcon from "../../svg_images/PythonGear.svg"
-import RocketChatIcon from "../../svg_images/RocketChat.svg"
 
 const NavLink = React.forwardRef((props, ref) => {
   return (
-    <NavLinkAdmin
+    <NavLinkAi
       ref={ref}
       {...props}
       className={({ isActive }) =>
-        // isActive ? 'activeAdminHref' : 'adminHref'
         isActive ? 'baseHref active' : 'baseHref'
       }
     />
   );
 });
 
-export default function Admin() {
+export default function AiBase() {
   const { colorScheme } = useColorScheme();
   const { sidebarCollapsed } = useSidebarState();
 
@@ -33,26 +29,33 @@ export default function Admin() {
     <>
       <div className={!sidebarCollapsed && "baseSidebar" || "baseSidebar collapsed"}>
         <nav className={!sidebarCollapsed && "baseSidebar" || "baseSidebar collapsed"}>
-          <NavLink to="/admin/users" >
+          <NavLink to="/ai/summary" >
             {!sidebarCollapsed &&
-              <div className="baseHrefText">Пользователи</div>
+              <div className="baseHrefText">Статус AI сервисов</div>
               ||
               <UsersGearIcon className="baseSidebarIcon"></UsersGearIcon>}
-            {sidebarCollapsed && <div className="baseSidebarTextDiv">Пользователи</div>}
+            {sidebarCollapsed && <div className="baseSidebarTextDiv">Статус AI сервисов</div>}
           </NavLink>
-          <NavLink to="/admin/binary" >
+          <NavLink to="/ai/direct_llm" >
             {!sidebarCollapsed &&
-              <div className="baseHrefText">Исполняемый модуль</div>
+              <div className="baseHrefText">Direct LLM</div>
+              ||
+              <UsersGearIcon className="baseSidebarIcon"></UsersGearIcon>}
+            {sidebarCollapsed && <div className="baseSidebarTextDiv">Direct LLM</div>}
+          </NavLink>
+          <NavLink to="/ai/rag_llm" >
+            {!sidebarCollapsed &&
+              <div className="baseHrefText">RAG LLM</div>
               ||
               <ConfluenceIcon className="baseSidebarIcon"></ConfluenceIcon>}
-            {sidebarCollapsed && <div className="baseSidebarTextDiv">Исполняемый модуль</div>}
+            {sidebarCollapsed && <div className="baseSidebarTextDiv">RAG LLM</div>}
           </NavLink>
-          <NavLink to="/admin/logs" >
+          <NavLink to="/ai/rag_conf" >
             {!sidebarCollapsed &&
-              <div className="baseHrefText">Логи</div>
+              <div className="baseHrefText">Configure RAG</div>
               ||
               <CatalogIcon className="baseSidebarIcon"></CatalogIcon>}
-            {sidebarCollapsed && <div className="baseSidebarTextDiv">Логи</div>}
+            {sidebarCollapsed && <div className="baseSidebarTextDiv">Configure RAG</div>}
           </NavLink>
         </nav>
       </div>

@@ -79,13 +79,13 @@ input {
     font-size: large;
     background-color: var(--main-background-color);
     border: solid 2px var(--border-color);
-    padding: 4px;
+    padding: 10px 12px;
     border-radius: 10px;
+    box-sizing: border-box;
 }
 
 input:focus {
     border: solid 2px var(--border-picked-color);
-    box-sizing: border-box;
 }
 
 select {
@@ -93,25 +93,26 @@ select {
     font-size: large;
     background-color: var(--main-background-color);
     border: solid 2px var(--border-color);
+    box-sizing: border-box;
 }
 
 select:focus {
-    border: solid 3px var(--border-picked-color);
-    box-sizing: border-box;
+    border: solid 2px var(--border-picked-color);
 }
 
 textarea {
     outline: none;
-    font-size: 16px;
+    padding: 10px 12px;
+    font-size: large;
     border-radius: 10px;
     background-color: var(--main-background-color);
     border: solid 2px var(--border-color);
     box-sizing: border-box;
+    resize: none;
 }
 
 textarea:focus {
     border: solid 2px var(--border-picked-color);
-    box-sizing: border-box;
 }
 
 

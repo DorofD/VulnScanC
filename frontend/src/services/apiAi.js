@@ -1,22 +1,19 @@
 import { authFetch } from './authFetch';
 
-export async function apiGetUsers() {
-    const response = await authFetch(`${process.env.BACKEND_URL}/users`, {
+export async function apiRagChatGetInfo() {
+    const response = await authFetch(`${process.env.BACKEND_URL}/ai_chat`, {
         method: 'GET',
     })
     return response
 }
 
-export async function apiAddUser(login, role, authType, password) {
-    const response = await authFetch(`${process.env.BACKEND_URL}/users`, {
+export async function apiRagChatSendMessage(messages) {
+    const response = await authFetch(`${process.env.BACKEND_URL}/ai/rag_chat/completions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            action: 'add',
-            login: login,
-            role: role,
-            auth_type: authType,
-            password: password
+          messages: messages,
+
         })
     })
     return response

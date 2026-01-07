@@ -168,12 +168,15 @@ class FSTEC:
         return result
 
     def get_bdu_update_time(self):
-        file_stats = os.stat(self.bdu_file)
-        creation_time = file_stats.st_mtime
-        readable_time = time.ctime(creation_time)
-        return readable_time
+        if os.path.exists(self.bdu_file):
+            file_stats = os.stat(self.bdu_file)
+            creation_time = file_stats.st_mtime
+            readable_time = time.ctime(creation_time)
+            return readable_time
+        return False
 
     def get_bdu_info(self):
+
         result = {}
         result['last_update'] = self.get_bdu_update_time()
         result['vuln_count'] = get_bdu_vulnerabilities_count()

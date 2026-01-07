@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.services.api_services.users import get_users, add_user, delete_user, change_user
+from app.services.users import get_users, add_user, delete_user, change_user
 from flask_jwt_extended import jwt_required
 from app.routes import role_required
 
@@ -20,8 +20,7 @@ def users():
             add_user(data['login'], data['auth_type'],
                      data['role'], data['password'])
         if data['action'] == 'change':
-            change_user(data['id'], data['login'], data['role'],
-                        data['auth_type'], data['password'])
+            change_user(data['id'], data['fields_to_change'])
         if data['action'] == 'delete':
             delete_user(id=data['id'])
 

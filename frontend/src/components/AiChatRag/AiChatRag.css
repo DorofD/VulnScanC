@@ -1,0 +1,101 @@
+.chatRagShell {
+  width: 60%;
+  padding: 16px;
+  display: grid;
+  grid-template-rows: auto 2fr auto auto;
+  gap: 6px;
+}
+
+.chatRagHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.chatRagTitle {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.chatRagControls {
+  display: flex;
+  gap: 8px;
+}
+
+.systemBox {
+  display: grid;
+  gap: 6px;
+}
+
+.chatRagMain {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px;
+  overflow: auto;
+  background: var(--navbar-color);
+}
+
+.emptyState {
+  color: var(--text-secondary-color);
+  padding: 12px;
+}
+
+.msgRow {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 10px;
+  margin: 10px 0;
+  align-items: start;
+}
+
+.msgMeta {
+  color: var(--text-secondary-color);
+  padding-top: 10px;
+  text-transform: lowercase;
+}
+
+.msgBubble {
+  border: 1px solid var(--border-color);
+  background: var(--card-background-color);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.msgUser .msgBubble {
+  border-color: var(--border-picked-color);
+  background: var(--main-background-color);
+}
+
+.msgAssistant .msgBubble {
+  border-color: var(--border-color);
+  background: var(--main-background-color);
+}
+
+.msgText {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: inherit;
+  line-height: 1.35;
+}
+
+.typing {
+  color: var(--text-secondary-color);
+}
+
+.errorBox {
+  border: 1px solid var(--border-color);
+  background: var(--info-background);
+  color: var(--info-text-color);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.chatRagFooter {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: end;
+}
+

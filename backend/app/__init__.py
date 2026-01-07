@@ -9,7 +9,9 @@ from datetime import timedelta
 from dotenv import load_dotenv
 
 from app.repository.db_model import create_db
-from app.services.api_services.users import add_user_db, get_users
+from app.pg_repository.db_model import create_db
+# from app.services.api_services.users import add_user_db, get_users
+from app.services.users import add_user, get_users
 
 
 def create_app():
@@ -65,6 +67,7 @@ def create_app():
     from app.routes.bdu import bdu_bp
     from app.routes.licenses import licenses_bp
     from app.routes.snapshots import snapshots_bp
+    from app.routes.ai import ai_bp
 
     app.register_blueprint(main_blueprint)
     app.register_blueprint(login_bp)
@@ -78,10 +81,11 @@ def create_app():
     app.register_blueprint(bdu_bp)
     app.register_blueprint(licenses_bp)
     app.register_blueprint(snapshots_bp)
-    print(app.url_map)
+    app.register_blueprint(ai_bp)
+    # print(app.url_map)
     create_db()
     users = get_users()
     if not users:
-        add_user_db('admin', 'local', 'admin', 'admin')
+        add_user('admin', 'local', 'admin', 'admin')
 
     return app
