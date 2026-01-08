@@ -3,10 +3,10 @@ import "../LlamaNodeCard/LlamaNodeCard.css";
 
 export default function LlamaNodeCard({ id, name, apiUrl, modelType, onClick, picked = false }) {
     return (
-        <div id={id} className={!picked ? "card users" : "card users picked"} onClick={onClick}>
-            <p className="userName">{name}</p>
-            <div className="componentStatus">
-                <p className="componentStatusFaded">Тип модели: </p> {modelType} <p className="componentStatusFaded">API: </p>{apiUrl}
+        <div id={id} className={!picked ? "card" : "card picked"} onClick={onClick}>
+            <p className="cardMainLabel">{name}</p>
+            <div className="llamaNodeStatus">
+             <p className="llamaNodeStatusFaded">Базовый API URL: </p>{apiUrl}
             </div>
         </div>
     )

@@ -20,49 +20,6 @@ button:active {
     transform: scale(0.97) translateY(1px);
 }
 
-button.logout {
-    height: 100%;
-    background-color: var(--navbar-color);
-    border-radius: 0;
-    font-size: 18px;
-    display: inline-block;
-    text-align: center;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-button.reservationAdd {
-    font-size: medium;
-    display: block;
-    margin: 0 auto;
-    text-transform: uppercase;
-    background: #4CAF50;
-    width: 120px;
-    height: 40px;
-    border: 0;
-    color: #FFFFFF;
-    cursor: pointer;
-    border-radius: 10px;
-}
-
-button.reservationExit {
-    font-size: medium;
-    display: block;
-    margin: 0 auto;
-    text-transform: uppercase;
-    background: #F44336;
-    width: 120px;
-    height: 40px;
-    border: 0;
-    color: #FFFFFF;
-    cursor: pointer;
-    border-radius: 10px;
-}
-
-
-
-
 /* актуальные */
 button.critical {
     background-color: var(--error-background);
@@ -87,20 +44,6 @@ button.login {
     color: var(--text-accent-color);
 }
 
-button.sourcesSetType {
-    font-size: 18px;
-    margin: 4px;
-    width: 70%;
-    height: auto;
-    border-radius: 10px;
-    text-transform: none;
-}
-
-button.sourcesSetType.picked {
-
-    background: var(--accent-color);
-    color: var(--text-accent-color);
-}
 
 button.showHint {
     font-size: large;
@@ -115,11 +58,11 @@ button.showHint {
     box-sizing: content-box;
 }
 
-button.showHint.picked {
-    /* background: var(--accent-color);
-    color: var(--text-accent-color); */
-    background: var(--info-background);
-    color: var(--info-text-color);
+button.picked {
+    background: var(--accent-color);
+    color: var(--text-accent-color);
+    /* background: var(--info-background);
+    color: var(--info-text-color); */
 }
 
 button:hover {

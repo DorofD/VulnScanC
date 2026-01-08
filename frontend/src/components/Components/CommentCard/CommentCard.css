@@ -1,38 +1,10 @@
-.commentCard { 
-    vertical-align: middle; 
-    padding: 10px; 
-    cursor: pointer;
-    user-select: none; 
-    border: solid 3px #afafaf; 
-    border-radius: 10px; 
-    margin: 20px; 
-    height: auto; 
-    white-space: pre-wrap;
+div.card.comment {
+    box-sizing: border-box;
+    vertical-align: middle;
 }
 
 div.commentCardClose{
     text-align: right;
-}
-
-.commentCardPicked {
-    vertical-align: middle;
-    padding: 10px;
-    cursor: text;
-    border: solid 3px rgb(34, 34, 34);
-    border-radius: 10px;
-    margin: 20px;
-    height: auto;
-    background-color: #e4e4e4;
-}
-
-.commentCard:hover {
-    background-color: #f1f1f1;
-    border: solid 3px #474747;
-}
-
-.commentCardPicked:hover {
-    background-color: #f1f1f1;
-    border: solid 3px #474747;
 }
 
 p.commentDatetime { 

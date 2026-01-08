@@ -163,6 +163,14 @@ textarea:focus {
     box-sizing: border-box;
 }
 
+p.cardMainLabel {
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 0px;
+    text-align: left;
+    padding-bottom: 8px;
+}
+
 *.error-colors {
     color: var(--error-text-color);
     background-color: var(--error-background);

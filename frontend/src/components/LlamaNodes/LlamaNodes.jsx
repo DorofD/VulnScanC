@@ -205,20 +205,18 @@ export default function LlamaNodes() {
     }, [])
 
     return (
-        <div className="usersContainer">
-            <div className="usersHeader">
-                <div className="nodesTabs">
-                    <button className={selectedTab === 'chat' ? 'active' : ''} onClick={() => setSelectedTab('chat')}>Chat Nodes</button>
-                    <button className={selectedTab === 'embedding' ? 'active' : ''} onClick={() => setSelectedTab('embedding')}>Embedding Nodes</button>
-                </div>
-                <button onClick={() => { setPickedNode({ id: 0, name: '', base_api_url: '', description: '' }); setIsAddModalOpen(true) }}>Добавить узел</button>
+        <div className="llamaNodesContainer">
+            <div className="llamaNodesHeader">
+                <button className={selectedTab === 'chat' ? 'picked' : ''} onClick={() => setSelectedTab('chat')}>Chat Nodes</button>
+                <button className={selectedTab === 'embedding' ? 'picked' : ''} onClick={() => setSelectedTab('embedding')}>Embedding Nodes</button>
+                <button onClick={() => { setPickedNode({ id: 0, name: '', base_api_url: '', description: '' }); setIsAddModalOpen(true) }}>Добавить</button>
             </div>
             <Filter onClick={() => setFilterNodes({ name: '', base_api_url: '' })}>
                 <input type="text" className="filter" placeholder="Имя" onChange={e => setFilterNodes({ ...filterNodes, name: e.target.value })} value={filterNodes.name} />
                 <input type="text" className="filter" placeholder="API URL" onChange={e => setFilterNodes({ ...filterNodes, base_api_url: e.target.value })} value={filterNodes.base_api_url} />
             </Filter>
 
-            <div className="usersNotes">
+            <div className="llamaNodesNotes">
 
 
                 {loading === 'loading' && <Loader />}
@@ -242,7 +240,7 @@ export default function LlamaNodes() {
                 <div className="addModalUsers">
 
                     <div className="addModalUsersHeader">
-                        Добавить хост
+                        Добавить ноду
                     </div>
 
                     <div className="addModalUsersParams">
@@ -265,7 +263,7 @@ export default function LlamaNodes() {
                 <div className="addModalUsers">
 
                     <div className="addModalUsersHeader">
-                        Изменить хост
+                        Изменить ноду
                     </div>
 
                     <div className="addModalUsersParams">

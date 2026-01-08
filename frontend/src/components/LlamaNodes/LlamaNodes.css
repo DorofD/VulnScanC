@@ -1,19 +1,22 @@
-div.usersContainer {
+div.llamaNodesContainer {
     height: 100%;
     width: 70%;
 
 }
 
-div.usersHeader {
+div.llamaNodesHeader {
     height: 10%;
+    width: 100%;
     display: flex;
+    flex-direction: row;
     justify-content: center;
+    gap: 20px;
     align-items: center;
 
 }
 
 
-div.usersNotes {
+div.llamaNodesNotes {
     box-sizing: border-box;
     overflow: auto;
     height: 80%;
@@ -43,10 +46,6 @@ div.addModalUsersParamsValues {
     flex-direction: column;
 }
 
-div.addModalUsersHeader {
-    text-align: center;
-    margin: 10px;
-}
 
 input.addModalUsers {
     height: 20px;

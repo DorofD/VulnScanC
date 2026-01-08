@@ -1,12 +1,14 @@
-.card.project {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    user-select: none;
-    padding: 10px;
-    margin: 0;
-    height: auto;
+
+
+div.componentStatus {
+    display: block;
     width: 100%;
+    text-align: left;
+}
+
+p.componentStatusFaded {
+    display: inline;
+    color: var(--text-secondary-color);
 }
 
 p.projectCardStatusFaded {

@@ -115,6 +115,7 @@ export default function AiChatRag() {
 
         <div className="chatRagControls">
           <select
+            className='aiChatRag'
             value={selectedModelUuid}
             onChange={(e) => { setSelectedModelUuid(e.target.value); setError(""); }}
             disabled={isLoading}

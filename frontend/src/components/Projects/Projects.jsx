@@ -204,7 +204,7 @@ export default function Projects() {
                 </div>
 
                 <div className="projectsRight">
-                    |
+                    |--
 
                 </div>
             </div>

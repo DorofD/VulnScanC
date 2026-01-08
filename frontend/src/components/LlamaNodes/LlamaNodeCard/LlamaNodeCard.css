@@ -1,29 +1,10 @@
-div.card.users {
-    box-sizing: border-box;
-    vertical-align: middle;
-    /* padding: 10px; */
-    /* user-select: none; */
-    /* margin: 20px; */
-    /* height: auto; */
-}
-
-
-p.userName {
-    font-size: 20px;
-    font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 0px;
-    text-align: left;
-    padding-bottom: 8px;
-}
-
-div.componentStatus {
+div.llamaNodeStatus {
     display: block;
     width: 100%;
     text-align: left;
 }
 
-p.componentStatusFaded {
+p.llamaNodeStatusFaded {
     display: inline;
     color: var(--text-secondary-color);
 }

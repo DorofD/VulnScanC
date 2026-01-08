@@ -99,3 +99,8 @@
   align-items: end;
 }
 
+select.aiChatRag {
+    width: auto;
+    padding: 4px;
+    border-radius: 10px;
+}

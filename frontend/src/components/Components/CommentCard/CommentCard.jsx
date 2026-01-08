@@ -6,10 +6,10 @@ export default function CommentCard({id, onClick, picked = false, user, datetime
     let cardStyle
     let contentStyle
     if (!picked) {
-        cardStyle = "commentCard"
+        cardStyle = "card comment"
         contentStyle = "commentContent"
     } else {
-        cardStyle = "commentCardPicked"
+        cardStyle = "card comment picked"
         contentStyle = "commentContentPicked"
     }
 
