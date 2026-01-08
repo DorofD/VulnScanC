@@ -20,7 +20,7 @@ import Binary from "./Binary/Binary";
 import SarifViewer from "./Sarif/Sarif";
 import Bitbake from "./Bitbake/Bitbake";
 import Login from "./Login/Login";
-import LlamaHosts from "./LlamaHosts/LlamaHosts";
+import LlamaNodes from "./LlamaNodes/LlamaNodes";
 import { PrivateRoute } from "./PrivateRoute/PrivateRoute";
 import { useAuthContext } from "../hooks/useAuthContext";
 import "./App.css";
@@ -47,11 +47,11 @@ export default function App() {
                             <Route path="/ai/rag_llm" element={< AiChatRag/>} />
                             <Route path="/ai/rag_conf" element={< AiRagConf/>} />
                         </Route>
-                        {userRole === 'admin' && <Route path="/admin" element={<Admin />}>
+                            {userRole === 'admin' && <Route path="/admin" element={<Admin />}>
                             <Route path="/admin/users" element={<Users />} />
                             <Route path="/admin/binary" element={<Binary />} />
                             <Route path="/admin/logs" element={<Logs />} />
-                            <Route path="/admin/llama_hosts" element={<LlamaHosts />} />
+                            <Route path="/admin/llama_nodes" element={<LlamaNodes />} />
                         </Route>}
 
                         <Route path="/about" element={<About />} />

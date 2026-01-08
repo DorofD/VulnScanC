@@ -1,7 +1,7 @@
 import React from "react";
-import "./LlamaHostCard.css";
+import "../LlamaNodeCard/LlamaNodeCard.css";
 
-export default function LlamaHostCard({ id, name, apiUrl, modelType, onClick, picked = false }) {
+export default function LlamaNodeCard({ id, name, apiUrl, modelType, onClick, picked = false }) {
     return (
         <div id={id} className={!picked ? "card users" : "card users picked"} onClick={onClick}>
             <p className="userName">{name}</p>

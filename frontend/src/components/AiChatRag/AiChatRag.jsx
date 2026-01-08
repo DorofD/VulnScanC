@@ -1,5 +1,6 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import { apiRagChatSendMessage } from "../../services/apiAi";
+import { apiGetChatNodes } from "../../services/apiLlamaNodes";
 import "./AiChatRag.css";
 // import "../AiChat/AiChat.css"
 
@@ -7,12 +8,11 @@ import "./AiChatRag.css";
 export default function AiChatRag() {
   const [systemPrompt, setSystemPrompt] = useState("");
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([
-    // { role: "system", content: "Ты специалист по DevSecOps, отвечай строго на основе CONTEXT, если в CONTEXT нет ответа - так и скажи" },
-    // { role: "user", content: "CONTEXT: [chunk 1 | source: ГОСТ Р 56939—2024 | section: Введение (стр. 3) | chunk_id: gostr56939-2024_intro_p3_c01] Настоящий стандарт направлен"}
-  ]);
+  const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [hosts, setHosts] = useState([]);
+  const [selectedModelUuid, setSelectedModelUuid] = useState("");
 
   const abortRef = useRef(null);
   const listRef = useRef(null);
@@ -41,6 +41,11 @@ export default function AiChatRag() {
     const text = input.trim();
     if (!text || isLoading) return;
 
+    if (!selectedModelUuid) {
+      setError("Пожалуйста, выберите модель перед отправкой сообщения.");
+      return;
+    }
+
     setError("");
 
     const historyWithoutOldSystem = messages.filter((m) => m.role !== "system");
@@ -51,7 +56,7 @@ export default function AiChatRag() {
     setIsLoading(true);
     scrollToBottom();
     try {
-      const res = await apiRagChatSendMessage(nextMessages);
+      const res = await apiRagChatSendMessage(nextMessages, selectedModelUuid);
 
       if (!res.ok) {
         const body = await res.text().catch(() => "");
@@ -84,6 +89,23 @@ export default function AiChatRag() {
     setMessages([{ role: "system", content: systemPrompt }]);
   }
 
+  useEffect(() => {
+    let mounted = true;
+    async function fetchHosts() {
+      try {
+        const res = await apiGetChatNodes();
+        if (!res.ok) return;
+        const data = await res.json();
+        const hosts = data.chat_nodes || [];
+        if (mounted) setHosts(hosts);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    fetchHosts();
+    return () => { mounted = false };
+  }, []);
+
   return (
     <div className="chatRagShell">
       <header className="chatRagHeader">
@@ -92,6 +114,17 @@ export default function AiChatRag() {
         </div>
 
         <div className="chatRagControls">
+          <select
+            value={selectedModelUuid}
+            onChange={(e) => { setSelectedModelUuid(e.target.value); setError(""); }}
+            disabled={isLoading}
+          >
+            <option value="">Выберите модель</option>
+            {hosts.map((h) => (
+              <option key={h.uuid} value={h.uuid}>{h.name}{h.model_type ? ` (${h.model_type})` : ""}</option>
+            ))}
+          </select>
+
           <button onClick={resetChat} disabled={isLoading}>
             Удалить контекст
           </button>

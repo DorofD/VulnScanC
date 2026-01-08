@@ -1,3 +1,4 @@
+import os
 import requests
 import time
 from typing import List, Optional
@@ -6,11 +7,9 @@ import requests
 
 class Llama:
     def __init__(self):
-        self.embed_url = "http://192.168.1.133:8081/v1/embeddings"
-        self.chat_url = "http://192.168.1.133:8080/v1/chat/completions"
-        # self.chat_url = "http://192.168.5.226:8080/v1/chat/completions"
+        pass
 
-    def get_embedding(self, text: str, retries: int = 3, sleep_s: float = 1.0) -> List[float]:
+    def get_embedding(self, text: str, retries: int = 3, sleep_s: float = 1.0, base_api_url: str = None) -> List[float]:
         """
         Дергает llama.cpp embeddings endpoint и возвращает вектор (list[float])
         """
@@ -19,8 +18,13 @@ class Llama:
 
         for _ in range(retries):
             try:
-                r = requests.post(
-                    self.embed_url, json=payload, timeout=840)
+                base = base_api_url or getattr(
+                    self, 'embed_url', None) or os.environ.get('LLAMA_BASE_API_URL')
+                if not base:
+                    raise RuntimeError(
+                        'No base_api_url provided for embeddings')
+                target = base.rstrip('/') + '/v1/embeddings'
+                r = requests.post(target, json=payload, timeout=840)
                 r.raise_for_status()
                 data = r.json()
                 # Ожидаем формат: {"data":[{"embedding":[...]}], ...}
@@ -36,7 +40,13 @@ class Llama:
                      temperature: float = 0.2,
                      max_tokens: int = 300,
                      stream: bool = False,
-                     model: str = "local"):
+                     model: str = "local",
+                     base_api_url: str = None):
+        base = base_api_url or getattr(
+            self, 'chat_url', None) or os.environ.get('LLAMA_BASE_API_URL')
+        if not base:
+            raise RuntimeError('No base_api_url provided for chat')
+        target_url = base.rstrip('/') + '/v1/chat/completions'
         payload = {
             "messages": messages,
             "temperature": temperature,
@@ -48,7 +58,7 @@ class Llama:
             'Content-Type': 'application/json',
         }
         try:
-            r = requests.post(self.chat_url, json=payload,
+            r = requests.post(target_url, json=payload,
                               headers=headers, timeout=840)
             r.raise_for_status()
             data = r.json()

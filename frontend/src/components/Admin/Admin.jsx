@@ -54,12 +54,12 @@ export default function Admin() {
               <CatalogIcon className="baseSidebarIcon"></CatalogIcon>}
             {sidebarCollapsed && <div className="baseSidebarTextDiv">Логи</div>}
           </NavLink>
-          <NavLink to="/admin/llama_hosts" >
+          <NavLink to="/admin/llama_nodes" >
             {!sidebarCollapsed &&
-              <div className="baseHrefText">Llama Hosts</div>
+              <div className="baseHrefText">Ноды LLAMA</div>
               ||
               <CatalogIcon className="baseSidebarIcon"></CatalogIcon>}
-            {sidebarCollapsed && <div className="baseSidebarTextDiv">Llama Hosts</div>}
+            {sidebarCollapsed && <div className="baseSidebarTextDiv">Ноды LLAMA</div>}
           </NavLink>
         </nav>
       </div>

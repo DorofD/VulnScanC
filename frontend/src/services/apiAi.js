@@ -7,14 +7,14 @@ export async function apiRagChatGetInfo() {
     return response
 }
 
-export async function apiRagChatSendMessage(messages) {
+export async function apiRagChatSendMessage(messages, modelUuid) {
+    const body = { messages: messages };
+    if (modelUuid) body.model_uuid = modelUuid;
+
     const response = await authFetch(`${process.env.BACKEND_URL}/ai/rag_chat/completions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: messages,
-
-        })
+        body: JSON.stringify(body)
     })
     return response
 }

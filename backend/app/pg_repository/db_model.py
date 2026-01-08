@@ -52,28 +52,45 @@ def create_db():
         """)
 
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS llama_hosts (
+        CREATE TABLE IF NOT EXISTS llama_chat_nodes (
         id bigserial PRIMARY KEY,
         uuid uuid NOT NULL DEFAULT gen_random_uuid(),
         name text,
-        api_url text NOT NULL,
-        model_type text NOT NULL,
+        base_api_url text NOT NULL,
         description text,
-        created_at timestamptz NOT NULL DEFAULT now(),
-
-        CONSTRAINT llama_hosts_model_type_chk
-        CHECK (model_type IN ('chat', 'embedding'))
+        created_at timestamptz NOT NULL DEFAULT now()
         );
                    """)
 
     cursor.execute("""
-        CREATE UNIQUE INDEX IF NOT EXISTS llama_hosts_uuid_uniq
-        ON llama_hosts (uuid);
+        CREATE UNIQUE INDEX IF NOT EXISTS llama_chat_nodes_uuid_uniq
+        ON llama_chat_nodes (uuid);
                    """)
 
     cursor.execute("""
-        CREATE UNIQUE INDEX IF NOT EXISTS llama_hosts_api_url_uniq
-        ON llama_hosts (api_url);
+        CREATE UNIQUE INDEX IF NOT EXISTS llama_chat_nodes_base_api_url_uniq
+        ON llama_chat_nodes (base_api_url);
+                   """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS llama_embedding_nodes (
+        id bigserial PRIMARY KEY,
+        uuid uuid NOT NULL DEFAULT gen_random_uuid(),
+        name text,
+        base_api_url text NOT NULL,
+        description text,
+        created_at timestamptz NOT NULL DEFAULT now()
+        );
+                   """)
+
+    cursor.execute("""
+        CREATE UNIQUE INDEX IF NOT EXISTS llama_embedding_nodes_uuid_uniq
+        ON llama_embedding_nodes (uuid);
+                   """)
+
+    cursor.execute("""
+        CREATE UNIQUE INDEX IF NOT EXISTS llama_embedding_nodes_base_api_url_uniq
+        ON llama_embedding_nodes (base_api_url);
                    """)
 
     cursor.close()

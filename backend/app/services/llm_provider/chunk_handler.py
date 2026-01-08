@@ -1,5 +1,6 @@
 from app.pg_repository.queries.rag import PostgresRAG
 from app.services.llm_provider.llama_api import Llama
+from app.pg_repository.queries.llama_nodes import DBLlamaEmbeddingNodes
 import json
 from typing import List, Dict, Any, Optional
 
@@ -8,9 +9,24 @@ class ChunkHandler:
     def __init__(self):
         self.llama = Llama()
 
+    def _get_embedding_base_api_url(self) -> str:
+        """Return base_api_url from any embedding node (first available).
+
+        Raises RuntimeError if no embedding nodes are configured.
+        """
+        nodes = DBLlamaEmbeddingNodes().get_nodes() or []
+        if not nodes:
+            raise RuntimeError(
+                "No embedding nodes configured in llama_embedding_nodes")
+        # pick the first configured embedding node
+        node = nodes[0]
+        return node.get('base_api_url')
+
     def get_embedding_dimension(self):
         """Получить размерность эмбеддинга"""
-        dim = len(self.llama.get_embedding("dimension check"))
+        base = self._get_embedding_base_api_url()
+        dim = len(self.llama.get_embedding(
+            "dimension check", base_api_url=base))
         print("Embedding dim =", dim)
         return dim
 
@@ -27,7 +43,8 @@ class ChunkHandler:
         pg_rag = PostgresRAG()
         for i, ch in enumerate(chunks, start=1):
             raw_text = ch["raw_text"]
-            emb = self.llama.get_embedding(raw_text)
+            base = self._get_embedding_base_api_url()
+            emb = self.llama.get_embedding(raw_text, base_api_url=base)
 
             meta = {k: ch[k] for k in meta_keys if k in ch}
             print('NUMBER', ch["chunk_number"])
@@ -46,7 +63,8 @@ class ChunkHandler:
         В pgvector оператор:
         embedding <=> query_vector  -- cosine distance (меньше = ближе)
         """
-        q_emb = self.llama.get_embedding(query)
+        base = self._get_embedding_base_api_url()
+        q_emb = self.llama.get_embedding(query, base_api_url=base)
         pg_rag = PostgresRAG()
 
         rows = pg_rag.search_topk(q_emb, k)
