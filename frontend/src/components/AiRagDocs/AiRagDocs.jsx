@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./AiRagConf.css";
+import "./AiRagDocs.css";
 import Modal from "../Modal/Modal";
 import AcceptModal from "../AcceptModal/AcceptModal";
 import Filter from "../Filter/Filter";
@@ -13,7 +13,7 @@ import {
   apiDeleteRagDocument,
 } from "../../services/apiRagDocuments";
 
-export default function AiRagConf() {
+export default function AiRagDocs() {
   const { addMessage } = useTimedMessagesContext();
 
   const [loading, setLoading] = useState("loading");
@@ -21,6 +21,7 @@ export default function AiRagConf() {
 
   const [pickedDoc, setPickedDoc] = useState({ id: '', name: '', file_path: '' });
   const [newDoc, setNewDoc] = useState({ name: '', file_path: '' });
+  const [newDocFile, setNewDocFile] = useState(null);
   const [changedDoc, setChangedDoc] = useState({ id: '', name: '', file_path: '' });
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -38,6 +39,7 @@ export default function AiRagConf() {
   function closeAddModal() {
     setIsAddModalOpen(false);
     setNewDoc({ name: '', file_path: '' });
+    setNewDocFile(null);
   }
 
   function closeChangeModal() {
@@ -66,11 +68,22 @@ export default function AiRagConf() {
   }
 
   async function addDocument() {
-    if (!newDoc.name || !newDoc.file_path) {
-      addMessage('Заполните имя и путь к файлу', 'warning', 3000)
+    if (!newDoc.name || !newDocFile) {
+      addMessage('Заполните имя и выберите PDF-файл', 'warning', 3000)
       return
     }
-    const resp = await apiAddRagDocument(newDoc)
+
+    let resp
+    if (newDocFile) {
+      const form = new FormData()
+      form.append('action', 'add')
+      form.append('name', newDoc.name)
+      form.append('file', newDocFile, newDocFile.name)
+      resp = await apiAddRagDocument(form)
+    } else {
+      // should not reach here: server requires file upload
+      resp = await apiAddRagDocument(newDoc)
+    }
     if (resp.ok) {
       addMessage('Документ добавлен', 'success', 3000)
       loadDocuments()
@@ -103,6 +116,7 @@ export default function AiRagConf() {
       loadDocuments()
       closeChangeModal()
       closeAcceptModal()
+      setPickedDoc({ id: '', name: '', file_path: '' })
     } else {
       addMessage('Не удалось удалить документ', 'error', 3000)
     }
@@ -138,19 +152,27 @@ export default function AiRagConf() {
                 name={doc.name}
                 filePath={doc.file_path}
                 picked={pickedDoc.id === doc.id && true || false}
-                onClick={() => { setPickedDoc(doc); setChangedDoc({ id: doc.id, name: doc.name, file_path: doc.file_path }); setIsChangeModalOpen(true) }}
+                onClick={() => { setPickedDoc(doc); setChangedDoc({ id: doc.id, name: doc.name, file_path: doc.file_path }) }}
+                // onClick={() => { setPickedDoc(doc); setChangedDoc({ id: doc.id, name: doc.name, file_path: doc.file_path }); setIsChangeModalOpen(true) }}
               >
               </AiRagDocumentCard>
             </div>
           ))}
         </div>}
+    </div>
+     <div className="ragConfRight">
+      {pickedDoc.id && <div>Выбран документ: {pickedDoc.name}</div> || 'false'}
+      {pickedDoc.id && <div>Путь к файлу: {pickedDoc.file_path}</div> || 'false'}
+      <button onClick={() => openAcceptModalWithAction(deleteDocument)}>Удалить</button>
+      </div>
 
-        <Modal isOpen={isAddModalOpen} onClose={() => closeAddModal()}>
+
+          <Modal isOpen={isAddModalOpen} onClose={() => closeAddModal()}>
           <div className="ragConfModal">
             <h3>Добавить документ</h3>
             <div className="ragConfInputs">
-              <input type="text" placeholder="Имя" onChange={e => setNewDoc({ ...newDoc, name: e.target.value })} value={newDoc.name} />
-              <input type="text" placeholder="Путь к файлу" onChange={e => setNewDoc({ ...newDoc, file_path: e.target.value })} value={newDoc.file_path} />
+                <input type="text" placeholder="Имя" onChange={e => setNewDoc({ ...newDoc, name: e.target.value })} value={newDoc.name} />
+                <input type="file" accept="application/pdf" onChange={e => setNewDocFile(e.target.files && e.target.files[0] || null)} />
             </div>
             <div className="ragConfModalButtons">
               <button onClick={() => addDocument()}>Добавить</button>
@@ -164,10 +186,10 @@ export default function AiRagConf() {
             <h3>Изменить документ</h3>
             <div className="ragConfInputs">
               <input type="text" placeholder="Имя" onChange={e => setChangedDoc({ ...changedDoc, name: e.target.value })} value={changedDoc.name} />
-              <input type="text" placeholder="Путь к файлу" onChange={e => setChangedDoc({ ...changedDoc, file_path: e.target.value })} value={changedDoc.file_path} />
+              <div style={{ marginTop: 8 }}><strong>Путь к файлу:</strong> {changedDoc.file_path}</div>
             </div>
             <div className="ragConfModalButtons">
-              <button onClick={() => { const changes = {}; if (changedDoc.name !== pickedDoc.name) changes.name = changedDoc.name; if (changedDoc.file_path !== pickedDoc.file_path) changes.file_path = changedDoc.file_path; if (Object.keys(changes).length === 0) { addMessage('Вы ничего не изменили', 'warning', 3000); return } openAcceptModalWithAction(() => changeDocument(changes)) }}>Изменить</button>
+              <button onClick={() => { const changes = {}; if (changedDoc.name !== pickedDoc.name) changes.name = changedDoc.name; if (Object.keys(changes).length === 0) { addMessage('Вы ничего не изменили', 'warning', 3000); return } openAcceptModalWithAction(() => changeDocument(changes)) }}>Изменить</button>
               <button onClick={() => openAcceptModalWithAction(deleteDocument)}>Удалить</button>
               <button onClick={() => closeChangeModal()}>Закрыть</button>
             </div>
@@ -185,6 +207,6 @@ export default function AiRagConf() {
           </div>
         </AcceptModal>
     </div>
-    </div>
+    
   );
 }

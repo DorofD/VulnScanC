@@ -50,12 +50,12 @@ export default function AiBase() {
               <ConfluenceIcon className="baseSidebarIcon"></ConfluenceIcon>}
             {sidebarCollapsed && <div className="baseSidebarTextDiv">RAG LLM</div>}
           </NavLink>
-          <NavLink to="/ai/rag_conf" >
+          <NavLink to="/ai/rag_docs" >
             {!sidebarCollapsed &&
-              <div className="baseHrefText">Настройка RAG</div>
+              <div className="baseHrefText">Документы RAG</div>
               ||
               <CatalogIcon className="baseSidebarIcon"></CatalogIcon>}
-            {sidebarCollapsed && <div className="baseSidebarTextDiv">Настройка RAG</div>}
+            {sidebarCollapsed && <div className="baseSidebarTextDiv">Документы RAG</div>}
           </NavLink>
                     <NavLink to="/ai/llama_nodes" >
                       {!sidebarCollapsed &&

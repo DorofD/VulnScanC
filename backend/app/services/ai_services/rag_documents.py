@@ -13,7 +13,8 @@ def add_rag_document(values: dict):
     name = values.get('name')
     file_path = values.get('file_path')
     if not name or not file_path:
-        raise Exception('name and file_path are required to add a rag_document')
+        raise Exception(
+            'name and file_path are required to add a rag_document')
     return DBRagDocuments().add_document(name, file_path)
 
 

@@ -1,5 +1,5 @@
 import React from "react";
-import "../AiRagDocumentCard/AiRagDocumentCard.css";
+import "./AiRagDocumentCard.css";
 
 export default function AiRagDocumentCard({ id, name, filePath, onClick, picked = false, children }) {
   return (

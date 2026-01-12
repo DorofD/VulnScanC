@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from app.routes import role_required
-from app.services.api_services.ai import (
+import os
+from werkzeug.utils import secure_filename
+from app.services.ai_services.llama_nodes import (
     get_llama_nodes,
     get_llama_chat_nodes,
     get_llama_embedding_nodes,
@@ -13,14 +15,14 @@ from app.services.api_services.ai import (
     delete_llama_chat_node,
     delete_llama_embedding_node,
     move_node_between_tables,
-    send_messages,
 )
-from app.services.rag_documents import (
+from app.services.ai_services.rag_documents import (
     get_rag_documents,
     add_rag_document,
     change_rag_document,
     delete_rag_document,
 )
+from app.services.ai_services.rag_handler import RagHandler
 
 
 ai_bp = Blueprint("ai", __name__, url_prefix="/ai")
@@ -38,10 +40,11 @@ def summary():
 @jwt_required()
 def completions():
     data = request.json
-    print(data['messages'])
+    # print(data['messages'])
+    rh = RagHandler()
     messages = data['messages']
     model_uuid = data.get('model_uuid')
-    response = send_messages(messages, model_uuid=model_uuid)
+    response = rh.send_messages(messages, model_uuid)
     if response:
         return jsonify(response)
     return jsonify({
@@ -51,7 +54,7 @@ def completions():
                 "message":
                 {
                     "role": 'assistant',
-                    "content": "брат, саси)"
+                    "content": "Response generation failed"
                 }
             }
         ]
@@ -154,14 +157,56 @@ def rag_documents():
         nodes = get_rag_documents()
         return jsonify({"rag_documents": nodes})
     if request.method == "POST":
-        data = request.get_json()
-        if data['action'] == 'add':
-            result = add_rag_document(data.get('values', {}))
-            return jsonify(result)
-        if data['action'] == 'change':
+        # Support both JSON and multipart/form-data uploads
+        data = None
+        if request.is_json:
+            data = request.get_json()
+        else:
+            # form data -> convert to dict
+            data = request.form.to_dict()
+
+        action = data.get('action') if isinstance(data, dict) else None
+
+        # Handle file upload for adding rag document
+        if action == 'add':
+            # Try to extract values from JSON payload first
+            values = {}
+            if request.is_json:
+                values = data.get('values', {}) or {}
+
+            # If multipart/form-data was used, get name from form and file from files
+            if 'file' in request.files:
+                upload = request.files.get('file')
+                name = values.get('name') or request.form.get('name')
+                if not name:
+                    return jsonify({"error": "missing 'name' for uploaded document", "status": 400}), 400
+
+                # ensure storage directory exists
+                save_dir = os.path.join(os.getcwd(), 'data', 'rag_docs')
+                os.makedirs(save_dir, exist_ok=True)
+
+                # Use a safe filename derived from provided name
+                filename = secure_filename(f"{name}.pdf")
+                save_path = os.path.join(save_dir, filename)
+                try:
+                    upload.save(save_path)
+                except Exception as exc:
+                    return jsonify({"error": f"failed to save uploaded file: {exc}", "status": 500}), 500
+
+                # Prepare values for DB insertion: store relative path as requested
+                rel_path = os.path.join('data', 'rag_docs', filename)
+                values['name'] = name
+                values['file_path'] = rel_path
+                result = add_rag_document(values)
+                return jsonify(result)
+
+            # No file uploaded — do not allow manual `file_path`. Require file upload.
+            return jsonify({"error": "file upload required for adding rag_document", "status": 400}), 400
+
+        if action == 'change':
             result = change_rag_document(
                 data['id'], data.get('fields_to_change', {}))
             return jsonify(result)
-        if data['action'] == 'delete':
+        if action == 'delete':
             result = delete_rag_document(data['id'])
             return jsonify(result)

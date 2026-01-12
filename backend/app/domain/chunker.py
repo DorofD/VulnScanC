@@ -1,123 +1,11 @@
-from app.pg_repository.queries.rag_chunks import DBRagChunks
-from app.services.llm_provider.llama_api import Llama
-from app.pg_repository.queries.llama_nodes import DBLlamaEmbeddingNodes
-import json
-from typing import List, Dict, Any, Optional
 import re
-import pdfplumber
 import tiktoken
-from typing import List, Iterable
+from typing import List
 
 
-class ChunkHandler:
+class Chunker:
     def __init__(self):
-        self.llama = Llama()
         self.sent_split = re.compile(r"(?<=[.!?…])s+(?=[A-ZА-ЯЁ0-9])")
-
-    def extract_text_from_pdf(self, pdf_file_path):
-        # --- извлечение текста из PDF + чанкинг ---
-        pdf_file_path = "data/rag_docs/gost_56939_2024.pdf"
-
-        pages_text = []
-        with pdfplumber.open(pdf_file_path) as pdf:
-            for page in pdf.pages:
-                # if page.page_number == 6:
-                #     break
-                t = page.extract_text() or ""
-                pages_text.append(t)
-
-        full_text = "\n\n".join(pages_text)
-        return full_text
-
-    def _get_embedding_base_api_url(self) -> str:
-        """Return base_api_url from any embedding node (first available).
-
-        Raises RuntimeError if no embedding nodes are configured.
-        """
-        nodes = DBLlamaEmbeddingNodes().get_nodes() or []
-        if not nodes:
-            raise RuntimeError(
-                "No embedding nodes configured in llama_embedding_nodes")
-        # pick the first configured embedding node
-        node = nodes[0]
-        return node.get('base_api_url')
-
-    def get_embedding_dimension(self):
-        """Получить размерность эмбеддинга"""
-        base = self._get_embedding_base_api_url()
-        dim = len(self.llama.get_embedding(
-            "dimension check", base_api_url=base))
-        print("Embedding dim =", dim, )
-        return dim
-
-    def process_chunks(self, json_path: str, meta_keys: Optional[List[str]] = None) -> None:
-        """
-        Читает чанки из json, запрашивает embeddings и записывает результат в БД
-        meta_keys: какие поля (кроме document_id/raw_text) складывать в meta.
-        """
-        meta_keys = meta_keys or []
-
-        with open(json_path, "r", encoding="utf-8") as f:
-            chunks = json.load(f)
-        print(len(chunks))
-        pg_rag = DBRagChunks()
-        count = 0
-        for ch in chunks:
-            count += 1
-            raw_text = ch["raw_text"]
-            base = self._get_embedding_base_api_url()
-            emb = self.llama.get_embedding(raw_text, base_api_url=base)
-
-            meta = {k: ch[k] for k in meta_keys if k in ch}
-            print('NUMBER', count)
-            pg_rag.upsert_chunk(
-                document_id=str(ch["document_id"]),
-                raw_text=raw_text,
-                embedding=emb,
-                meta=meta
-            )
-            print(f'chunk count done:', count)
-
-    def search_topk(self, query: str, k: int = 4) -> List[Dict[str, Any]]:
-        """
-        Возвращает top-k чанков по cosine distance.
-        В pgvector оператор:
-        embedding <=> query_vector  -- cosine distance (меньше = ближе)
-        """
-        base = self._get_embedding_base_api_url()
-        q_emb = self.llama.get_embedding(query, base_api_url=base)
-        pg_rag = DBRagChunks()
-
-        rows = pg_rag.search_topk(q_emb, k)
-        results = []
-        for row in rows:
-            results.append(
-                {
-                    "id": row['id'],
-                    "raw_text": row['raw_text'],
-                    "meta": row['meta'],
-                    "cosine_similarity": float(row['cosine_similarity']),
-                }
-            )
-        return results
-
-    def build_context_content(self, chunks: list[dict], *, sort_by_id: bool = False) -> str:
-        if sort_by_id:
-            chunks = sorted(chunks, key=lambda c: c.get("id", 0))
-
-        lines = []
-        for c in chunks:
-            id = c.get("id", "?")
-            source = c.get("document_id", "unknown")
-            raw_text = (c.get("raw_text") or "").strip()
-
-            # при желании можно чистить переводы строк внутри чанка:
-            raw_text = " ".join(raw_text.split())
-
-            lines.append(
-                f"[id: {id} | document_id: {source}] {raw_text}")
-
-        return "CONTEXT:\n" + "\n".join(lines)
 
     def _split_by_regex(self, text: str, pattern: re.Pattern) -> List[str]:
         parts = pattern.split(text)
@@ -144,9 +32,9 @@ class ChunkHandler:
         self,
         text: str,
         target_tokens: int = 300,     # желаемый размер
-        max_tokens: int = 380,        # жесткий потолок
-        min_tokens: int = 120,        # чтобы не плодить мусор
-        overlap_tokens: int = 40,
+        max_tokens: int = 330,        # жесткий потолок
+        min_tokens: int = 80,        # чтобы не плодить мусор
+        overlap_tokens: int = 20,
         encoding_name: str = "cl100k_base",
     ) -> List[str]:
 
@@ -251,31 +139,3 @@ class ChunkHandler:
             merged.append(c)
 
         return merged
-
-    def extract_and_chunk(self, pdf_file_path):
-        extracted_text = self.extract_text_from_pdf(pdf_file_path)
-        chunks = self.chunk_text(extracted_text, target_tokens=350,
-                                 max_tokens=430, min_tokens=170, overlap_tokens=60)
-
-        result_data = []
-        for i in range(len(chunks)):
-            # print(chunks[i])
-            result_data.append(
-                {
-                    "document_id": 1,
-                    "raw_text": chunks[i]
-                }
-            )
-        with open(f"data/rag_docs/{pdf_file_path}.json", 'w', encoding='utf-8') as f:
-            json.dump(result_data, f, ensure_ascii=False, indent=4)
-        return result_data
-
-# print(ChunkHandler().get_embedding_dimension())
-# Посчитать эмбеддинги для чанков и сохранить результат
-# ChunkHandler().process_chunks('data/rag_docs/output3.json', meta_keys=[])
-
-# Найти топ близких к запросу чанков
-# top_chunks = search_topk(
-#     "Запрооооос", k=5)
-# for i in top_chunks:
-#     print(i['id'], i['cosine_similarity'])

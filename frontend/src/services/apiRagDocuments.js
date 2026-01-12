@@ -6,6 +6,16 @@ export async function apiGetRagDocuments() {
 }
 
 export async function apiAddRagDocument(values) {
+    // If caller passed a FormData (for file upload), send it directly without JSON headers
+    if (values instanceof FormData) {
+        // ensure action is included in FormData by caller
+        const response = await authFetch(`${process.env.BACKEND_URL}/ai/rag_documents`, {
+            method: 'POST',
+            body: values
+        })
+        return response
+    }
+
     const response = await authFetch(`${process.env.BACKEND_URL}/ai/rag_documents`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

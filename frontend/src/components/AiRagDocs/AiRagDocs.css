@@ -12,6 +12,13 @@ div.ragConfLeft {
   flex-direction: column;
   box-sizing: border-box;
 }
+div.ragConfRight {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
 .ragConfHeader {
     height: 10%;
     width: 100%;
