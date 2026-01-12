@@ -5,3 +5,73 @@ div.ragConfMain {
   flex-direction: row;
   box-sizing: border-box;
 }
+div.ragConfLeft {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.ragConfHeader {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+}
+
+.ragConfNotes {
+    box-sizing: border-box;
+    overflow: auto;
+    height: 80%;
+    width: 100%;
+    border-top: solid 3px var(--border-color);
+    border-bottom: solid 3px var(--border-color);
+}
+
+
+.ragConfItemDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.ragConfItemName {
+  font-weight: 600;
+}
+
+.ragConfItemPath {
+  font-size: 12px;
+  color: var(--faded-color, #666);
+}
+
+.ragConfItemActions {
+  display: flex;
+  gap: 8px;
+}
+
+.ragConfModal {
+  padding: 16px;
+  min-width: 360px;
+  box-sizing: border-box;
+}
+
+.ragConfModal h3 {
+  margin-top: 0;
+}
+
+.ragConfInputs input {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.ragConfModalButtons {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}

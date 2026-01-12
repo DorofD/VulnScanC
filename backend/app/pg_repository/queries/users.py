@@ -16,7 +16,6 @@ class DBUsers:
         return execute_query(query, params, fetch="one")
 
     def add_user(self, login: str, auth_type: str, role: str, password: str = ""):
-        # чтобы метод реально “что-то возвращал”, добавляем RETURNING
         query = """
             INSERT INTO users (login, auth_type, role, password)
             VALUES (%s, %s, %s, %s)

@@ -1,4 +1,3 @@
-import os
 import requests
 import time
 from typing import List, Optional
@@ -18,12 +17,10 @@ class Llama:
 
         for _ in range(retries):
             try:
-                base = base_api_url or getattr(
-                    self, 'embed_url', None) or os.environ.get('LLAMA_BASE_API_URL')
-                if not base:
+                if not base_api_url:
                     raise RuntimeError(
                         'No base_api_url provided for embeddings')
-                target = base.rstrip('/') + '/v1/embeddings'
+                target = base_api_url.rstrip('/') + '/v1/embeddings'
                 r = requests.post(target, json=payload, timeout=840)
                 r.raise_for_status()
                 data = r.json()
@@ -42,11 +39,9 @@ class Llama:
                      stream: bool = False,
                      model: str = "local",
                      base_api_url: str = None):
-        base = base_api_url or getattr(
-            self, 'chat_url', None) or os.environ.get('LLAMA_BASE_API_URL')
-        if not base:
+        if not base_api_url:
             raise RuntimeError('No base_api_url provided for chat')
-        target_url = base.rstrip('/') + '/v1/chat/completions'
+        target_url = base_api_url.rstrip('/') + '/v1/chat/completions'
         payload = {
             "messages": messages,
             "temperature": temperature,
@@ -65,3 +60,23 @@ class Llama:
             return data
         except Exception as exc:
             print('Error:', exc)
+
+    def get_node_info(self, base_api_url: str = None):
+        """Fetch node info from the model node at /v1/models.
+
+        Returns the `models` object on success or {'success': False} on any error.
+        """
+        if not base_api_url:
+            return {'success': False}
+        target = base_api_url.rstrip('/') + '/v1/models'
+        try:
+            r = requests.get(target, timeout=30)
+            r.raise_for_status()
+            data = r.json()
+            models = data.get('models')
+            if models is None:
+                return {'success': False}
+            return {'success': True, 'models': models}
+        except Exception as exc:
+            print(exc)
+            return {'success': False}

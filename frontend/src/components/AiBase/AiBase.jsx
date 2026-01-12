@@ -52,11 +52,18 @@ export default function AiBase() {
           </NavLink>
           <NavLink to="/ai/rag_conf" >
             {!sidebarCollapsed &&
-              <div className="baseHrefText">Configure RAG</div>
+              <div className="baseHrefText">Настройка RAG</div>
               ||
               <CatalogIcon className="baseSidebarIcon"></CatalogIcon>}
-            {sidebarCollapsed && <div className="baseSidebarTextDiv">Configure RAG</div>}
+            {sidebarCollapsed && <div className="baseSidebarTextDiv">Настройка RAG</div>}
           </NavLink>
+                    <NavLink to="/ai/llama_nodes" >
+                      {!sidebarCollapsed &&
+                        <div className="baseHrefText">Ноды LLAMA</div>
+                        ||
+                        <CatalogIcon className="baseSidebarIcon"></CatalogIcon>}
+                      {sidebarCollapsed && <div className="baseSidebarTextDiv">Ноды LLAMA</div>}
+                    </NavLink>
         </nav>
       </div>
       <div className={!sidebarCollapsed && "baseContent" || "baseContent collapsed"}>

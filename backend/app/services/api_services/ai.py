@@ -23,7 +23,7 @@ def send_messages(messages, model_uuid: str = None):
         topk_chunks = ch.search_topk(user_text, k=5)
 
         for i in topk_chunks:
-            print(i['chunk_number'], i['cosine_similarity'])
+            print(i['cosine_similarity'], i['id'])
 
         system_prompt_str = "Ты специалист по ИБ, отвечай строго на основе CONTEXT, если в CONTEXT нет ответа - так и скажи"
         context_str = ch.build_context_content(topk_chunks)
@@ -134,3 +134,27 @@ def move_node_between_tables(id: int, from_type: str, to_type: str):
     # delete old
     src.delete_node(id)
     return new
+
+
+def get_llama_nodes_summary():
+    """Collect `/v1/models` info from all chat and embedding nodes.
+
+    Returns: {"chat_nodes": [...], "embedding_nodes": [...]} where each item is the
+    original node record extended with a `models` key containing the result of
+    `Llama.get_node_info` or `{'success': False}` on error.
+    """
+    llama = Llama()
+    chat_nodes = DBLlamaChatNodes().get_nodes()
+    embedding_nodes = DBLlamaEmbeddingNodes().get_nodes()
+
+    def enrich(nodes):
+        out = []
+        for n in nodes or []:
+            base = n.get('base_api_url')
+            info = llama.get_node_info(base_api_url=base)
+            item = dict(n)
+            item['models'] = info
+            out.append(item)
+        return out
+
+    return {"chat_nodes": enrich(chat_nodes), "embedding_nodes": enrich(embedding_nodes)}

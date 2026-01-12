@@ -4,13 +4,12 @@ from typing import List, Dict, Any, Optional
 from app.pg_repository.queries.base_query import execute_query
 
 
-class PostgresRAG:
+class DBRagChunks:
     def __init__(self):
         pass
 
     def upsert_chunk(self,
-                     chunk_number: int,
-                     source_document_name: str,
+                     document_id: int,
                      raw_text: str,
                      embedding: List[float],
                      meta: Optional[Dict[str, Any]] = None,
@@ -18,19 +17,14 @@ class PostgresRAG:
 
         execute_query(
             """
-                INSERT INTO rag_chunks (chunk_number, source_document_name, raw_text, meta, embedding)
-                VALUES (%s, %s, %s, %s, %s)
-                ON CONFLICT (source_document_name, chunk_number)
-                DO UPDATE SET
-                raw_text = EXCLUDED.raw_text,
-                meta = EXCLUDED.meta,
-                embedding = EXCLUDED.embedding
+                INSERT INTO rag_chunks (document_id, raw_text, meta, embedding)
+                VALUES (%s, %s, %s, %s)
             """,
-            (chunk_number, source_document_name, raw_text,
+            (document_id, raw_text,
              json.dumps(meta), Vector(embedding)), fetch=None
         )
 
-    def search_topk(self, query_embedding, k: int = 4) -> List[Dict[str, Any]]:
+    def search_topk(self, query_embedding, k: int = 5) -> List[Dict[str, Any]]:
         """
         Возвращает top-k чанков по cosine distance.
         В pgvector оператор:
@@ -40,8 +34,7 @@ class PostgresRAG:
         result = execute_query(
             """
                 SELECT
-                chunk_number,
-                source_document_name,
+                id,
                 raw_text,
                 meta,
                 (1 - (embedding <=> %s)) AS cosine_similarity

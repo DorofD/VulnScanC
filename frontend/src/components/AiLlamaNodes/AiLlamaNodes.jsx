@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { useState, useEffect } from "react";
-import "./LlamaNodes.css";
-import LlamaNodeCard from "./LlamaNodeCard/LlamaNodeCard";
+import "./AiLlamaNodes.css";
+import AiLlamaNodeCard from "./AiLlamaNodeCard/AiLlamaNodeCard";
 import Button from "../Button/Button";
 import Filter from "../Filter/Filter";
 import {
@@ -24,7 +24,7 @@ import Modal from "../Modal/Modal";
 import AcceptModal from "../AcceptModal/AcceptModal";
 import Loader from "../Loader/Loader";
 
-export default function LlamaNodes() {
+export default function AiLlamaNodes() {
     const { messages, addMessage } = useTimedMessagesContext();
 
     const [loaderActive, setLoaderActive] = useState(false)
@@ -223,7 +223,7 @@ export default function LlamaNodes() {
                 {loading === 'error' && <p> бекенд отвалился</p>}
                 {loading === 'loaded' && <>
                     {filteredNodes.map(node =>
-                        <LlamaNodeCard
+                        <AiLlamaNodeCard
                             key={node.id}
                             id={node.id}
                             name={node.name}
@@ -231,7 +231,7 @@ export default function LlamaNodes() {
                             modelType={selectedTab}
                             picked={pickedNode.id === node.id && true || false}
                             onClick={() => { setPickedNode(node); setChangedNode({ id: node.id, name: node.name, base_api_url: node.base_api_url, description: node.description }); setAdditionalText([]); setIsChangeModalOpen(true) }}>
-                        </LlamaNodeCard>
+                        </AiLlamaNodeCard>
                     )}
                 </>}
             </div>

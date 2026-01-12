@@ -1,5 +1,5 @@
 import React from "react";
-import "../LlamaNodeCard/LlamaNodeCard.css";
+import "../AiLlamaNodeCard/AiLlamaNodeCard.css";
 
 export default function LlamaNodeCard({ id, name, apiUrl, modelType, onClick, picked = false }) {
     return (

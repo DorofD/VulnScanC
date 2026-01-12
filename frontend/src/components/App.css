@@ -169,6 +169,8 @@ p.cardMainLabel {
     margin-bottom: 0px;
     text-align: left;
     padding-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 *.error-colors {

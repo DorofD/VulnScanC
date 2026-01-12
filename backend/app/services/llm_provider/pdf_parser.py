@@ -31,7 +31,7 @@ def _slice_by_tokens(enc, text: str, max_tokens: int, overlap_tokens: int = 0) -
     return [c for c in chunks if c]
 
 
-def chunk_text_smart(
+def chunk_text(
     text: str,
     target_tokens: int = 300,     # желаемый размер
     max_tokens: int = 380,        # жесткий потолок
@@ -39,7 +39,9 @@ def chunk_text_smart(
     overlap_tokens: int = 40,
     encoding_name: str = "cl100k_base",
 ) -> List[str]:
+
     enc = tiktoken.get_encoding(encoding_name)
+    enc = tiktoken.get_encoding("cl100k_base")
     text = text.strip()
     if not text:
         return []
@@ -141,37 +143,36 @@ def chunk_text_smart(
     return merged
 
 
-# --- извлечение текста из PDF + чанкинг ---
-path_pdf = "data/gost56939-2024.pdf"
+def extract_text_from_pdf(pdf_file_path):
+    # --- извлечение текста из PDF + чанкинг ---
+    pdf_file_path = "data/rag_docs/gost_56939_2024.pdf"
 
-pages_text = []
-with pdfplumber.open(path_pdf) as pdf:
-    for page in pdf.pages:
-        # if page.page_number == 6:
-        #     break
-        t = page.extract_text() or ""
-        pages_text.append(t)
+    pages_text = []
+    with pdfplumber.open(pdf_file_path) as pdf:
+        for page in pdf.pages:
+            # if page.page_number == 6:
+            #     break
+            t = page.extract_text() or ""
+            pages_text.append(t)
 
-full_text = "\n\n".join(pages_text)
+    full_text = "\n\n".join(pages_text)
+    return full_text
 
-chunks = chunk_text_smart(full_text)
 
-print("chunks:", len(chunks))
-# print("first chunk:\n", chunks[0])
-# for i in range(len(chunks)):
-#     print("Номер чанка:", i)
-#     print(chunks[i])
+def extract_and_chunk(pdf_file_path):
+    extracted_text = extract_text_from_pdf(pdf_file_path)
+    chunks = chunk_text(extracted_text, target_tokens=350,
+                        max_tokens=430, min_tokens=170, overlap_tokens=60)
 
-result_data = []
-for i in range(len(chunks)):
-    # print(chunks[i])
-    result_data.append(
-        {
-            "chunk_number": i,
-            "source_document_name": "ГОСТ Р 56939-2024 РБПО",
-            "raw_text": chunks[i]
-        }
-    )
-
-with open('data/output2.json', 'w', encoding='utf-8') as f:
-    json.dump(result_data, f, ensure_ascii=False, indent=4)
+    result_data = []
+    for i in range(len(chunks)):
+        # print(chunks[i])
+        result_data.append(
+            {
+                "document_id": 1,
+                "raw_text": chunks[i]
+            }
+        )
+    return result_data
+    # with open('data/rag_docs/output3.json', 'w', encoding='utf-8') as f:
+    #     json.dump(result_data, f, ensure_ascii=False, indent=4)
