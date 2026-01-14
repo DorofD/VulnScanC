@@ -6,6 +6,12 @@
   gap: 6px;
 }
 
+.chatRagInfoContainer {
+  width: 40%;
+  height: 100%;
+  padding: 16px;
+}
+
 .chatRagHeader {
   display: flex;
   align-items: center;
@@ -103,4 +109,66 @@ select.aiChatRag {
     width: auto;
     padding: 4px;
     border-radius: 10px;
+}
+
+.jsonPanel {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px;
+  background: var(--card-background-color);
+  max-height: 420px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+}
+
+.jsonHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jsonHeaderControls button {
+  margin-left: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.jsonPre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: monospace;
+  font-size: 12px;
+  background: transparent;
+  margin: 0;
+}
+
+.jsonNode {
+  margin-left: 6px;
+}
+
+.jsonSummary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+
+.jsonChildren {
+  padding-left: 16px;
+  border-left: 1px dashed var(--border-color);
+  margin-top: 6px;
+}
+
+.jsonKey {
+  font-weight: 600;
+}
+
+.jsonValue {
+  margin-left: 6px;
+  color: var(--text-secondary-color);
 }

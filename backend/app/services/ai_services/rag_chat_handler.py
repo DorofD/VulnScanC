@@ -1,14 +1,14 @@
 from app.pg_repository.queries.rag_chunks import DBRagChunks
 from app.pg_repository.queries.llama_nodes import DBLlamaEmbeddingNodes, DBLlamaChatNodes
 from app.adapters.pdf_extract import PDFExtractAdapter
-from app.domain.chunker import Chunker
+from app.adapters.chunker import Chunker
 from app.adapters.llama_api import LlamaEmbeddingApiAdapter, LlamaChatApiAdapter
 from typing import List, Dict, Any, Optional
 
 from typing import List
 
 
-class RagHandler:
+class RagChatHandler:
     def __init__(self):
         self.base_embed_url = self.get_embedding_base_api_url()
         self.embed_adapter = LlamaEmbeddingApiAdapter(self.base_embed_url)
@@ -82,40 +82,36 @@ class RagHandler:
 
             lines.append(
                 # f"[id: {id} | document_id: {source}] {raw_text}")
-                f"{raw_text}")
+                f"|{raw_text}|")
 
         return "CONTEXT:\n" + "\n".join(lines)
 
-    def send_messages(self, messages, model_uuid: str = None):
-        msg_count = len(messages)
-        ch = Chunker()
-        host_info = None
-        if model_uuid:
-            host_info = DBLlamaChatNodes().get_node_by_uuid(model_uuid)
-            if not host_info:
-                host_info = DBLlamaEmbeddingNodes().get_node_by_uuid(model_uuid)
+    def send_messages(self, messages, chat_node_uuid: str = None):
+        # msg_count = len(messages)
+        print('message count:', len(messages))
+        # ch = Chunker()
+        if chat_node_uuid:
+            host_info = DBLlamaChatNodes().get_node_by_uuid(chat_node_uuid)
             if not host_info:
                 return {"error": "model not found", "status": 400}
-        if msg_count == 1:
-            user_text = messages[0]['content']
-            topk_chunks = self.search_topk(user_text, k=5)
+        user_text = messages[0]['content']
+        topk_chunks = self.search_topk(user_text, k=5)
 
-            for i in topk_chunks:
-                print(i['cosine_similarity'], i['id'])
+        for i in topk_chunks:
+            print(i['cosine_similarity'], i['id'])
 
-            system_prompt_str = "Ты специалист DevSecOps, отвечай строго на основе CONTEXT, если в CONTEXT нет ответа - напиши, что ответ не найден"
-            context_str = self.build_context_content(topk_chunks)
+        system_prompt_str = "Ты специалист DevSecOps, отвечай строго на основе CONTEXT, если в CONTEXT нет ответа - напиши, что ответ не найден"
+        context_str = self.build_context_content(topk_chunks)
 
-            final_messages = [
-                {"role": "system", "content": system_prompt_str},
-                {"role": "user", "content": context_str},
-                {"role": "user", "content": user_text}
+        final_messages = [
+            {"role": "system", "content": system_prompt_str},
+            {"role": "user", "content": context_str},
+            {"role": "user", "content": user_text}
 
-            ]
-            base_api = host_info['base_api_url']
-            response = LlamaChatApiAdapter(base_api).send_message(
-                final_messages)
-            if response:
-                return response
-            return False
+        ]
+        base_api = host_info['base_api_url']
+        response = LlamaChatApiAdapter(base_api).send_message(
+            final_messages)
+        if response:
+            return response
         return False

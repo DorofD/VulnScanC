@@ -13,7 +13,7 @@ def get_llama_nodes_summary():
     chat_nodes = DBLlamaChatNodes().get_nodes()
     embedding_nodes = DBLlamaEmbeddingNodes().get_nodes()
 
-    def enrich(nodes, llama):
+    def enrich(nodes):
         out = []
         for n in nodes or []:
             base = n.get('base_api_url')

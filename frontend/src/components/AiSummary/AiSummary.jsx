@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./AiSummary.css";
+import AiSummaryCard from "./AiSummaryCard/AiSummaryCard";
 import { authFetch } from "../../services/authFetch";
 
 export default function AiSummary() {
@@ -28,31 +29,7 @@ export default function AiSummary() {
     load();
   }, []);
 
-  function renderNode(n) {
-    const info = n.models || { success: false };
-    return (
-      <div className="card" key={n.id || n.uuid} style={{ marginBottom: 12 }}>
-        <div style={{ fontWeight: 700 }}>{n.name || "(no name)"}</div>
-        <div style={{ fontSize: 12, color: '#666' }}>{n.base_api_url}</div>
-        <div style={{ marginTop: 8 }}>
-          {info.success ? (
-            <div>
-              <div style={{ fontSize: 12, marginBottom: 6 }}>Models:</div>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                {(info.models || []).map((m) => (
-                  <li key={m.get ? m.get('id') : (m.id || m.model_id || JSON.stringify(m))} style={{ fontSize: 13 }}>
-                    {m.name || m.model_id || JSON.stringify(m)}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <div style={{ color: 'crimson' }}>unreachable / no models</div>
-          )}
-        </div>
-      </div>
-    );
-  }
+  
 
   return (
     <div className="aiSummaryMain">
@@ -62,11 +39,15 @@ export default function AiSummary() {
         <div style={{ display: 'flex', gap: 16, width: '100%' }}>
           <div style={{ flex: 1 }}>
             <h3>Chat Nodes ({(summary.chat_nodes || []).length})</h3>
-            {(summary.chat_nodes || []).map(renderNode)}
+            {(summary.chat_nodes || []).map((n) => (
+              <AiSummaryCard key={n.id || n.uuid} node={n} />
+            ))}
           </div>
           <div style={{ flex: 1 }}>
             <h3>Embedding Nodes ({(summary.embedding_nodes || []).length})</h3>
-            {(summary.embedding_nodes || []).map(renderNode)}
+            {(summary.embedding_nodes || []).map((n) => (
+              <AiSummaryCard key={n.id || n.uuid} node={n} />
+            ))}
           </div>
         </div>
       )}

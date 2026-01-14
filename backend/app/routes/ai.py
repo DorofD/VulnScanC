@@ -22,7 +22,7 @@ from app.services.ai_services.rag_documents import (
     change_rag_document,
     delete_rag_document,
 )
-from app.services.ai_services.rag_handler import RagHandler
+from app.services.ai_services.rag_chat_handler import RagChatHandler
 
 
 ai_bp = Blueprint("ai", __name__, url_prefix="/ai")
@@ -41,10 +41,10 @@ def summary():
 def completions():
     data = request.json
     # print(data['messages'])
-    rh = RagHandler()
+    rch = RagChatHandler()
     messages = data['messages']
     model_uuid = data.get('model_uuid')
-    response = rh.send_messages(messages, model_uuid)
+    response = rch.send_messages(messages, model_uuid)
     if response:
         return jsonify(response)
     return jsonify({

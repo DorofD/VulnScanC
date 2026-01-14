@@ -1,0 +1,36 @@
+.aiSummaryCard .cardMainLabel {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.aiSummaryApi {
+  font-size: 12px;
+  color: #666;
+}
+
+.modelsLabel {
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.modelsList {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.modelItem {
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.modelName {
+  flex: 1 1 auto;
+}
+
+
+.unreachable {
+  color: var(--error-color);
+}

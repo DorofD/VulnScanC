@@ -12,6 +12,8 @@ export default function AiChatRag() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [hosts, setHosts] = useState([]);
+  const [lastResponse, setLastResponse] = useState(null);
+  const [showRawResponse, setShowRawResponse] = useState(false);
   const [selectedModelUuid, setSelectedModelUuid] = useState("");
 
   const abortRef = useRef(null);
@@ -69,6 +71,7 @@ export default function AiChatRag() {
       console.log(assistant)
 
       setMessages((prev) => [...prev, { role: "assistant", content: assistant }]);
+      setLastResponse(data);
       scrollToBottom();
     } catch (e) {
       if (e.name === "AbortError") {
@@ -87,6 +90,7 @@ export default function AiChatRag() {
     setIsLoading(false);
     setSystemPrompt("")
     setMessages([{ role: "system", content: systemPrompt }]);
+    setLastResponse(null);
   }
 
   useEffect(() => {
@@ -106,7 +110,42 @@ export default function AiChatRag() {
     return () => { mounted = false };
   }, []);
 
+  function CollapsibleJson({ data, name }) {
+    const [open, setOpen] = useState(false);
+
+    if (data === null || typeof data !== "object") {
+      return (
+        <div className="jsonRow">
+          <span className="jsonKey">{name}:</span>
+          <span className="jsonValue">{String(data)}</span>
+        </div>
+      );
+    }
+
+    const entries = Array.isArray(data)
+      ? data.map((v, i) => [i, v])
+      : Object.entries(data);
+
+    return (
+      <div className="jsonNode">
+        <div className="jsonSummary" onClick={() => setOpen((s) => !s)}>
+          <button>{open ? "−" : "+"}</button>
+          <span className="jsonKey">{name}</span>
+          <span className="jsonMeta">{Array.isArray(data) ? ` [${data.length}]` : ""}</span>
+        </div>
+        {open && (
+          <div className="jsonChildren">
+            {entries.map(([k, v]) => (
+              <CollapsibleJson key={String(k)} name={String(k)} data={v} />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
+    <>
     <div className="chatRagShell">
       <header className="chatRagHeader">
         <div className="chatRagTitle">
@@ -119,7 +158,7 @@ export default function AiChatRag() {
             value={selectedModelUuid}
             onChange={(e) => { setSelectedModelUuid(e.target.value); setError(""); }}
             disabled={isLoading}
-          >
+            >
             <option value="">Выберите модель</option>
             {hosts.map((h) => (
               <option key={h.uuid} value={h.uuid}>{h.name}{h.model_type ? ` (${h.model_type})` : ""}</option>
@@ -139,12 +178,12 @@ export default function AiChatRag() {
         ) : (
           displayMessages.map((m, idx) => (
             <div
-              key={idx}
-              className={[
-                "msgRow",
-                m.role === "user" ? "msgUser" : "",
-                m.role === "assistant" ? "msgAssistant" : "",
-              ].join(" ")}
+            key={idx}
+            className={[
+              "msgRow",
+              m.role === "user" ? "msgUser" : "",
+              m.role === "assistant" ? "msgAssistant" : "",
+            ].join(" ")}
             >
               <div className="msgMeta">{m.role}</div>
               <div className="msgBubble">
@@ -174,11 +213,34 @@ export default function AiChatRag() {
           placeholder="Введите сообщение… (Enter — отправить, Shift+Enter — новая строка)"
           rows={3}
           disabled={isLoading}
-        />
+          />
         <button onClick={send} disabled={isLoading || !input.trim()}>
           Отправить
         </button>
       </footer>
     </div>
+    <div className="chatRagInfoContainer">
+      {lastResponse ? (
+        <div className="jsonPanel">
+          <div className="jsonHeader">
+            <strong>Last response</strong>
+            <div className="jsonHeaderControls">
+              <button onClick={() => setShowRawResponse((s) => !s)}>{showRawResponse ? "Hide raw" : "Show raw"}</button>
+              <button onClick={() => { setLastResponse(null); setShowRawResponse(false); }}>Clear</button>
+            </div>
+          </div>
+          {showRawResponse ? (
+            <pre className="jsonPre">{JSON.stringify(lastResponse, null, 2)}</pre>
+          ) : (
+            <div className="jsonTree">
+              <CollapsibleJson name="response" data={lastResponse} />
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="emptyState">Ответ от модели будет здесь.</div>
+      )}
+    </div>
+          </>
   );
 }
