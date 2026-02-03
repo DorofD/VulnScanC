@@ -35,7 +35,8 @@ def create_db():
                     id bigserial PRIMARY KEY,
                     uuid uuid NOT NULL DEFAULT gen_random_uuid(),
                     name text NOT NULL,
-                    file_path text NOT NULL
+                    file_path text NULL,
+                    description text NULL
                 );
                 """)
 

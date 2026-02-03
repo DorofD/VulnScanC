@@ -20,6 +20,7 @@ from app.services.ai_services.rag_documents import (
     get_rag_documents,
     add_rag_document,
     change_rag_document,
+    change_rag_document,
     delete_rag_document,
 )
 from app.services.ai_services.rag_chat_handler import RagChatHandler
@@ -157,50 +158,37 @@ def rag_documents():
         nodes = get_rag_documents()
         return jsonify({"rag_documents": nodes})
     if request.method == "POST":
-        # Support both JSON and multipart/form-data uploads
         data = None
         if request.is_json:
             data = request.get_json()
         else:
-            # form data -> convert to dict
             data = request.form.to_dict()
 
         action = data.get('action') if isinstance(data, dict) else None
 
-        # Handle file upload for adding rag document
         if action == 'add':
-            # Try to extract values from JSON payload first
             values = {}
             if request.is_json:
                 values = data.get('values', {}) or {}
 
-            # If multipart/form-data was used, get name from form and file from files
             if 'file' in request.files:
                 upload = request.files.get('file')
-                name = values.get('name') or request.form.get('name')
-                if not name:
-                    return jsonify({"error": "missing 'name' for uploaded document", "status": 400}), 400
+                # name = values.get('name') or request.form.get('name')
+                # if not name:
+                #     return jsonify({"error": "missing 'name' for uploaded document", "status": 400}), 400
 
-                # ensure storage directory exists
                 save_dir = os.path.join(os.getcwd(), 'data', 'rag_docs')
                 os.makedirs(save_dir, exist_ok=True)
-
-                # Use a safe filename derived from provided name
-                filename = secure_filename(f"{name}.pdf")
-                save_path = os.path.join(save_dir, filename)
-                try:
-                    upload.save(save_path)
-                except Exception as exc:
-                    return jsonify({"error": f"failed to save uploaded file: {exc}", "status": 500}), 500
-
-                # Prepare values for DB insertion: store relative path as requested
-                rel_path = os.path.join('data', 'rag_docs', filename)
-                values['name'] = name
-                values['file_path'] = rel_path
-                result = add_rag_document(values)
-                return jsonify(result)
-
-            # No file uploaded — do not allow manual `file_path`. Require file upload.
+                file_note = add_rag_document(
+                    upload.filename, values.get('description', ''))
+                print(file_note)
+                file_path = os.path.join(
+                    'data', 'rag_docs', f"{file_note['uuid']}.pdf")
+                upload.save(file_path)
+                print(file_path)
+                print(change_rag_document(
+                    file_note['id'], {'file_path': str(file_path)}))
+                return jsonify(200)
             return jsonify({"error": "file upload required for adding rag_document", "status": 400}), 400
 
         if action == 'change':

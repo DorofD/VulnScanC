@@ -4,20 +4,25 @@ import logging
 
 
 def get_rag_documents():
-    return DBRagDocuments().get_documents()
+    docs = DBRagDocuments().get_documents()
+    for doc in docs:
+        file_size = os.path.getsize(doc['file_path'])
+        file_size_mb = file_size / (1024 * 1024)
+        file_size_str = f"{file_size_mb:.4f} МБ"
+        doc['file_size'] = file_size_str
+
+    return docs
 
 
 def get_rag_document(id: int):
     return DBRagDocuments().get_document(id)
 
 
-def add_rag_document(values: dict):
-    name = values.get('name')
-    file_path = values.get('file_path')
-    if not name or not file_path:
+def add_rag_document(name: str, description: str = None):
+    if not name:
         raise Exception(
             'name and file_path are required to add a rag_document')
-    return DBRagDocuments().add_document(name, file_path)
+    return DBRagDocuments().add_document(name, description)
 
 
 def change_rag_document(id: int, fields_to_update: dict):

@@ -46,3 +46,23 @@ class DBRagChunks:
             fetch="all"
         )
         return result
+
+    def get_chunks_by_document_id(self, document_id: int) -> List[Dict[str, Any]]:
+        """
+            Возвращает все чанки с указанным document_id.
+            """
+        result = execute_query(
+            """
+            SELECT
+            id,
+            document_id,
+            raw_text,
+            meta,
+            FROM rag_chunks
+            WHERE document_id= % s
+            ORDER BY id;
+            """,
+            (document_id,),
+            fetch="all"
+        )
+        return result

@@ -163,6 +163,8 @@ export default function AiRagDocs() {
      <div className="ragConfRight">
       {pickedDoc.id && <div>Выбран документ: {pickedDoc.name}</div> || 'false'}
       {pickedDoc.id && <div>Путь к файлу: {pickedDoc.file_path}</div> || 'false'}
+      {pickedDoc.id && <div>Размер файла: {pickedDoc.file_size}</div> || 'false'}
+      {pickedDoc.id && <div>Кол-во чанков: {pickedDoc.chunks_num}</div> || 'false'}
       <button onClick={() => openAcceptModalWithAction(deleteDocument)}>Удалить</button>
       </div>
 
