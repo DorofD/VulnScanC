@@ -74,7 +74,8 @@ def create_db():
         name text,
         base_api_url text NOT NULL,
         description text,
-        created_at timestamptz NOT NULL DEFAULT now()
+        created_at timestamptz NOT NULL DEFAULT now(),
+        is_active boolean NOT NULL DEFAULT false
         );
                    """)
 
@@ -87,6 +88,12 @@ def create_db():
         CREATE UNIQUE INDEX IF NOT EXISTS llama_chat_nodes_base_api_url_uniq
         ON llama_chat_nodes (base_api_url);
                    """)
+
+    cursor.execute("""
+        CREATE UNIQUE INDEX IF NOT EXISTS llama_chat_nodes_active_uniq
+        ON llama_chat_nodes (is_active)
+        WHERE is_active = true;
+    """)
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS llama_embedding_nodes (

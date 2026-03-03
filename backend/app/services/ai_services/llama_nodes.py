@@ -26,13 +26,6 @@ def get_llama_nodes_summary():
     return {"chat_nodes": enrich(chat_nodes), "embedding_nodes": enrich(embedding_nodes)}
 
 
-def get_llama_nodes():
-    # legacy combined listing: return both arrays
-    chat = DBLlamaChatNodes().get_nodes()
-    embedding = DBLlamaEmbeddingNodes().get_nodes()
-    return {"chat_nodes": chat, "embedding_nodes": embedding}
-
-
 def get_llama_chat_nodes():
     return DBLlamaChatNodes().get_nodes()
 
@@ -132,3 +125,10 @@ def move_node_between_tables(id: int, from_type: str, to_type: str):
     # delete old
     src.delete_node(id)
     return new
+
+
+def set_active_node(uuid, node_type):
+    if node_type == 'chat':
+        print(uuid)
+        result = DBLlamaChatNodes().set_active_by_uuid(uuid)
+        return result

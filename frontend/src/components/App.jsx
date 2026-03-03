@@ -6,11 +6,10 @@ import Components from "./Components/Components";
 import Snapshots from "./Snapshots/Snapshots";
 import BduFstec from "./BduFstec/BduFstec";
 import DependencyTrack from "./DependencyTrack/DependencyTrack";
-import AiChat from "./AiChat/AiChat";
 import Admin from "./Admin/Admin"
 import AiBase from "./AiBase/AiBase";
 import AiSummary from "./AiSummary/AiSummary";
-import AiChatRag from "./AiChatRag/AiChatRag";
+import AiChat from "./AiChat/AiChat";
 import AiRagDocs from "./AiRagDocs/AiRagDocs";
 import About from "./About/About"
 import Users from "./Users/Users";
@@ -43,8 +42,7 @@ export default function App() {
                         <Route path="/sarif" element={<SarifViewer />} />
                         <Route path="/ai" element={< AiBase/>} >
                             <Route path="/ai/summary" element={< AiSummary/>} />
-                            <Route path="/ai/direct_llm" element={< AiChat/>} />
-                            <Route path="/ai/rag_llm" element={< AiChatRag/>} />
+                            <Route path="/ai/chat" element={< AiChat/>} />
                             <Route path="/ai/rag_docs" element={< AiRagDocs/>} />
                             <Route path="/ai/llama_nodes" element={<AiLlamaNodes />} />
                         </Route>

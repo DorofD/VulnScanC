@@ -36,19 +36,12 @@ export default function AiBase() {
               <UsersGearIcon className="baseSidebarIcon"></UsersGearIcon>}
             {sidebarCollapsed && <div className="baseSidebarTextDiv">Статус AI сервисов</div>}
           </NavLink>
-          <NavLink to="/ai/direct_llm" >
+          <NavLink to="/ai/chat" >
             {!sidebarCollapsed &&
-              <div className="baseHrefText">Direct LLM</div>
-              ||
-              <UsersGearIcon className="baseSidebarIcon"></UsersGearIcon>}
-            {sidebarCollapsed && <div className="baseSidebarTextDiv">Direct LLM</div>}
-          </NavLink>
-          <NavLink to="/ai/rag_llm" >
-            {!sidebarCollapsed &&
-              <div className="baseHrefText">RAG LLM</div>
+              <div className="baseHrefText">Чат</div>
               ||
               <ConfluenceIcon className="baseSidebarIcon"></ConfluenceIcon>}
-            {sidebarCollapsed && <div className="baseSidebarTextDiv">RAG LLM</div>}
+            {sidebarCollapsed && <div className="baseSidebarTextDiv">Чат</div>}
           </NavLink>
           <NavLink to="/ai/rag_docs" >
             {!sidebarCollapsed &&

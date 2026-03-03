@@ -12,27 +12,74 @@ div.ragConfLeft {
   flex-direction: column;
   box-sizing: border-box;
 }
-div.ragConfRight {
+
+.ragConfRight {
   height: 100%;
   width: 50%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  padding: 12px;
+  box-shadow: 0 2px 8px var(--border-color);
+  border-radius: 8px;
 }
+
+.ragConfRight .selectedDoc {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  /* margin-bottom: 12px; */
+}
+
+.ragConfRight .docInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  /* margin-bottom: 12px; */
+}
+
+
+.ragConfRight .docActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ragConfRight .docActions button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+/* .docInfoItem {
+  margin: 4px 0;
+} */
+
+.docActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 12px;
+}
+
+
 .ragConfHeader {
-    height: 10%;
+    /* height: 10%; */
+    padding-top: 12px;
+    padding-right: 12px;
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    gap: 20px;
+    justify-content: right;
+    /* gap: 20px; */
     align-items: center;
 }
 
 .ragConfNotes {
     box-sizing: border-box;
     overflow: auto;
-    height: 80%;
+    height: 90%;
     width: 100%;
     border-top: solid 3px var(--border-color);
     border-bottom: solid 3px var(--border-color);

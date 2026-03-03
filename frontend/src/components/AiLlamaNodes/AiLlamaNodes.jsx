@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { useState, useEffect } from "react";
 import "./AiLlamaNodes.css";
 import AiLlamaNodeCard from "./AiLlamaNodeCard/AiLlamaNodeCard";
-import Button from "../Button/Button";
 import Filter from "../Filter/Filter";
 import {
     apiGetChatNodes,
@@ -13,12 +12,9 @@ import {
     apiChangeEmbeddingNode,
     apiDeleteChatNode,
     apiDeleteEmbeddingNode,
-    apiChangeLlamaNode,
-    apiDeleteLlamaNode,
     apiGetLlamaNodes,
-    apiAddLlamaNode,
+    apiSetActiveLlamaNode
 } from "../../services/apiLlamaNodes";
-// // import { useNotificationContext } from "../../hooks/useNotificationContext";
 import { useTimedMessagesContext } from "../../hooks/useTimedMessagesContext";
 import Modal from "../Modal/Modal";
 import AcceptModal from "../AcceptModal/AcceptModal";
@@ -35,7 +31,7 @@ export default function AiLlamaNodes() {
     const [loading, setLoading] = useState('loading')
     const [pickedNode, setPickedNode] = useState({ id: '', name: '', base_api_url: '', description: '' })
     const [newNode, setNewNode] = useState({ name: '', base_api_url: '', description: '' })
-    const [changedNode, setChangedNode] = useState({ id: '', name: '', base_api_url: '', description: '' })
+    const [changedNode, setChangedNode] = useState({ id: '', uuid:'', name: '', base_api_url: '', description: '' })
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isChangeModalOpen, setIsChangeModalOpen] = useState(false);
@@ -57,7 +53,7 @@ export default function AiLlamaNodes() {
 
     function closeChangeModal() {
         setIsChangeModalOpen(false);
-        setChangedNode({ id: '', name: '', base_api_url: '', description: '' })
+        setChangedNode({ id: '', uuid: '', name: '', base_api_url: '', description: '' })
         setAdditionalText([])
     }
 
@@ -173,6 +169,23 @@ export default function AiLlamaNodes() {
         }
     }
 
+    async function setActiveNode() {
+        let response
+        console.log(changedNode)
+        response = await apiSetActiveLlamaNode(changedNode.uuid, selectedTab)
+
+        if (response.status == 200) {
+            getNodes()
+            closeAcceptModal()
+            closeChangeModal()
+            addMessage('Успешно', 'success', 3000)
+
+        } else {
+            closeAcceptModal()
+            addMessage('Ошибка', 'error', 3000)
+        }
+    }
+
     async function deleteNode() {
         let response
         if (selectedTab === 'embedding') {
@@ -225,12 +238,13 @@ export default function AiLlamaNodes() {
                     {filteredNodes.map(node =>
                         <AiLlamaNodeCard
                             key={node.id}
-                            id={node.id}
+                            id={node.uuid}
                             name={node.name}
                             apiUrl={node.base_api_url}
                             modelType={selectedTab}
+                            isNodeActive={node.is_active}
                             picked={pickedNode.id === node.id && true || false}
-                            onClick={() => { setPickedNode(node); setChangedNode({ id: node.id, name: node.name, base_api_url: node.base_api_url, description: node.description }); setAdditionalText([]); setIsChangeModalOpen(true) }}>
+                            onClick={() => { setPickedNode(node); setChangedNode({ id: node.id, uuid: node.uuid, name: node.name, base_api_url: node.base_api_url, description: node.description }); setAdditionalText([]); setIsChangeModalOpen(true) }}>
                         </AiLlamaNodeCard>
                     )}
                 </>}
@@ -272,6 +286,7 @@ export default function AiLlamaNodes() {
                             <input type="text" className="addModalUsers" placeholder="API URL" onChange={e => setChangedNode({ ...changedNode, base_api_url: e.target.value })} value={changedNode.base_api_url} />
                             <div className="addModalUsersType">Тип: {selectedTab}</div>
                             <input type="text" className="addModalUsers" placeholder="Описание" onChange={e => setChangedNode({ ...changedNode, description: e.target.value })} value={changedNode.description} />
+                        <button onClick={() => { setActiveNode() }}>Сделать активной</button>
                         </div>
                     </div>
 

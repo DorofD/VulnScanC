@@ -1,17 +1,16 @@
 import { authFetch } from './authFetch';
 
-export async function apiRagChatGetInfo() {
+export async function apiChatGetInfo() {
     const response = await authFetch(`${process.env.BACKEND_URL}/ai_chat`, {
         method: 'GET',
     })
     return response
 }
 
-export async function apiRagChatSendMessage(messages, modelUuid) {
+export async function apiAiChatSendMessage(messages, useRag) {
     const body = { messages: messages };
-    if (modelUuid) body.model_uuid = modelUuid;
-
-    const response = await authFetch(`${process.env.BACKEND_URL}/ai/rag_chat/completions`, {
+    body.use_rag = useRag;
+    const response = await authFetch(`${process.env.BACKEND_URL}/ai/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -19,27 +18,13 @@ export async function apiRagChatSendMessage(messages, modelUuid) {
     return response
 }
 
-export async function apiChangeUser(id, changes_dict) {
-    const response = await authFetch(`${process.env.BACKEND_URL}/users`, {
+export async function apiAiChatSendMessage1(messages, useRag) {
+    const body = { messages: messages };
+    body.use_rag = useRag;
+    const response = await authFetch(`${process.env.BACKEND_URL}/ai/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            action: 'change',
-            id: id,
-            fields_to_change: changes_dict
-        })
-    })
-    return response
-}
-
-export async function apiDeleteUser(id) {
-    const response = await authFetch(`${process.env.BACKEND_URL}/users`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            action: 'delete',
-            id: id
-        })
+        body: JSON.stringify(body)
     })
     return response
 }

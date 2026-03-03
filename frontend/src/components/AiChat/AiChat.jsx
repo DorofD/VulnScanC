@@ -1,17 +1,19 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
+import { apiAiChatSendMessage } from "../../services/apiAi";
+import { apiGetChatNodes } from "../../services/apiLlamaNodes";
 import "./AiChat.css";
+// import "../AiChat/AiChat.css"
 
-const API_URL = "http://192.168.1.133:8080/v1/chat/completions";
 
 export default function AiChat() {
   const [systemPrompt, setSystemPrompt] = useState("");
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([
-    // { role: "system", content: "Ты специалист по DevSecOps, отвечай строго на основе CONTEXT, если в CONTEXT нет ответа - так и скажи" },
-    // { role: "user", content: "CONTEXT: [chunk 1 | source: ГОСТ Р 56939—2024 | section: Введение (стр. 3) | chunk_id: gostr56939-2024_intro_p3_c01] Настоящий стандарт направлен"}
-  ]);
+  const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [lastResponse, setLastResponse] = useState(null);
+  const [showRawResponse, setShowRawResponse] = useState(false);
+  const [useRag, setUseRag] = useState(false);
 
   const abortRef = useRef(null);
   const listRef = useRef(null);
@@ -35,45 +37,20 @@ export default function AiChat() {
     }
   }
 
-  function stop() {
-    if (abortRef.current) {
-      abortRef.current.abort();
-      abortRef.current = null;
-    }
-  }
 
   async function send() {
     const text = input.trim();
     if (!text || isLoading) return;
-
     setError("");
-
-    // синхронизируем system в истории
-    const base = [{ role: "system", content: systemPrompt.trim() || "Ты помощник" }];
     const historyWithoutOldSystem = messages.filter((m) => m.role !== "system");
-    const nextMessages = [...base, ...historyWithoutOldSystem, { role: "user", content: text }];
+    const nextMessages = [...historyWithoutOldSystem, { role: "user", content: text }];
 
     setMessages(nextMessages);
     setInput("");
     setIsLoading(true);
     scrollToBottom();
-
-    const controller = new AbortController();
-    abortRef.current = controller;
-    console.log(nextMessages)
     try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        signal: controller.signal,
-        body: JSON.stringify({
-          model: "local",
-          messages: nextMessages,
-          temperature: 0.2,
-          max_tokens: 300,
-          stream: false
-        }),
-      });
+      const res = await apiAiChatSendMessage(nextMessages, useRag);
 
       if (!res.ok) {
         const body = await res.text().catch(() => "");
@@ -81,9 +58,12 @@ export default function AiChat() {
       }
 
       const data = await res.json();
+      console.log(data)
       const assistant = data?.choices?.[0]?.message?.content ?? "";
+      console.log(assistant)
 
       setMessages((prev) => [...prev, { role: "assistant", content: assistant }]);
+      setLastResponse(data);
       scrollToBottom();
     } catch (e) {
       if (e.name === "AbortError") {
@@ -100,56 +80,87 @@ export default function AiChat() {
   function resetChat() {
     setError("");
     setIsLoading(false);
-    stop();
     setSystemPrompt("")
     setMessages([{ role: "system", content: systemPrompt }]);
+    setLastResponse(null);
+  }
+
+  // useEffect(() => {
+    
+  // }, []);
+
+  function CollapsibleJson({ data, name }) {
+    const [open, setOpen] = useState(false);
+
+    if (data === null || typeof data !== "object") {
+      return (
+        <div className="jsonRow">
+          <span className="jsonKey">{name}:</span>
+          <span className="jsonValue">{String(data)}</span>
+        </div>
+      );
+    }
+
+    const entries = Array.isArray(data)
+      ? data.map((v, i) => [i, v])
+      : Object.entries(data);
+
+    return (
+      <div className="jsonNode">
+        <div className="jsonSummary" onClick={() => setOpen((s) => !s)}>
+          <button>{open ? "−" : "+"}</button>
+          <span className="jsonKey">{name}</span>
+          <span className="jsonMeta">{Array.isArray(data) ? ` [${data.length}]` : ""}</span>
+        </div>
+        {open && (
+          <div className="jsonChildren">
+            {entries.map(([k, v]) => (
+              <CollapsibleJson key={String(k)} name={String(k)} data={v} />
+            ))}
+          </div>
+        )}
+      </div>
+    );
   }
 
   return (
-    <div className="chatShell">
-      <header className="chatHeader">
-        <div className="chatTitle">Подключение к API LLM сервиса напрямую</div>
-        
-        <div className="chatControls">
+    <>
+    <div className="chatRagShell">
+      <header className="chatRagHeader">
+        <div className="chatRagTitle">
+          Чат с AI
+        </div>
+
+        <div className="chatRagControls">
+        <label className="chatRagCheckbox" style={{ marginLeft: 12 }}>
+          <input
+            type="checkbox"
+            checked={useRag}
+            onChange={(e) => setUseRag(e.target.checked)}
+            disabled={isLoading}
+          />
+          <span className="checkbox-box" />
+          Использовать RAG
+        </label>
           <button onClick={resetChat} disabled={isLoading}>
-            Очистить
-          </button>
-          <button onClick={stop} disabled={!isLoading}>
-            Прервать действие
+            Удалить контекст
           </button>
         </div>
       </header>
 
-      <section className="systemBox">
-        <input
-          value={"URL: " + API_URL}
-          onChange={(e) => setSystemPrompt(e.target.value)}
-          placeholder="URL"
-          // disabled={isLoading}
-          disabled={true}
-        />
-      </section>
-      <section className="systemBox">
-        <input
-          value={systemPrompt}
-          onChange={(e) => setSystemPrompt(e.target.value)}
-          placeholder="Системный промпт (роль)"
-          disabled={isLoading}
-        />
-      </section>
 
-      <main className="chatMain" ref={listRef}>
+      <main className="chatRagMain" ref={listRef}>
         {displayMessages.length === 0 ? (
           <div className="emptyState">Напишите сообщение, чтобы начать.</div>
         ) : (
           displayMessages.map((m, idx) => (
             <div
-              key={idx}
-              className={[
-                "msgRow",
-                m.role === "user" ? "msgUser" : "",
-                m.role === "assistant" ? "msgAssistant" : "",
-              ].join(" ")}
+            key={idx}
+            className={[
+              "msgRow",
+              m.role === "user" ? "msgUser" : "",
+              m.role === "assistant" ? "msgAssistant" : "",
+            ].join(" ")}
             >
               <div className="msgMeta">{m.role}</div>
               <div className="msgBubble">
@@ -163,7 +174,7 @@ export default function AiChat() {
           <div className="msgRow msgAssistant">
             <div className="msgMeta">assistant</div>
             <div className="msgBubble">
-              <div className="typing">Думаю…</div>
+              <div className="typing">Обработка запроса</div>
             </div>
           </div>
         )}
@@ -171,7 +182,7 @@ export default function AiChat() {
 
       {error && <div className="errorBox">{error}</div>}
 
-      <footer className="chatFooter">
+      <footer className="chatRagFooter">
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -179,11 +190,34 @@ export default function AiChat() {
           placeholder="Введите сообщение… (Enter — отправить, Shift+Enter — новая строка)"
           rows={3}
           disabled={isLoading}
-        />
+          />
         <button onClick={send} disabled={isLoading || !input.trim()}>
           Отправить
         </button>
       </footer>
     </div>
+    <div className="chatRagInfoContainer">
+      {lastResponse ? (
+        <div className="jsonPanel">
+          <div className="jsonHeader">
+            <strong>Last response</strong>
+            <div className="jsonHeaderControls">
+              <button onClick={() => setShowRawResponse((s) => !s)}>{showRawResponse ? "Hide raw" : "Show raw"}</button>
+              <button onClick={() => { setLastResponse(null); setShowRawResponse(false); }}>Clear</button>
+            </div>
+          </div>
+          {showRawResponse ? (
+            <pre className="jsonPre">{JSON.stringify(lastResponse, null, 2)}</pre>
+          ) : (
+            <div className="jsonTree">
+              <CollapsibleJson name="response" data={lastResponse} />
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="emptyState">Подробный вывод</div>
+      )}
+    </div>
+          </>
   );
 }

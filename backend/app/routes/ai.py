@@ -2,9 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from app.routes import role_required
 import os
-from werkzeug.utils import secure_filename
 from app.services.ai_services.llama_nodes import (
-    get_llama_nodes,
     get_llama_chat_nodes,
     get_llama_embedding_nodes,
     get_llama_nodes_summary,
@@ -15,15 +13,15 @@ from app.services.ai_services.llama_nodes import (
     delete_llama_chat_node,
     delete_llama_embedding_node,
     move_node_between_tables,
+    set_active_node
 )
 from app.services.ai_services.rag_documents import (
     get_rag_documents,
-    add_rag_document,
     change_rag_document,
     change_rag_document,
     delete_rag_document,
 )
-from app.services.ai_services.rag_chat_handler import RagChatHandler
+from app.services.ai_services.ai_chat_handler import AiChatHandler
 
 
 ai_bp = Blueprint("ai", __name__, url_prefix="/ai")
@@ -32,20 +30,19 @@ ai_bp = Blueprint("ai", __name__, url_prefix="/ai")
 @ai_bp.route("/summary", methods=["GET"])
 @jwt_required()
 def summary():
-    # return aggregated node model info
     data = get_llama_nodes_summary()
     return jsonify(data)
 
 
-@ai_bp.route("/rag_chat/completions", methods=["POST"])
+@ai_bp.route("/chat", methods=["POST"])
 @jwt_required()
 def completions():
     data = request.json
     # print(data['messages'])
-    rch = RagChatHandler()
+    chat = AiChatHandler()
     messages = data['messages']
-    model_uuid = data.get('model_uuid')
-    response = rch.send_messages(messages, model_uuid)
+    use_rag = data.get('use_rag')
+    response = chat.send_messages(messages, use_rag)
     if response:
         return jsonify(response)
     return jsonify({
@@ -66,10 +63,6 @@ def completions():
 @jwt_required()
 @role_required("admin")
 def llama_nodes():
-    if request.method == "GET":
-        hosts = get_llama_nodes()
-        # return combined structure for backward compatibility
-        return jsonify(hosts)
     if request.method == "POST":
         data = request.get_json()
         # Legacy POST: route based on provided model_type (if any)
@@ -105,6 +98,15 @@ def llama_nodes():
                 result = delete_llama_embedding_node(data['id'])
             else:
                 result = delete_llama_chat_node(data['id'])
+            return jsonify(result)
+        if data['action'] == 'set_active':
+            # node_type = data.get('node_type')
+            # node_uuid = data.get('node_uuid')
+            node_type = data['node_type']
+            print(node_type)
+            node_uuid = data['node_uuid']
+            print(node_type, node_uuid)
+            result = set_active_node(node_uuid, node_type)
             return jsonify(result)
 
 
@@ -172,15 +174,19 @@ def rag_documents():
                 values = data.get('values', {}) or {}
 
             if 'file' in request.files:
+                print('FILE')
                 upload = request.files.get('file')
-                # name = values.get('name') or request.form.get('name')
-                # if not name:
-                #     return jsonify({"error": "missing 'name' for uploaded document", "status": 400}), 400
-
                 save_dir = os.path.join(os.getcwd(), 'data', 'rag_docs')
                 os.makedirs(save_dir, exist_ok=True)
+                try:
+                    descr = values.get(
+                        'description') or request.form.get('description')
+                except KeyError:
+                    print('key')
+                    descr = ''
+                print('DESCR', descr)
                 file_note = add_rag_document(
-                    upload.filename, values.get('description', ''))
+                    upload.filename, descr)
                 print(file_note)
                 file_path = os.path.join(
                     'data', 'rag_docs', f"{file_note['uuid']}.pdf")

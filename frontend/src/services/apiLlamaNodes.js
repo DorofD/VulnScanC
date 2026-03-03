@@ -44,6 +44,15 @@ export async function apiDeleteLlamaNode(id, node_type = null) {
     })
     return response
 }
+export async function apiSetActiveLlamaNode(node_uuid, node_type ) {
+    const body = { action: 'set_active', node_uuid: node_uuid, node_type: node_type }
+    const response = await authFetch(`${process.env.BACKEND_URL}/ai/llama_nodes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    })
+    return response
+}
 
 // New: explicit endpoints for chat and embedding nodes
 export async function apiGetChatNodes() {

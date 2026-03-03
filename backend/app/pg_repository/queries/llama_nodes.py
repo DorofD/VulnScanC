@@ -7,7 +7,7 @@ class DBLlamaChatNodes:
         pass
 
     def get_nodes(self):
-        query = "SELECT * FROM llama_chat_nodes"
+        query = "SELECT * FROM llama_chat_nodes ORDER BY is_active DESC, uuid;"
         return execute_query(query, fetch="all")
 
     def get_node_by_uuid(self, uuid: str):
@@ -44,6 +44,36 @@ class DBLlamaChatNodes:
         query = "DELETE FROM llama_chat_nodes WHERE id = %s RETURNING *"
         params = (id,)
         return execute_query(query, params=params, fetch="one")
+
+    def set_active_by_uuid(self, node_uuid: str):
+        query = """
+        WITH
+        deactivated AS (
+            UPDATE llama_chat_nodes
+            SET is_active = false
+            WHERE is_active = true
+              AND uuid <> %s
+            RETURNING 1
+        ),
+        activated AS (
+            UPDATE llama_chat_nodes n
+            SET is_active = true
+            FROM (SELECT 1) s
+            LEFT JOIN deactivated d ON true 
+            WHERE n.uuid = %s
+            RETURNING n.*
+        )
+        SELECT * FROM activated;
+        """
+        params = (node_uuid, node_uuid)
+        return execute_query(query, params=params, fetch="one")
+
+    def get_active_node(self):
+        """
+        Возвращает единственную активную запись
+        """
+        query = "SELECT * FROM llama_chat_nodes WHERE is_active = true"
+        return execute_query(query, fetch="one")
 
 
 class DBLlamaEmbeddingNodes:
