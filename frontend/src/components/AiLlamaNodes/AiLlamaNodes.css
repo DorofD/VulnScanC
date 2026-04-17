@@ -27,10 +27,6 @@ div.llamaNodesNotes {
 
 div.addModalUsers {
     padding: 20px;
-    /* width: 385px;
-    height: 355px;
-    text-align: center;
-    background-color: var(--main-background-color); */
 
 }
 
@@ -54,7 +50,6 @@ input.addModalUsers {
     width: 300px;
     height: 32px;
     padding: 4px;
-    /* border: solid 3px var(--border-color); */
     border-radius: 10px;
 }
 
@@ -68,9 +63,7 @@ select.addModalUsers {
     font-size: large;
     width: 180px;
     padding: 4px;
-    /* border: solid 3px var(--border-color); */
     border-radius: 10px;
-    /* background-color: var(--main-background-color); */
 }
 
 select.addModalUsers:disabled {
