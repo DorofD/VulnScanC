@@ -1,25 +1,17 @@
-from app.repository.queries.projects import add_project as add_project_db
-from app.repository.queries.projects import get_project as get_project_db
-from app.repository.queries.projects import get_projects as get_projects_db
-from app.repository.queries.projects import delete_project as delete_project_db
-from app.repository.queries.projects import change_project as change_project_db
+from app.pg_repository.queries.projects import DBProjects
 
 
 def add_project(name):
-    add_project_db(name)
-
-
-def get_project(name):
-    return (get_project_db(name))
+    DBProjects().add_project(name)
 
 
 def get_projects():
-    return (get_projects_db())
+    return (DBProjects().get_projects())
 
 
 def delete_project(id):
-    delete_project_db(id)
+    DBProjects().delete_project(id)
 
 
 def change_project(id, name):
-    change_project_db(id, name)
+    DBProjects().update_project_name(id, name)

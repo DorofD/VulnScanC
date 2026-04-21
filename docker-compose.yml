@@ -9,18 +9,17 @@ services:
     ports:
       - 5000:5000
 
-  services:
-    postgres:
-      image: pgvector/pgvector:pg16
-      environment:
-        POSTGRES_DB: vsc_db
-        POSTGRES_USER: vsc_user
-        POSTGRES_PASSWORD: vsc_password
-      volumes:
-        - ./postgres_data:/var/lib/postgresql/data
-      ports:
-        - "5432:5432"
-      restart: unless-stopped
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: vsc_db
+      POSTGRES_USER: vsc_user
+      POSTGRES_PASSWORD: vsc_password
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
 
   frontend:
     build:

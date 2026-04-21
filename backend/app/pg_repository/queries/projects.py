@@ -2,7 +2,7 @@ from psycopg2 import sql
 from app.pg_repository.queries.base_query import execute_query
 
 
-class DBProjects:
+class DBProjects():
     def __init__(self):
         pass
 

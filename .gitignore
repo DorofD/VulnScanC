@@ -8,3 +8,4 @@ build
 node_modules
 data
 *.cve
+postgres_data
