@@ -15,6 +15,8 @@ import ExpandRightIcon from "../../svg_images/ExpandRight.svg"
 import ExpandLeftIcon from "../../svg_images/ExpandLeft.svg"
 import LogoutIcon from "../../svg_images/Logout.svg"
 import UserIcon from "../../svg_images/User.svg"
+import DtIcon from "../../svg_images/Dt.svg"
+import BitbakeIcon from "../../svg_images/Bitbake.svg"
 import BduFstecIcon from "../../svg_images/BduFstec.svg"
 import SnapshotsIcon from "../../svg_images/Snapshots.svg"
 import SarifIcon from "../../svg_images/Sarif.svg"
@@ -33,7 +35,7 @@ const NavLink = React.forwardRef((props, ref) => {
 export default function Base() {
     const { isAuthenticated, toogleAuth } = useAuthContext();
     const { userName, userRole, userId, userAuthType, userLdapInfo, accessToken } = useAuthContext();
-    const { messages, addMesage } = useTimedMessagesContext();
+    const { messages, addMessage } = useTimedMessagesContext();
     const { sidebarCollapsed, setSidebarCollapsed } = useSidebarState();
     const [userHintActive, setUserHintActive] = useState(false);
     // const location = useLocation();
@@ -142,6 +144,18 @@ export default function Base() {
                                 <div className="baseHrefText">Снапшоты</div>
                                 ||
                                 <SnapshotsIcon className="baseSidebarIcon"></SnapshotsIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Снапшоты</div>}
+                        </NavLink>
+                        <NavLink to="/dependencyTrack" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'} aria-current="page">
+                            {!sidebarCollapsed &&
+                                <div className="baseHrefText">Dependency Track</div>
+                                ||
+                                <DtIcon className="baseSidebarIcon"></DtIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Dependency Track</div>}
+                        </NavLink>
+                        <NavLink to="/bitbake" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'} aria-current="page">
+                            {!sidebarCollapsed &&
+                                <div className="baseHrefText">Bitbake</div>
+                                ||
+                                <BitbakeIcon className="baseSidebarIcon"></BitbakeIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Bitbake</div>}
                         </NavLink>
                         <NavLink to="/sarif" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'} aria-current="page">
                             {!sidebarCollapsed &&

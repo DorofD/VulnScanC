@@ -7,7 +7,7 @@ import { apiGetProjectSnapshots, apiDeleteSnapshot } from "../../services/apiSna
 import { apiGetOsvReport, apiGetBduReport, apiGetBitbakeBduReport, apiGetBitbakeReport } from "../../services/apiReports";
 import ProjectCard from "../Projects/ProjectCard/ProjectCard";
 import SnapshotCard from "./SnapshotCard/SnapshotCard";
-import { useNotificationContext } from "../../hooks/useNotificationContext";
+import { useTimedMessagesContext } from "../../hooks/useTimedMessagesContext";
 import Modal from "../Modal/Modal";
 import AcceptModal from "../AcceptModal/AcceptModal";
 import filterLogo from './filter.png'
@@ -16,7 +16,7 @@ import { apiGetBitbakeProjects } from "../../services/apiBitbake";
 
 export default function Snapshots() {
 
-    const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
+    const { addMessage } = useTimedMessagesContext();
     const [loaderActive, setLoaderActive] = useState(false)
 
     const [loadingProjects, setLoadingProjects] = useState('loaded')
@@ -76,6 +76,7 @@ export default function Snapshots() {
             }
         } catch (err) {
             setLoadingProjects('error')
+            addMessage('Ошибка при загрузке проектов: ' + err.message, 'error', 5000)
         }
     }
 
@@ -105,20 +106,18 @@ export default function Snapshots() {
             if (response.status == 200) {
                 getProjectSnapshots(pickedProject.id)
                 setPickedSnapshot([])
-                setNotificationData({ message: 'Снапшот удален', type: 'success' })
-                toggleNotificationFunc()
+                
+                addMessage('Снапшот удален', 'success', 3000)
                 closeChangeModal()
                 closeAcceptModal()
 
             } else {
-                setNotificationData({ message: 'Не удалось удалить снапшот', type: 'error' })
-                toggleNotificationFunc()
+                addMessage('Не удалось удалить отчёт: ' + err.message, 'error', 5000)
                 closeChangeModal()
                 closeAcceptModal()
             }
         } catch (err) {
-            setNotificationData({ message: `Проблема с бекендом: ${err}`, type: 'error' })
-            toggleNotificationFunc()
+            addMessage('Проблема с бекендом ' + err.message, 'error', 5000)
         }
     }
 
@@ -143,8 +142,7 @@ export default function Snapshots() {
     async function getOsvReport() {
         try {
             if (selectedSeverities.length === 0) {
-                setNotificationData({ message: 'Выберете severity', type: 'error' })
-                toggleNotificationFunc()
+                addMessage('Выберете severity', 'warning', 3000)
                 return false
             }
             const report = await apiGetOsvReport(pickedSnapshot.id, selectedSeverities, pickedProject.name, pickedSnapshot.datetime)
@@ -154,16 +152,14 @@ export default function Snapshots() {
         } catch (err) {
             setSnapshots([])
             setSelectedSeverities([])
-            setNotificationData({ message: 'Не удалось загрузить отчет', type: 'error' })
-            toggleNotificationFunc()
+            addMessage('Не удалось загрузить отчет OSV: ' + err.message, 'error', 5000)
         }
     }
 
     async function getBduReport() {
         try {
             if (selectedSeverities.length === 0) {
-                setNotificationData({ message: 'Выберете severity', type: 'error' })
-                toggleNotificationFunc()
+                addMessage('Выберете severity', 'warning', 3000)
                 return false
             }
             const report = await apiGetBduReport(pickedSnapshot.id, selectedSeverities, pickedProject.name, pickedSnapshot.datetime)
@@ -173,21 +169,18 @@ export default function Snapshots() {
         } catch (err) {
             setSnapshots([])
             setSelectedSeverities([])
-            setNotificationData({ message: 'Не удалось загрузить отчет', type: 'error' })
-            toggleNotificationFunc()
+            addMessage('Не удалось загрузить отчет БДУ: ' + err.message, 'error', 5000)
         }
     }
 
     async function getBitbakeReport() {
         try {
             if (selectedLayers.length === 0) {
-                setNotificationData({ message: 'Выберете минимум один слой', type: 'error' })
-                toggleNotificationFunc()
+                addMessage('Выберете минимум один слой', 'warning', 3000)
                 return false
             }
             if (selectedSeverities.length === 0) {
-                setNotificationData({ message: 'Выберете severity', type: 'error' })
-                toggleNotificationFunc()
+                addMessage('Выберете severity', 'warning', 3000)
                 return false
             }
             const report = await apiGetBitbakeReport(pickedSnapshot.id, selectedSeverities, selectedLayers, pickedProject.name, pickedSnapshot.datetime)
@@ -199,21 +192,18 @@ export default function Snapshots() {
             setSnapshots([])
             setSelectedSeverities([])
             setSelectedLayers([])
-            setNotificationData({ message: 'Не удалось загрузить отчет', type: 'error' })
-            toggleNotificationFunc()
+            addMessage('Не удалось загрузить отчет Bitbake: ' + err.message, 'error', 5000)
         }
     }
 
     async function getBitbakeBduReport() {
         try {
             if (selectedLayers.length === 0) {
-                setNotificationData({ message: 'Выберете минимум один слой', type: 'error' })
-                toggleNotificationFunc()
+                addMessage('Выберете минимум один слой', 'warning', 3000)
                 return false
             }
             if (selectedSeverities.length === 0) {
-                setNotificationData({ message: 'Выберете severity', type: 'error' })
-                toggleNotificationFunc()
+                addMessage('Выберете severity', 'warning', 3000)
                 return false
             }
             const report = await apiGetBitbakeBduReport(pickedSnapshot.id, selectedSeverities, selectedLayers, pickedProject.name, pickedSnapshot.datetime)
@@ -225,8 +215,7 @@ export default function Snapshots() {
             setSnapshots([])
             setSelectedSeverities([])
             setSelectedLayers([])
-            setNotificationData({ message: 'Не удалось загрузить отчет', type: 'error' })
-            toggleNotificationFunc()
+            addMessage('Не удалось загрузить отчет Bitbake БДУ: ' + err.message, 'error', 5000)
         }
     }
 

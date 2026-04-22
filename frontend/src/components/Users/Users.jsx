@@ -5,7 +5,6 @@ import UserCard from "./UserCard/UserCard";
 import Button from "../Button/Button";
 import Filter from "../Filter/Filter";
 import { apiGetUsers, apiAddUser, apiChangeUser, apiDeleteUser } from "../../services/apiUsers";
-// // import { useNotificationContext } from "../../hooks/useNotificationContext";
 import { useTimedMessagesContext } from "../../hooks/useTimedMessagesContext";
 import Modal from "../Modal/Modal";
 import AcceptModal from "../AcceptModal/AcceptModal";
@@ -60,6 +59,7 @@ export default function Users() {
             setLoading('loaded')
         } catch (err) {
             setLoading('error')
+            addMessage('Ошибка при загрузке пользователей: ' + err.message, 'error', 5000)
         }
     }
 

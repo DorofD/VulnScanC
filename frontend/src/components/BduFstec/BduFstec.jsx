@@ -5,12 +5,12 @@ import Button from "../Button/Button";
 import { apiGetProjectComponents, apiChangeComponentStatus } from "../../services/apiComponents";
 import { apiGetComponentVulnerabilities } from "../../services/apiVulnerabilities";
 import { apiGetBduInfo, apiGetBduComponentVulns, apiUpdateBdu, apiUpdateBduVulns} from "../../services/apiBduFstec";
-import { useNotificationContext } from "../../hooks/useNotificationContext";
+import { useTimedMessagesContext } from "../../hooks/useTimedMessagesContext";
 import Loader from "../Loader/Loader";
 
 export default function BduFstec() {
 
-    const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
+    const { addMessage } = useTimedMessagesContext();
     const [ loaderActive, setLoaderActive ] = useState(false)
     const [ disableButtons, setDisableButtons ] = useState(false)
     
@@ -26,12 +26,12 @@ export default function BduFstec() {
             setLoading('loaded')
         } catch (err) {
             setLoading('error')
+            addMessage('Ошибка при загрузке БДУ: ' + err.message, 'error', 5000)
         }
     }
 
     async function updateBdu() {
-        setNotificationData({message:'Выполняется обновление БДУ', type: 'success'})
-        toggleNotificationFunc()
+        addMessage('Выполняется обновление БДУ', 'info', 3000)
         setLoaderActive(true)
         setDisableButtons(true)
 
@@ -40,26 +40,22 @@ export default function BduFstec() {
             if (response.status == 200) {
                 setLoaderActive(false)
                 getBduInfo()
-                setNotificationData({message:'БДУ обновлена', type: 'success'})
-                toggleNotificationFunc()
+                addMessage('БДУ обновлена', 'success', 3000)
                 setDisableButtons(false)
             } else {
                 setLoaderActive(false)
-                setNotificationData({message:'Не удалось обновить БДУ', type: 'error'})
-                toggleNotificationFunc()
+                addMessage('Не удалось обновить БДУ', 'error', 3000)
                 setDisableButtons(false)
             }
         } catch (error) {
             setLoaderActive(false)
-            setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
-            toggleNotificationFunc()
+            addMessage(`Ошибка при обновлении БДУ: ${error.message}`, 'error', 5000)
             setDisableButtons(false)
         }
     }
 
     async function updateBduVulns() {
-        setNotificationData({message:'Выполняется поиск уязвимостей, ожидайте', type: 'success'})
-        toggleNotificationFunc()
+        addMessage('Выполняется поиск уязвимостей, ожидайте', 'info', 3000)
         setLoaderActive(true)
         setDisableButtons(true)
         try {
@@ -67,19 +63,16 @@ export default function BduFstec() {
             if (response.status == 200) {
                 setLoaderActive(false)
                 getBduInfo()
-                setNotificationData({message:'Поиск завершен', type: 'success'})
-                toggleNotificationFunc()
+                addMessage('Поиск завершен', 'success', 3000)
                 setDisableButtons(false)
             } else {
                 setLoaderActive(false)
-                setNotificationData({message:'Не удалось выполнить поиск', type: 'error'})
-                toggleNotificationFunc()
+                addMessage('Не удалось выполнить поиск', 'error', 3000)
                 setDisableButtons(false)
             }
         } catch (error) {
             setLoaderActive(false)
-            setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
-            toggleNotificationFunc()
+            addMessage(`Ошибка при поиске уязвимостей: ${error.message}`, 'error', 5000)
             setDisableButtons(false)
         }
     }
@@ -98,6 +91,7 @@ export default function BduFstec() {
         } catch (err) {
             setComponents([])
             setLoadingComponents('error')
+            addMessage('Ошибка при загрузке компонентов проекта: ' + err.message, 'error', 5000)
         }
     }
 
@@ -107,8 +101,7 @@ export default function BduFstec() {
             setcomponentVulnerabilities(vulnerabilities)
         } catch (err) {
             setcomponentVulnerabilities([])
-            setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
-            toggleNotificationFunc()
+            addMessage(`Ошибка при загрузке уязвимостей компонента: ${err.message}`, 'error', 5000)
         }
         closeChangeModal()
     }
@@ -117,8 +110,7 @@ export default function BduFstec() {
         console.log(pickedComponent.id)
         console.log(newComponentStatus)
         if (newComponentStatus == '') {
-            setNotificationData({message:'Выберете новый статус', type: 'error'})
-            toggleNotificationFunc()
+            addMessage('Выберете новый статус', 'error', 3000)
             return 0
         }
         try {
@@ -126,20 +118,17 @@ export default function BduFstec() {
             if (response.status == 200) {
                 getProjectComponents(pickedProject.id)
                 setNewComponentStatus('')
-                setNotificationData({message:'Статус изменен', type: 'success'})
-                toggleNotificationFunc()
+                addMessage('Статус изменен', 'success', 3000)
                 closeChangeModal()
                 closeAcceptModal()
             } else {
-                setNotificationData({message:'Не удалось изменить статус', type: 'error'})
                 setNewComponentStatus('')
-                toggleNotificationFunc()
+                addMessage('Не удалось изменить статус', 'error', 3000)
                 closeChangeModal()
                 closeAcceptModal()
             }
         } catch (error) {
-            setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
-            toggleNotificationFunc()
+            addMessage(`Ошибка при изменении статуса: ${error.message}`, 'error', 5000)
             setNewComponentStatus('')
         }
     }

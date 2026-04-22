@@ -1,13 +1,13 @@
 import React from "react";
 import { useState, useEffect, useContext} from "react";
 import { apiGetBinaryInfo, apiBuildBinary, apiGetBinaryFile } from "../../services/apiBinary";
-import { useNotificationContext } from "../../hooks/useNotificationContext";
+import { useTimedMessagesContext } from "../../hooks/useTimedMessagesContext";
 import "./Binary.css"
 import Loader from "../Loader/Loader";
 
 export default function Binary() {
 
-    const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
+    const { addMessage } = useTimedMessagesContext();
     const [ loaderActive, setLoaderActive ] = useState(false)
 
     const [loading, setLoading] = useState('loading')
@@ -25,6 +25,7 @@ export default function Binary() {
         } catch (err) {
             console.log(err)
             setLoading('error')
+            addMessage('Ошибка при загрузке информации о модуле: ' + err.message, 'error', 5000)
         }
     }
 
@@ -36,16 +37,14 @@ export default function Binary() {
                 setIsPicked(false)
                 getBinaryInfo()
                 setBuildInProcess(false)
-                setNotificationData({message:'Исполняемый модуль собран', type: 'success'})
-                toggleNotificationFunc()
+                addMessage('Исполняемый модуль собран', 'success', 3000)
             } else {
                 setBuildInProcess(false)
-                setNotificationData({message:'Исполняемый модуль не собран', type: 'error'})
-                toggleNotificationFunc()
+                addMessage('Исполняемый модуль не собран', 'error', 3000)
             }
         } catch (err) {
-            setNotificationData({message: `Проблема с бекендом: ${err}`, type: 'error'})
-            toggleNotificationFunc()
+            setBuildInProcess(false)
+            addMessage(`Ошибка при сборке модуля: ${err.message}`, 'error', 5000)
         }
     }
 
@@ -53,8 +52,7 @@ export default function Binary() {
         try {
             const report = await apiGetBinaryFile()
         } catch (err) {
-            setNotificationData({message:'Не удалось загрузить исполняемый модуль', type: 'error'})
-            toggleNotificationFunc()
+            addMessage('Не удалось загрузить исполняемый модуль: ' + err.message, 'error', 5000)
         }
     }
     

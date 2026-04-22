@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from "react";
 import { apiGetLogsJson, apiGetLogsFile, apiClearLogs } from "../../services/apiLogs";
 import Button from "../Button/Button";
 import { useTimedMessagesContext } from "../../hooks/useTimedMessagesContext";
-
 import LogCard from "./LogCard/LogCard";
 import "./Logs.css"
 import Filter from "../Filter/Filter";

@@ -5,8 +5,8 @@ import { useColorScheme } from "../../hooks/useColorThemeContext";
 import { useSidebarState } from "../../hooks/useSidebarStateContext";
 
 import UsersGearIcon from "../../svg_images/UsersGear.svg"
-import ConfluenceIcon from "../../svg_images/Confluence.svg"
-// import BareMetalIcon from "../../svg_images/BareMetal.svg"
+import ChatIcon from "../../svg_images/Chat.svg"
+import BareMetalIcon from "../../svg_images/BareMetal.svg"
 import CatalogIcon from "../../svg_images/Catalog.svg"
 
 const NavLink = React.forwardRef((props, ref) => {
@@ -40,7 +40,7 @@ export default function AiBase() {
             {!sidebarCollapsed &&
               <div className="baseHrefText">Чат</div>
               ||
-              <ConfluenceIcon className="baseSidebarIcon"></ConfluenceIcon>}
+              <ChatIcon className="baseSidebarIcon"></ChatIcon>}
             {sidebarCollapsed && <div className="baseSidebarTextDiv">Чат</div>}
           </NavLink>
           <NavLink to="/ai/rag_docs" >
@@ -54,7 +54,7 @@ export default function AiBase() {
                       {!sidebarCollapsed &&
                         <div className="baseHrefText">Ноды LLAMA</div>
                         ||
-                        <CatalogIcon className="baseSidebarIcon"></CatalogIcon>}
+                        <BareMetalIcon className="baseSidebarIcon"></BareMetalIcon>}
                       {sidebarCollapsed && <div className="baseSidebarTextDiv">Ноды LLAMA</div>}
                     </NavLink>
         </nav>

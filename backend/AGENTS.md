@@ -1,14 +1,19 @@
 # Backend Development Guide
 
+## Overview
+The backend of VulnScanC is a layered Python application built with **Flask**. It provides a robust API for security scanning, project management, and AI-driven analysis.
+
 ## Tech Stack
 - **Language/Framework**: Python (Flask)
 - **Database**: PostgreSQL
 - **Production Server**: Gunicorn
 
 ## Architecture
-The backend follows a layered architecture:
-- **`routes/`**: Thin controllers (Blueprints).
-- **`services/`**: Business logic and orchestration.
+The backend follows a layered architecture to decouple business logic from external dependencies.
+
+### Layers
+- **`routes/`**: Thin controllers (Blueprints) that handle incoming HTTP requests.
+- **`services/`**: Core business logic and orchestration.
 - **`adapters/`**: Decouples external APIs (LLMs, etc.) from logic.
 - **`pg_repository/`**: Low-level PostgreSQL interaction via `psycopg2`.
 - **`repository/`**: Higher-level data access logic.
@@ -16,17 +21,24 @@ The backend follows a layered architecture:
 
 **Dependency Flow**: `Routes` $\rightarrow$ `Services` $\rightarrow$ `Adapters`/`Repositories` $\rightarrow$ `Database/External APIs`.
 
-## API Documentation
-For detailed API endpoint descriptions, refer to the specific module documentation in the [docs/](./docs/) directory:
-- [Authentication](./docs/authentication.md)
-- [Users](./docs/users.md)
-- [Logs](./docs/logs.md)
-- [AI](./docs/ai.md)
-- [Bitbake](./docs/bitbake.md)
-- [BDU](./docs/bdu.md)
-- [Dependency Track](./docs/dependency_track.md)
-- [Licenses](./docs/licenses.md)
-- [Reports](./docs/reports.md)
+## Documentation
+
+### Module Overview
+For high-level architecture and business logic of specific modules, refer to:
+- [BDU Module](./docs/bdu.md)
+- [Testing Strategy](./docs/tests.md)
+
+### API Reference
+For detailed technical specifications of API endpoints, refer to the specific module documentation in the [docs/api/](./docs/api/) directory:
+- [Authentication](./docs/api/authentication.md)
+- [Users](./docs/api/users.md)
+- [Logs](./docs/api/logs.md)
+- [AI](./docs/api/ai.md)
+- [Bitbake](./docs/api/bitbake.md)
+- [BDU](./docs/api/bdu.md)
+- [Dependency Track](./docs/api/dependency_track.md)
+- [Licenses](./docs/api/licenses.md)
+- [Reports](./docs/api/reports.md)
 
 ## Development Commands
 
@@ -34,7 +46,7 @@ For detailed API endpoint descriptions, refer to the specific module documentati
 - **Run locally**: `python backend/run.py` (port 5001).
 - **Setup**: 
   - Use `backend/venv/bin/python` for running scripts.
-  - `backend/requirements.txt` uses `psycopg2-binary` for easier installation.
+  - `backend/requirements.txt` uses `psycopg2-binary` for easier installation. 
 
 ### Production
 - **Run**: `gunicorn -w 4 -b 0.0.0.0:5000 "app:create_app()"`
@@ -46,4 +58,3 @@ For detailed API endpoint descriptions, refer to the specific module documentati
 - **Timezone**: System is configured to `Europe/Moscow`.
 - **API Proxy**: In production (Nginx), `/api/` is proxied to `http://backend:5000/`.
 - **Executable Module**: Can be fetched via `http://<backend_ip>:5000/binary?action=get_file`.
-

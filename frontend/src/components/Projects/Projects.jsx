@@ -4,14 +4,14 @@ import "./Projects.css";
 import { apiAddProject, apiGetProjects, apiDeleteProject, apiChangeProject } from "../../services/apiProjects";
 import { apiAddBitbakeProject, apiGetBitbakeProjects, apiDeleteBitbakeProject, apiChangeBitbakeProject } from "../../services/apiBitbake";
 import ProjectCard from "./ProjectCard/ProjectCard";
-import { useNotificationContext } from "../../hooks/useNotificationContext";
+import { useTimedMessagesContext } from "../../hooks/useTimedMessagesContext";
 import Modal from "../Modal/Modal";
 import AcceptModal from "../AcceptModal/AcceptModal";
 import Loader from "../Loader/Loader";
 
 export default function Projects() {
 
-    const { notificationData, setNotificationData, toggleNotificationFunc, notificationToggle } = useNotificationContext();
+    const { addMessage } = useTimedMessagesContext();
     const [loaderActive, setLoaderActive] = useState(false)
 
     const [loadingProjects, setLoadingProjects] = useState('loading')
@@ -63,6 +63,7 @@ export default function Projects() {
             setLoadingProjects('loaded')
         } catch (err) {
             setLoadingProjects('error')
+            addMessage('Ошибка при загрузке проектов: ' + err.message, 'error', 5000)
         }
     }
 
@@ -77,19 +78,14 @@ export default function Projects() {
             if (response.status == 200) {
                 getProjects()
                 setPickedProject({ id: '0', name: 'default' })
-                setNotificationData({ message: 'Проект добавлен', type: 'success' })
-                toggleNotificationFunc()
+                addMessage('Проект добавлен', 'success', 3000)
                 closeAddModal()
-
             } else {
-                setNotificationData({ message: 'Не удалось добавить проект', type: 'error' })
-                toggleNotificationFunc()
+                addMessage('Не удалось добавить проект', 'error', 3000)
             }
         } catch (err) {
-            setNotificationData({ message: `Проблема с бекендом: ${err}`, type: 'error' })
-            toggleNotificationFunc()
+            addMessage(`Проблема с бекендом: ${err.message}`, 'error', 5000)
         }
-
     }
 
     async function deleteProject() {
@@ -103,20 +99,18 @@ export default function Projects() {
             if (response.status == 200) {
                 getProjects()
                 setPickedProject({ id: '0', name: 'default' })
-                setNotificationData({ message: 'Проект удален', type: 'success' })
-                toggleNotificationFunc()
+                addMessage('Проект удален', 'success', 3000)
                 closeChangeModal()
                 closeAcceptModal()
-
             } else {
-                setNotificationData({ message: 'Не удалось удалить проект', type: 'error' })
-                toggleNotificationFunc()
+                addMessage('Не удалось удалить проект', 'error', 3000)
                 closeChangeModal()
                 closeAcceptModal()
             }
         } catch (err) {
-            setNotificationData({ message: `Проблема с бекендом: ${err}`, type: 'error' })
-            toggleNotificationFunc()
+            addMessage(`Проблема с бекендом: ${err.message}`, 'error', 5000)
+            closeChangeModal()
+            closeAcceptModal()
         }
     }
 
@@ -131,22 +125,75 @@ export default function Projects() {
             if (response.status == 200) {
                 getProjects()
                 setPickedProject({ id: '0', name: 'default' })
-                setNotificationData({ message: 'Проект изменен', type: 'success' })
-                toggleNotificationFunc()
+                addMessage('Проект изменен', 'success', 3000)
                 closeChangeModal()
                 closeAcceptModal()
-
             } else {
-                setNotificationData({ message: 'Не удалось изменить проект', type: 'error' })
-                toggleNotificationFunc()
+                addMessage('Не удалось изменить проект', 'error', 3000)
                 closeChangeModal()
                 closeAcceptModal()
             }
         } catch (err) {
-            setNotificationData({ message: `Проблема с бекендом: ${err}`, type: 'error' })
-            toggleNotificationFunc()
+            addMessage(`Проблема с бекендом: ${err.message}`, 'error', 5000)
+            closeChangeModal()
+            closeAcceptModal()
         }
     }
+    
+
+    async function deleteProject() {
+        try {
+            const apiFunctions = {
+                common: apiDeleteProject,
+                bitbake: apiDeleteBitbakeProject,
+            };
+            const apiFunction = apiFunctions[pickedProject['type']];
+            const response = await apiFunction(pickedProject['id'])
+            if (response.status == 200) {
+                getProjects()
+                setPickedProject({ id: '0', name: 'default' })
+                addMessage('Проект удален', 'success', 3000)
+                closeChangeModal()
+                closeAcceptModal()
+            } else {
+                addMessage('Не удалось удалить проект', 'error', 3000)
+                closeChangeModal()
+                closeAcceptModal()
+            }
+        } catch (err) {
+            addMessage(`Проблема с бекендом: ${err.message}`, 'error', 5000)
+            closeChangeModal()
+            closeAcceptModal()
+        }
+    
+    }
+
+    async function changeProject() {
+        try {
+            const apiFunctions = {
+                common: apiChangeProject,
+                bitbake: apiChangeBitbakeProject,
+            };
+            const apiFunction = apiFunctions[pickedProject['type']];
+            const response = await apiFunction(pickedProject['id'], pickedProject['name'])
+            if (response.status == 200) {
+                getProjects()
+                setPickedProject({ id: '0', name: 'default' })
+                addMessage('Проект изменен', 'success', 3000)
+                closeChangeModal()
+                closeAcceptModal()
+            } else {
+                addMessage('Не удалось изменить проект', 'error', 3000)
+                closeChangeModal()
+                closeAcceptModal()
+            }
+        } catch (err) {
+            addMessage(`Проблема с бекендом: ${err.message}`, 'error', 5000)
+            closeChangeModal()
+            closeAcceptModal()
+        }
+    }
+
 
     useEffect(() => {
         getProjects()

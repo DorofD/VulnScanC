@@ -3,17 +3,27 @@ import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'; 
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'; 
 import { useNavigate } from 'react-router-dom'; 
+import { useTimedMessagesContext } from '../../hooks/useTimedMessagesContext';
 import './MarkdownViewer.css'
  
 export default function MarkdownViewer({ filePath }) { 
   const [markdownContent, setMarkdownContent] = useState(''); 
   const navigate = useNavigate(); 
+  const { addMessage } = useTimedMessagesContext();
  
   useEffect(() => { 
     fetch(filePath) 
-      .then((response) => response.text()) 
-      .then((text) => setMarkdownContent(text)); 
-  }, [filePath]); 
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Не удалось загрузить файл');
+        }
+        return response.text();
+      })
+      .then((text) => setMarkdownContent(text))
+      .catch((err) => {
+        addMessage('Ошибка при загрузке Markdown: ' + err.message, 'error', 5000);
+      });
+  }, [filePath, addMessage]); 
  
   return ( 
     <div className='MarkdownMain'>
