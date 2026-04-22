@@ -1,4 +1,7 @@
-# Backend Development Guide
+# Backend Technical Architecture
+
+## Overview
+The backend of VulnScanC is a layered Python application built with **Flask**. It provides a robust API for security scanning, project management, and AI-driven analysis.
 
 ## Tech Stack
 - **Language/Framework**: Python (Flask)
@@ -6,27 +9,17 @@
 - **Production Server**: Gunicorn
 
 ## Architecture
-The backend follows a layered architecture:
-- **`routes/`**: Thin controllers (Blueprints).
-- **`services/`**: Business logic and orchestration.
+The backend follows a layered architecture to decouple business logic from external dependencies.
+
+### Layers
+- **`routes/`**: Thin controllers (Blueprints) that handle incoming HTTP requests.
+- **`services/`**: Core business logic and orchestration.
 - **`adapters/`**: Decouples external APIs (LLMs, etc.) from logic.
 - **`pg_repository/`**: Low-level PostgreSQL interaction via `psycopg2`.
 - **`repository/`**: Higher-level data access logic.
 - **`domain/`**: Core entity definitions.
 
 **Dependency Flow**: `Routes` $\rightarrow$ `Services` $\rightarrow$ `Adapters`/`Repositories` $\rightarrow$ `Database/External APIs`.
-
-## API Documentation
-For detailed API endpoint descriptions, refer to the specific module documentation in the [docs/](./docs/) directory:
-- [Authentication](./docs/authentication.md)
-- [Users](./docs/users.md)
-- [Logs](./docs/logs.md)
-- [AI](./docs/ai.md)
-- [Bitbake](./docs/bitbake.md)
-- [BDU](./docs/bdu.md)
-- [Dependency Track](./docs/dependency_track.md)
-- [Licenses](./docs/licenses.md)
-- [Reports](./docs/reports.md)
 
 ## Development Commands
 
@@ -47,3 +40,14 @@ For detailed API endpoint descriptions, refer to the specific module documentati
 - **API Proxy**: In production (Nginx), `/api/` is proxied to `http://backend:5000/`.
 - **Executable Module**: Can be fetched via `http://<backend_ip>:5000/binary?action=get_file`.
 
+## API Documentation
+For detailed API endpoint descriptions, refer to the specific module documentation in the [docs/](./docs/) directory:
+- [Authentication](./docs/authentication.md)
+- [Users](./docs/users.md)
+- [Logs](./docs/logs.md)
+- [AI](./docs/ai.md)
+- [Bitbake](./docs/bitbake.md)
+- [BDU](./docs/bdu.md)
+- [Dependency Track](./docs/dependency_track.md)
+- [Licenses](./docs/licenses.md)
+- [Reports](./docs/reports.md)

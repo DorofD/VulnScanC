@@ -7,6 +7,7 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useSidebarState } from "../../hooks/useSidebarStateContext";
 import ColorSchemeSelector from "../ColorSchemeSelector/ColorSchemeSelector";
 import HomeIcon from "../../svg_images/Home.svg"
+import ProjectsIcon from "../../svg_images/Projects.svg"
 import ScheduleIcon from "../../svg_images/Schedule.svg"
 import GearIcon from "../../svg_images/Gear.svg"
 import ManualIcon from "../../svg_images/Manual.svg"
@@ -14,8 +15,11 @@ import ExpandRightIcon from "../../svg_images/ExpandRight.svg"
 import ExpandLeftIcon from "../../svg_images/ExpandLeft.svg"
 import LogoutIcon from "../../svg_images/Logout.svg"
 import UserIcon from "../../svg_images/User.svg"
-import BareMetalIcon from "../../svg_images/BareMetal.svg"
-import AiBase from "../AiBase/AiBase";
+import BduFstecIcon from "../../svg_images/BduFstec.svg"
+import SnapshotsIcon from "../../svg_images/Snapshots.svg"
+import SarifIcon from "../../svg_images/Sarif.svg"
+import AiIcon from "../../svg_images/Ai.svg"
+import ComponentsIcon from "../../svg_images/Components.svg"
 const NavLink = React.forwardRef((props, ref) => {
     return (
         <NavLinkBase
@@ -119,37 +123,37 @@ export default function Base() {
                             {!sidebarCollapsed &&
                                 <div className="baseHrefText">Проекты</div>
                                 ||
-                                <HomeIcon className="baseSidebarIcon"></HomeIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Проекты</div>}
+                                <ProjectsIcon className="baseSidebarIcon"></ProjectsIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Проекты</div>}
                         </NavLink>
                         <NavLink to="/components" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'} aria-current="page">
                             {!sidebarCollapsed &&
                                 <div className="baseHrefText">Компоненты</div>
                                 ||
-                                <BareMetalIcon className="baseSidebarIcon"></BareMetalIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Компоненты</div>}
+                                <ComponentsIcon className="baseSidebarIcon"></ComponentsIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Компоненты</div>}
                         </NavLink>
                         <NavLink to="/bdu_fstec" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'} aria-current="page">
                             {!sidebarCollapsed &&
                                 <div className="baseHrefText">БДУ ФСТЭК</div>
                                 ||
-                                <BareMetalIcon className="baseSidebarIcon"></BareMetalIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">БДУ ФСТЭК</div>}
+                                <BduFstecIcon className="baseSidebarIcon"></BduFstecIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">БДУ ФСТЭК</div>}
                         </NavLink>
                         <NavLink to="/snapshots" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'} aria-current="page">
                             {!sidebarCollapsed &&
                                 <div className="baseHrefText">Снапшоты</div>
                                 ||
-                                <ScheduleIcon className="baseSidebarIcon"></ScheduleIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Снапшоты</div>}
+                                <SnapshotsIcon className="baseSidebarIcon"></SnapshotsIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Снапшоты</div>}
                         </NavLink>
                         <NavLink to="/sarif" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'} aria-current="page">
                             {!sidebarCollapsed &&
                                 <div className="baseHrefText">Sarif</div>
                                 ||
-                                <ScheduleIcon className="baseSidebarIcon"></ScheduleIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Sarif</div>}
+                                <SarifIcon className="baseSidebarIcon"></SarifIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">Sarif</div>}
                         </NavLink>
                         <NavLink to="/ai" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'} aria-current="page">
                             {!sidebarCollapsed &&
                                 <div className="baseHrefText">AI </div>
                                 ||
-                                <ScheduleIcon className="baseSidebarIcon"></ScheduleIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">AI</div>}
+                                <AiIcon className="baseSidebarIcon"></AiIcon>} {sidebarCollapsed && <div className="baseSidebarTextDiv">AI</div>}
                         </NavLink>
                         {userRole === 'admin' && (<>
                             <NavLink to="/admin" className={({ isActive }) => isActive ? 'baseHref active' : 'baseHref'}>
