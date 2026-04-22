@@ -13,3 +13,11 @@
 - Never perform raw `fetch` calls inside components.
 - Always use the appropriate service from `src/services/`.
 - Use `authFetch.js` for requests requiring authentication.
+
+### Error Handling
+- Use the `useTimedMessagesContext` to provide temporary feedback to the user.
+- Use the `addMessage` function from the `useTimedMessagesContext` hook.
+- The `addMessage` function accepts three arguments: `message` (string), `type` ('success', 'error', 'warning', 'info'), and `duration` (number in milliseconds).
+- Example: `addMessage('Operation successful', 'success', 3000)`
+- Example: `addMessage('Error: ' + err.message, 'error', 5000)`
+- This method is preferred over `NotificationContext` as it automatically handles message expiration.

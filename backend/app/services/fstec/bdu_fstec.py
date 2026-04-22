@@ -29,8 +29,8 @@ class FSTEC:
                     for chunk in response.iter_content(chunk_size=8192):
                         file.write(chunk)
                 with zipfile.ZipFile(archive_bdu, 'r') as zip_ref:
-                    if "export/export.xml" in zip_ref.namelist():
-                        with zip_ref.open("export/export.xml") as source_file:
+                    if "export/vulxml.xml" in zip_ref.namelist():
+                        with zip_ref.open("export/vulxml.xml") as source_file:
                             with open(extract_path, "wb") as target_file:
                                 target_file.write(source_file.read())
                     else:
