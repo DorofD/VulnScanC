@@ -2,51 +2,68 @@ import json
 import copy
 from datetime import datetime
 
-from app.repository.queries.components import get_project_components, add_component
-from app.repository.queries.vulnerabilities import get_vulnerabilities_by_components, add_vulnerabilities
-from app.repository.queries.projects import get_projects, get_project
-from app.repository.queries.snapshots import add_snapshot
+from app.pg_repository.queries.projects import DBProjects
+from app.pg_repository.queries.components import DBComponents
+from app.pg_repository.queries.vulnerabilities import DBVulnerabilities
+from app.pg_repository.queries.snapshots import DBSnapshots
 
 
 def save_search_data(data: dict):
     """
     Принимает json в формате {"project_name": ...,"datetime": 13_08_2024_17_00,  "dependencies": ..., "vulnerabilities": ...}
     """
+    db_projects = DBProjects()
+    db_components = DBComponents()
+    db_vulnerabilities = DBVulnerabilities()
+    db_snapshots = DBSnapshots()
+
     try:
-        project_id = get_project(data['project_name'])[0]['id']
-    except:
-        raise Exception(f"Project not found: {data['project_name']}")
+        projects = db_projects.get_projects()
+        project = next((p for p in projects if p['name'] == data['project_name']), None)
+        if not project:
+            raise Exception(f"Project not found: {data['project_name']}")
+        project_id = project['id']
+    except Exception as e:
+        if isinstance(e, Exception) and "Project not found" in str(e):
+            raise e
+        raise Exception(f"Error finding project: {e}")
 
     try:
         handled_data = handle_data(data)
     except Exception as exc:
         raise Exception(f"Error when handling data: {exc}")
 
-    components = get_project_components(project_id)
-    components_paths = [component['path'] for component in components]
-    components_ids = [component['id'] for component in components]
-    components_path_id_dict = {
-        component['path']: component['id'] for component in components}
+    try:
+        components = db_components.get_project_components(project_id)
+        components_paths = [component['path'] for component in components]
+        components_ids = [component['id'] for component in components]
+        components_path_id_dict = {
+            component['path']: component['id'] for component in components}
+    except Exception as exc:
+        raise Exception(f"Error fetching components: {exc}")
 
     try:
         # добавление компонентов
         for note in handled_data['dependencies']:
             if note['directory'] not in components_paths:
-                add_component(project_id=project_id, path=note['directory'],
-                              type=note['match']['repo_info']['type'],
-                              address=note['match']['repo_info']['address'],
-                              tag=note['match']['repo_info']['tag'],
-                              version=note['match']['repo_info']['version'],
-                              score=note['match']['score'])
+                new_comp = db_components.add_component(
+                    project_id=project_id, 
+                    path=note['directory'],
+                    type=note['match']['repo_info']['type'],
+                    address=note['match']['repo_info']['address'],
+                    tag=note['match']['repo_info']['tag'],
+                    version=note['match']['repo_info']['version'],
+                    score=note['match']['score']
+                )
+                components_ids.append(new_comp['id'])
+                components_path_id_dict[note['directory']] = new_comp['id']
+                components_paths.append(note['directory'])
     except Exception as exc:
         raise Exception(f"Error when adding components: {exc}")
 
     try:
         # добавление уязвимостей
-        components = get_project_components(project_id)
-        components_path_id_dict = {
-            component['path']: component['id'] for component in components}
-        vulnerabilities = get_vulnerabilities_by_components(components_ids)
+        vulnerabilities = db_vulnerabilities.get_vulnerabilities_by_components(components_ids)
         osv_vuln_ids = [vulnerability['osv_id']
                         for vulnerability in vulnerabilities]
         vulns_to_add = []
@@ -57,7 +74,7 @@ def save_search_data(data: dict):
                         vulns_to_add.append(
                             (components_path_id_dict[note['directory']], vuln['id'], str(vuln)))
         if vulns_to_add:
-            add_vulnerabilities(vulns_to_add)
+            db_vulnerabilities.add_vulnerabilities(vulns_to_add)
     except Exception as exc:
         raise Exception(f"Error when adding vulnerabilities: {exc}")
 
@@ -66,16 +83,14 @@ def save_search_data(data: dict):
         date_object = datetime.strptime(
             data['datetime'], '%d_%m_%Y_%H_%M')
         datetime_str = date_object.strftime('%d.%m.%Y %H:%M')
-        components = get_project_components(project_id)
-        components_path_id_dict = {
-            component['path']: component['id'] for component in components}
+        
         components_ids_snapshot = []
         for note in handled_data['dependencies']:
             components_ids_snapshot.append(
                 components_path_id_dict[note['directory']])
         components_ids_snapshot_str = ', '.join(
             map(str, components_ids_snapshot))
-        add_snapshot(project_id, datetime_str, components_ids_snapshot_str)
+        db_snapshots.add_snapshot(project_id, datetime_str, components_ids_snapshot_str)
     except Exception as exc:
         raise Exception(f"Error when create snapshot: {exc}")
 

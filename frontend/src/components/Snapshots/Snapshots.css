@@ -12,7 +12,6 @@ div.snapshotsComponents {
     overflow: auto;
 }
 
-
 textarea.mainProjects {
     font-family: Arial;
     font-size: 18px;
@@ -21,9 +20,9 @@ textarea.mainProjects {
     resize: none;
     padding: 5px;
     margin-bottom: 10px;
-    border: solid 4px #afafaf;
+    border: solid 3px var(--border-color);
     border-radius: 10px;
-    color: black;
+    color: var(--text-color);
 }
 
 div.snapshotModal {
@@ -39,33 +38,27 @@ div.bitbakeSnapshotModal {
 }
 
 div.snapshotModalInfo {
-    margin-bottom: 10px;
+    margin: 5px 5px 12px 5px;
     height: 440px;
     overflow: auto;
     word-break: break-word;
-    margin: 5px;
-    margin-bottom: 12px;
-    padding: 10px;
-    padding-right: 20px;
-    border: solid 3px #afafaf;
+    padding: 10px 20px 10px 10px;
+    border: solid 3px var(--border-color);
     border-radius: 10px;
 }
 
 div.bitbakeSnapshotModalInfo {
-    margin-bottom: 10px;
+    margin: 5px 5px 12px 5px;
     height: 390px;
     overflow: auto;
     word-break: break-word;
-    margin: 5px;
-    margin-bottom: 12px;
-    padding: 10px;
-    padding-right: 20px;
-    border: solid 3px #afafaf;
+    padding: 10px 20px 10px 10px;
+    border: solid 3px var(--border-color);
     border-radius: 10px;
 }
 
 div.snapshotReport {
-    border: solid 3px #afafaf;
+    border: solid 3px var(--border-color);
     border-radius: 10px;
     padding: 10px;
     margin: 5px;
@@ -75,7 +68,7 @@ div.snapshotReport {
 }
 
 div.bitbakeSnapshotReport {
-    border: solid 3px #afafaf;
+    border: solid 3px var(--border-color);
     border-radius: 10px;
     padding: 10px;
     margin: 5px;
@@ -109,7 +102,6 @@ div.acceptModalProjects {
     padding: 5px;
     width: 350px;
     height: 80px;
-
 }
 
 div.acceptModalProjectsName {
@@ -117,12 +109,6 @@ div.acceptModalProjectsName {
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
-}
-
-div.acceptModalProjectsButtons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 div.acceptModalProjectsButtons {
@@ -145,19 +131,15 @@ div.vulnerabilityModal {
     padding: 5px;
     width: 600px;
     height: 820px;
-
 }
 
 div.vulnerabilityModalInfo {
-    margin-bottom: 10px;
+    margin: 5px 5px 12px 5px;
     height: 740px;
     overflow: auto;
     word-break: break-word;
-    margin: 5px;
-    margin-bottom: 12px;
-    padding: 10px;
-    padding-right: 20px;
-    border: solid 3px #afafaf;
+    padding: 10px 20px 10px 10px;
+    border: solid 3px var(--border-color);
     border-radius: 10px;
 }
 
@@ -167,16 +149,16 @@ div.vulnerabilityModalInfo {
     font-size: 16px;
     width: 180px;
     padding: 8px;
-    border: solid 3px #afafaf;
+    border: solid 3px var(--border-color);
     border-radius: 10px;
 }
 
 .componentSelect:focus {
-    border: solid 3px #646464;
+    border: solid 3px var(--border-color);
 }
 
 .componentSelect:hover {
-    border: solid 3px #646464;
+    border: solid 3px var(--border-color);
     cursor: pointer;
 }
 
@@ -196,7 +178,7 @@ img.filterLogo {
     padding: 4px;
     margin-left: 10px;
     margin-bottom: 15px;
-    border: solid 3px #afafaf;
+    border: solid 3px var(--border-color);
     border-radius: 10px;
 }
 

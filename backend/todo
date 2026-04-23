@@ -1,0 +1,41 @@
+
+# Refactor DB: Migrate modules from old repository to repository_pg
+
+Итоги сессии:
+- Проанализированы схемы БД: SQLite (старая, TEXT для components и datetime) и PostgreSQL (новая, jsonb для components и timestamptz для datetime).
+- Выявлено, что pg_repository сильно не доделан: отсутствуют сложные методы get_all_snapshot_data (и для bitbake тоже), а также отсутствуют целые файлы запросов для bitbake, bdu, licenses и комментариев.
+- DOCX_GENERATOR заблокирован, так как требует этих методов.
+Что нужно сделать дальше:
+1. Реализовать недостающие сложные запросы в pg_repository (начиная с snapshots.py и bitbake_snapshots.py).
+2. Создать недостающие файлы запросов в pg_repository (bitbake, bdu, licenses, comments и т.д.).
+3. После реализации запросов — переписать сервисы (начиная с docx_generator.py) на использование pg_repository.
+
+## Progress
+- [x] Analyze old DB schema and queries (SQLite)
+- [x] Analyze new DB schema (PostgreSQL)
+- [ ] Implement missing complex queries in pg_repository (snapshots, bitbake, etc.)
+- [ ] Implement bitbake_snapshots.py in pg_repository
+- [ ] Implement bitbake_components.py in pg_repository
+- [ ] Implement bitbake_vulnerabilities.py in pg_repository
+- [ ] Implement bitbake_licenses.py in pg_repository
+- [ ] Implement bitbake_components_comments.py in pg_repository
+- [ ] Implement bitbake_vulnerabilities_comments.py in pg_repository
+- [ ] Implement bdu_vulnerabilities.py in pg_repository
+- [ ] Implement licenses.py in pg_repository
+- [ ] Implement components_comments.py in pg_repository
+- [ ] Implement users.py in pg_repository
+- [ ] Implement projects.py in pg_repository
+- [ ] Refactor backend/app/services/reports/docx_generator.py
+- [ ] Refactor backend/app/services/fstec/bdu_fstec.py
+- [ ] Refactor backend/app/services/licenses/license_checker.py
+- [ ] Refactor backend/app/services/bitbake/bitbake_handler.py
+- [ ] Refactor backend/app/services/api_services/vulnerabilities.py
+- [ ] Refactor backend/app/services/api_services/snapshots.py
+- [ ] Refactor backend/app/services/api_services/component_comments.py
+- [ ] Refactor backend/app/services/api_services/licenses.py
+- [ ] Refactor backend/app/services/api_services/components.py
+
+## Notes
+- Old schema (SQLite) uses `TEXT` for `components` and `datetime`.
+- New schema (PostgreSQL) uses `jsonb` for `components` and `timestamptz` for `datetime`.
+- `DOCX_GENERATOR` is the first blocker.
