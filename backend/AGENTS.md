@@ -26,6 +26,7 @@ The backend follows a layered architecture to decouple business logic from exter
 ### Module Overview
 For high-level architecture and business logic of specific modules, refer to:
 - [BDU Module](./docs/bdu.md)
+- [Projects Module](./docs/projects.md)
 - [Testing Strategy](./docs/tests.md)
 
 ### API Reference
@@ -36,6 +37,7 @@ For detailed technical specifications of API endpoints, refer to the specific mo
 - [AI](./docs/api/ai.md)
 - [Bitbake](./docs/api/bitbake.md)
 - [BDU](./docs/api/bdu.md)
+- [Projects](./docs/api/projects.md)
 - [Dependency Track](./docs/api/dependency_track.md)
 - [Licenses](./docs/api/licenses.md)
 - [Reports](./docs/api/reports.md)

@@ -119,7 +119,8 @@ def create_db():
     cursor.execute(f"""
                 CREATE TABLE IF NOT EXISTS projects (
                     id SERIAL PRIMARY KEY,
-                    name TEXT NOT NULL UNIQUE
+                    name TEXT NOT NULL UNIQUE,
+                    description TEXT NULL
                 );
                 """)
 
@@ -194,7 +195,8 @@ def create_db():
     cursor.execute(f"""
                 CREATE TABLE IF NOT EXISTS bitbake_projects (
                     id SERIAL PRIMARY KEY,
-                    name TEXT NOT NULL
+                    name TEXT NOT NULL,
+                    description TEXT NULL
                 );
                 """)
 

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app.repository.queries.bitbake_projects import add_bitbake_project, get_bitbake_project, get_bitbake_projects, delete_bitbake_project, change_bitbake_project
+from app.pg_repository.queries.bitbake_projects import DBBitbakeProjects
 from app.repository.queries.bitbake_components import add_bitbake_components, get_bitbake_components, get_bitbake_project_components, get_bitbake_components_with_licenses, get_bitbake_component
 from app.repository.queries.bitbake_vulnerabilities import get_bitbake_vulnerabilities_by_component, get_bitbake_vulnerabilities_by_components
 from app.repository.queries.bitbake_vulnerabilities import get_bitbake_vulnerabilities_count_in_component, get_bitbake_vulnerabilities_ids, add_bitbake_vulnerabilities
@@ -12,10 +12,10 @@ from app.repository.queries.bitbake_vulnerabilities_comments import add_bitbake_
 
 class BitbakeHandler:
     def __init__(self):
-        pass
+        self.db_bitbake_projects = DBBitbakeProjects()
 
-    def add_project(self, project_name):
-        add_bitbake_project(project_name)
+    def add_project(self, project_name, description=None):
+        self.db_bitbake_projects.add_bitbake_project(project_name, description)
         return True
 
     def add_license(self, component_id, license_name, recipe_name):
@@ -23,19 +23,20 @@ class BitbakeHandler:
         return True
 
     def delete_project(self, project_id):
-        delete_bitbake_project(project_id)
+        self.db_bitbake_projects.delete_bitbake_project(project_id)
         return True
 
     def delete_license(self, license_id):
         delete_bitbake_license(license_id)
         return True
 
-    def change_project(self, project_id, new_project_name):
-        change_bitbake_project(project_id, new_project_name)
+    def change_project(self, project_id, new_project_name, description=None):
+        self.db_bitbake_projects.update_bitbake_project(
+            project_id, new_project_name, description)
         return True
 
     def get_projects(self):
-        return get_bitbake_projects()
+        return self.db_bitbake_projects.get_bitbake_projects()
 
     def get_components(self, project_id, layer):
         components = get_bitbake_components(project_id, layer)

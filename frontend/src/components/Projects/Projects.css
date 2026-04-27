@@ -11,6 +11,8 @@ div.projectsRight {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    border-left: solid 3px var(--border-color);
+    background-color: var(--main-background-color);
 }
 
 div.projectsLeft {
@@ -29,6 +31,7 @@ div.projectsLeft1 {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    border-bottom: solid 3px var(--border-color);
 }
 
 div.projectsLeft2 {
@@ -36,89 +39,100 @@ div.projectsLeft2 {
     overflow: auto;
     height: 100%;
     width: 100%;
-    border-top: solid 3px var(--border-color);
-    border-bottom: solid 3px var(--border-color);
 }
 
-div.projectsRight1 {
-    width: 100%;
-    height: 35%;
-    box-sizing: border-box;
+/* Right Panel: Form Styles */
+.projectsRightForm {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-div.projectsRight2 {
-    width: 100%;
-    height: 65%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-}
-
-div.changeModalProjects {
     padding: 20px;
-    /* width: 385px;
-    height: 355px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.projectsRightTitle {
+    margin-top: 0;
+    margin-bottom: 20px;
     text-align: center;
-    background-color: var(--main-background-color); */
-
 }
 
-div.changeModalProjectsParams {
-    display: inline-block;
-    margin-bottom: 10px;
-    word-break: break-word;
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
 }
 
-div.changeModalProjectsParamsValues {
-    width: 60%;
+.formLabel {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.formInput {
+    padding: 8px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+textarea.formInput {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.formButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+
+/* Right Panel: Details Styles */
+.projectsRightDetails {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.detailsContent {
     display: flex;
     flex-direction: column;
 }
 
-div.changeModalProjectsHeader {
-    text-align: center;
-    margin: 10px;
+.detailsTitle {
+    margin-top: 0;
+    margin-bottom: 20px;
 }
 
-input.changeModalProjects {
-    height: 20px;
-    margin: 8px;
-    font-size: large;
-    width: 400px;
-    height: 32px;
-    padding: 4px;
-    /* border: solid 3px var(--border-color); */
-    border-radius: 10px;
+.detailsDescription {
+    margin-bottom: 20px;
+    line-height: 1.5;
+    white-space: pre-wrap;
 }
 
-input.changeModalProjects:disabled {
-    background-color: var(--disabled-color);
-}
-
-select.changeModalProjects {
-    height: 35px;
-    margin: 8px;
-    font-size: large;
-    width: 180px;
-    padding: 4px;
-    border-radius: 10px;
-}
-
-select.changeModalProjects:disabled {
-    background-color: var(--disabled-color);
-}
-
-div.changeModalProjectsButtons {
-    box-sizing: border-box;
+.detailsActions {
+    margin-top: auto;
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 6%;
-    margin: 10px;
+}
+
+
+.detailsButton:hover {
+    background-color: var(--hover-color);
+}
+
+/* Empty States */
+.emptyRight, .emptyDetails {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: var(--text-color-secondary);
+    text-align: center;
 }

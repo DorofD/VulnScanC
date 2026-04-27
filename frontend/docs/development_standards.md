@@ -8,6 +8,7 @@
 ### Styling
 - Use component-specific CSS files to avoid global scope pollution.
 - For global styles and themes, use the `src/color_themes/` directory.
+- **Buttons**: Do not define custom styles for buttons. Use the centralized button styling system to ensure consistency.
 
 ### API Calls
 - Never perform raw `fetch` calls inside components.

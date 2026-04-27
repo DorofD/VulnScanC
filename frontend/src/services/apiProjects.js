@@ -8,13 +8,14 @@ export async function apiGetProjects() {
     return projects
 }
 
-export async function apiAddProject(name) {
+export async function apiAddProject(name, description) {
     const response = await authFetch(`${process.env.BACKEND_URL}/projects`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             action: 'add',
             name: name,
+            description: description,
         })
     })
     return response
@@ -26,20 +27,21 @@ export async function apiDeleteProject(id) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             action: 'delete',
-            project_id: id,
+            id: id,
         })
     })
     return response
 }
 
-export async function apiChangeProject(id, name) {
+export async function apiChangeProject(id, name, description) {
     const response = await authFetch(`${process.env.BACKEND_URL}/projects`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             action: 'change',
-            project_id: id,
-            project_name: name
+            id: id,
+            name: name,
+            description: description
         })
     })
     return response

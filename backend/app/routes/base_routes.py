@@ -68,12 +68,29 @@ def projects():
 
     if request.method == 'POST':
         data = request.json
+        print(data['action'])
         if data['action'] == 'add':
-            add_project(data['name'])
+            try:
+                add_project(data['name'], data['description'])
+            except KeyError:
+                add_project(data['name'], '')
         if data['action'] == 'delete':
-            delete_project(data['project_id'])
+            delete_project(data['id'])
         if data['action'] == 'change':
-            change_project(data['project_id'], data['project_name'])
+            try:
+                new_name = data['name']
+            except KeyError:
+                new_name = ''
+            try:
+                new_description = data['description']
+            except KeyError:
+                new_description = ''
+            print(new_description)
+            change_project(
+                data['id'],
+                new_name,
+                new_description
+            )
         return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
 
 

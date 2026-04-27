@@ -9,15 +9,15 @@ button {
     height: auto;
     color: var(--text-button-color);
     background-color: var(--neutral-button-color);
-    border-radius: 12px;
-    /* border-radius: 1em; */
+    /* border-radius: 12px; */
+    border-radius: 6px;
     padding: 7px 15px 7px 15px;
 }
 
 button:active {
     color: var(--text-accent-color);
-    box-shadow: 0 2px 2px var(--accent-color), 0 1px 2px var(--text-accent-color);
-    transform: scale(0.97) translateY(1px);
+    box-shadow: 0 1px 1px var(--accent-color), 0 1px 2px var(--text-accent-color);
+    /* transform: scale(0.99) translateY(0.1px); */
 }
 
 /* актуальные */
