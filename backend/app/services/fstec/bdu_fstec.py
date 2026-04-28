@@ -84,15 +84,15 @@ class FSTEC:
                                             severity = 'not found'
                                             bdu_severity = "Не найдено"
                                         result.append({'component_id': cve['component_id'],
-                                                        'component_type': components_type,
-                                                        'bdu_id': vuln.find('identifier').text,
-                                                        'cve_id': cve[cve_text],
-                                                        'name': vuln.find('name').text,
-                                                        'description': vuln.find('description').text,
-                                                        'status': vuln.find('vul_status').text,
-                                                        'bdu_severity': bdu_severity,
-                                                        'severity': severity}
-                                                       )
+                                                       'component_type': components_type,
+                                                       'bdu_id': vuln.find('identifier').text,
+                                                       'cve_id': cve[cve_text],
+                                                       'name': vuln.find('name').text,
+                                                       'description': vuln.find('description').text,
+                                                       'status': vuln.find('vul_status').text,
+                                                       'bdu_severity': bdu_severity,
+                                                       'severity': severity}
+                                                      )
                                     except:
                                         raise Exception(
                                             f"Can't add founded vulnerability, check XML Parse for vulnerability with CVE ID: {cve[cve_text]}")
@@ -118,7 +118,8 @@ class FSTEC:
 
         bdu_vulns = self.find_vulns_by_cve_id(vulns, components_type)
         vulns_to_add = []
-        existing_bdu_vulns = self.db_bdu_vulnerabilities.get_bdu_vulnerabilities(components_type)
+        existing_bdu_vulns = self.db_bdu_vulnerabilities.get_bdu_vulnerabilities(
+            components_type)
 
         for bdu_vuln in bdu_vulns:
             add = True
@@ -180,11 +181,11 @@ class FSTEC:
         return False
 
     def get_bdu_info(self):
-
-        result = {}
-        result['last_update'] = self.get_bdu_update_time()
-        result['vuln_count'] = self.db_bdu_vulnerabilities.get_bdu_vulnerabilities_count()
-        return result
+        try:
+            result = {}
+            result['last_update'] = self.get_bdu_update_time()
+            result['vuln_count'] = self.db_bdu_vulnerabilities.get_bdu_vulnerabilities_count()
+            return result
 
         except FileNotFoundError:
             raise Exception("BDU file not found")
@@ -201,7 +202,8 @@ class FSTEC:
 
         bdu_vulns = self.find_vulns_by_cve_id(vulns, components_type)
         vulns_to_add = []
-        existing_bdu_vulns = self.db_bdu_vulnerabilities.get_bdu_vulnerabilities(components_type)
+        existing_bdu_vulns = self.db_bdu_vulnerabilities.get_bdu_vulnerabilities(
+            components_type)
 
         for bdu_vuln in bdu_vulns:
             add = True
@@ -261,10 +263,3 @@ class FSTEC:
             readable_time = time.ctime(creation_time)
             return readable_time
         return False
-
-    def get_bdu_info(self):
-
-        result = {}
-        result['last_update'] = self.get_bdu_update_time()
-        result['vuln_count'] = self.db_bdu_vulnerabilities.get_bdu_vulnerabilities_count()
-        return result

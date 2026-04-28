@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app, request, jsonify, send_file, abort
 from flask_jwt_extended import jwt_required, get_jwt
-from app.services.search_data.search_data import save_search_data
+from app.services.search_data.search_data import SearchDataService
 
 from app.services.api_services.projects import get_projects, add_project, delete_project, add_project, change_project
 from app.services.api_services.components import get_project_components, change_component_status
@@ -39,7 +39,7 @@ def search_data():
     try:
         data = request.get_json()
         if data['status'] == 'ok':
-            save_search_data(data)
+            SearchDataService().save_search_data(data)
             current_app.logger.info(
                 f"Data received from Executable Module, the processing was successful! Project: {data['project_name']} Time: {data['datetime']} Pipline ID: {data['pipeline_id']}")
         elif data['status'] == 'fail':

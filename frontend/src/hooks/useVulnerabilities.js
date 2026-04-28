@@ -56,6 +56,7 @@ export function useVulnerabilities(pickedComponentId) {
         setFilterVulnerabilitiesBdu,
         filteredVulnerabilities,
         showComponentVulnerabilities,
-        showComponentVulnerabilitiesBdu
+        showComponentVulnerabilitiesBdu,
+        setComponentVulnerabilities
     };
 }

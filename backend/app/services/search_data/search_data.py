@@ -8,15 +8,6 @@ from app.pg_repository.queries.vulnerabilities import DBVulnerabilities
 from app.pg_repository.queries.snapshots import DBSnapshots
 
 
-import json
-import copy
-from datetime import datetime
-
-from app.pg_repository.queries.projects import DBProjects
-from app.pg_repository.queries.components import DBComponents
-from app.pg_repository.queries.vulnerabilities import DBVulnerabilities
-from app.pg_repository.queries.snapshots import DBSnapshots
-
 class SearchDataService:
     def __init__(self):
         self.db_projects = DBProjects()
@@ -30,7 +21,8 @@ class SearchDataService:
         """
         try:
             projects = self.db_projects.get_projects()
-            project = next((p for p in projects if p['name'] == data['project_name']), None)
+            project = next(
+                (p for p in projects if p['name'] == data['project_name']), None)
             if not project:
                 raise Exception(f"Project not found: {data['project_name']}")
             project_id = project['id']
@@ -58,7 +50,7 @@ class SearchDataService:
             for note in handled_data['dependencies']:
                 if note['directory'] not in components_paths:
                     new_comp = self.db_components.add_component(
-                        project_id=project_id, 
+                        project_id=project_id,
                         path=note['directory'],
                         type=note['match']['repo_info']['type'],
                         address=note['match']['repo_info']['address'],
@@ -74,7 +66,8 @@ class SearchDataService:
 
         try:
             # добавление уязвимостей
-            vulnerabilities = self.db_vulnerabilities.get_vulnerabilities_by_components(components_ids)
+            vulnerabilities = self.db_vulnerabilities.get_vulnerabilities_by_components(
+                components_ids)
             osv_vuln_ids = [vulnerability['osv_id']
                             for vulnerability in vulnerabilities]
             vulns_to_add = []
@@ -94,14 +87,15 @@ class SearchDataService:
             date_object = datetime.strptime(
                 data['datetime'], '%d_%m_%Y_%H_%M')
             datetime_str = date_object.strftime('%d.%m.%Y %H:%M')
-            
+
             components_ids_snapshot = []
             for note in handled_data['dependencies']:
                 components_ids_snapshot.append(
                     components_path_id_dict[note['directory']])
             components_ids_snapshot_str = ', '.join(
                 map(str, components_ids_snapshot))
-            self.db_snapshots.add_snapshot(project_id, datetime_str, components_ids_snapshot_str)
+            self.db_snapshots.add_snapshot(
+                project_id, datetime_str, components_ids_snapshot_str)
         except Exception as exc:
             raise Exception(f"Error when create snapshot: {exc}")
 
@@ -117,5 +111,3 @@ class SearchDataService:
                     dependency['vulnerabilities'] = vuln['vulns']
         del handled_data['vulnerabilities']
         return handled_data
-
-
