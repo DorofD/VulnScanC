@@ -41,6 +41,14 @@ For detailed technical specifications of API endpoints, refer to the specific mo
 - [Dependency Track](./docs/api/dependency_track.md)
 - [Licenses](./docs/api/licenses.md)
 - [Reports](./docs/api/reports.md)
+- [Snapshots](./docs/api/snapshots.md)
+- [SARIF](./docs/api/sarif.md)
+- [Svacer](./docs/api/svacer.md)
+- [Components](./docs/api/components.md)
+- [Comments](./docs/api/comments.md)
+- [Vulnerabilities](./docs/api/vulnerabilities.md)
+- [Binary](./docs/api/binary.md)
+- [Search Data](./docs/api/search_data.md)
 
 ## Development Commands
 

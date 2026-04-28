@@ -26,52 +26,40 @@ Returns a list of all projects available in the system.
 
 ---
 
-### Create Project
+### Create / Update / Delete Project
 `POST /projects`
 
-Creates a new project.
+Creates, updates, or deletes a project.
 
 **Request Body**
+
+Create:
 ```json
 {
+  "action": "add",
   "name": "New Project Name",
   "description": "Optional description"
 }
 ```
 
-**Success Response**
-- Code: 201 Created
-
----
-
-### Update Project
-`PUT /projects`
-
-Updates an existing project's details.
-
-**Query Parameters**
-- `id` (required): The ID of the project to update.
-
-**Request Body**
+Update:
 ```json
 {
+  "action": "change",
+  "id": 1,
   "name": "Updated Project Name",
   "description": "Updated description"
 }
 ```
 
-**Success Response**
-- Code: 200 OK
-
----
-
-### Delete Project
-`DELETE /projects`
-
-Deletes a project and its associated data.
-
-**Query Parameters**
-- `id` (required): The ID of the project to delete.
+Delete:
+```json
+{
+  "action": "delete",
+  "id": 1
+}
+```
 
 **Success Response**
 - Code: 200 OK
+- Response Body: `{"success": true}`
