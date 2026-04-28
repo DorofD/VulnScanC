@@ -8,7 +8,7 @@ def build_binary():
         'pyinstaller',
         '--name=executable_module',
         '--onefile',
-        '--distpath=/binary',
+        '--distpath=/home/user/VulnScanC/backend/binary/',
         './app/services/sec_dev_scanner/template.py'
     ]
 

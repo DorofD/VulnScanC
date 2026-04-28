@@ -1,13 +1,15 @@
 import requests
 import copy
 
-from app.repository.queries.components import get_project_components
-from app.repository.queries.licenses import get_component_licenses, add_license
+from app.pg_repository.queries.components import DBComponents
+from app.pg_repository.queries.licenses import DBLicenses
 
 
 class LicenseChecker:
     def __init__(self):
         self.sas = 1
+        self.db_components = DBComponents()
+        self.db_licenses = DBLicenses()
 
     def check_github_license(self, component_url: str):
         """ В component_url ожидается ссылка на репозиторий в формате https://github.com/<owner>/<repo>"""
@@ -110,9 +112,9 @@ class LicenseChecker:
             return result
 
     def check_project_licenses(self, project_id):
-        components = get_project_components(project_id)
+        components = self.db_components.get_project_components(project_id)
         for component in components:
-            component_licenses = get_component_licenses(component['id'])
+            component_licenses = self.db_licenses.get_component_licenses(component['id'])
             if 'github.com' in component['address']:
                 license_check = self.check_github_license(component['address'])
                 if license_check['status'] == 'ok':
@@ -121,8 +123,8 @@ class LicenseChecker:
                         if existing_license['name'] == license_check['license']['name']:
                             add = 0
                     if add:
-                        add_license(component['id'], license_check['license']['key'],
-                                    license_check['license']['name'], license_check['license']['key'], license_check['license']['url'])
+                        self.db_licenses.add_license(component['id'], license_check['license']['key'],
+                                                     license_check['license']['name'], license_check['license']['key'], license_check['license']['url'])
                 else:
                     continue
             if 'gitlab' in component['address']:
@@ -133,5 +135,5 @@ class LicenseChecker:
                         if existing_license['name'] == license_check['license']['name']:
                             add = 0
                     if add:
-                        add_license(component['id'], license_check['license']['key'],
-                                    license_check['license']['name'], license_check['license']['nickname'], license_check['license']['html_url'])
+                        self.db_licenses.add_license(component['id'], license_check['license']['key'],
+                                                     license_check['license']['name'], license_check['license']['nickname'], license_check['license']['html_url'])

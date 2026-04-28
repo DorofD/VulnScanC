@@ -2,11 +2,12 @@ import json
 import re
 import ast
 
-from app.repository.queries.vulnerabilities import get_vulnerabilities_by_component as get_vulnerabilities_by_component_db
+from app.pg_repository.queries.vulnerabilities import DBVulnerabilities
 
 
 def get_vulnerabilities_by_component(id):
-    vulns = get_vulnerabilities_by_component_db(id)
+    db_vulnerabilities = DBVulnerabilities()
+    vulns = db_vulnerabilities.get_vulnerabilities_by_component(id)
     for vuln in vulns:
         vuln['full_data'] = ast.literal_eval(vuln['full_data'])
 

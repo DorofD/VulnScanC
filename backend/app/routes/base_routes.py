@@ -18,7 +18,8 @@ def binary():
             return jsonify(get_binary_info())
         if request.args.get('action') == 'get_file':
             try:
-                file_path = '/binary/executable_module'
+                # file_path = '/binary/executable_module'
+                file_path = '/home/user/VulnScanC/backend/binary/executable_module'
                 return send_file(file_path, as_attachment=True)
             except FileNotFoundError as exc:
                 current_app.logger.exception(

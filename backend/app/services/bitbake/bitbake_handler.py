@@ -1,25 +1,30 @@
 from datetime import datetime
 
 from app.pg_repository.queries.bitbake_projects import DBBitbakeProjects
-from app.repository.queries.bitbake_components import add_bitbake_components, get_bitbake_components, get_bitbake_project_components, get_bitbake_components_with_licenses, get_bitbake_component
-from app.repository.queries.bitbake_vulnerabilities import get_bitbake_vulnerabilities_by_component, get_bitbake_vulnerabilities_by_components
-from app.repository.queries.bitbake_vulnerabilities import get_bitbake_vulnerabilities_count_in_component, get_bitbake_vulnerabilities_ids, add_bitbake_vulnerabilities
-from app.repository.queries.bitbake_snapshots import add_bitbake_snapshot, get_all_bitbake_snapshot_data, get_bitbake_project_snapshots, get_bitbake_project_snapshots_with_components, delete_bitbake_snapshot
-from app.repository.queries.bitbake_licenses import add_bitbake_license, get_bitbake_component_licenses, delete_bitbake_license
-from app.repository.queries.bitbake_components_comments import add_bitbake_component_comment, delete_bitbake_component_comment, get_bitbake_comments_for_component
-from app.repository.queries.bitbake_vulnerabilities_comments import add_bitbake_vulnerability_comment, delete_bitbake_vulnerability_comment, get_bitbake_comments_for_vulnerability
+from app.pg_repository.queries.bitbake_components import DBBitbakeComponents
+from app.pg_repository.queries.bitbake_vulnerabilities import DBBitbakeVulnerabilities
+from app.pg_repository.queries.bitbake_snapshots import DBBitbakeSnapshots
+from app.pg_repository.queries.bitbake_licenses import DBBitbakeLicenses
+from app.pg_repository.queries.bitbake_components_comments import DBBitbakeComponentsComments
+from app.pg_repository.queries.bitbake_vulnerabilities_comments import DBBitbakeVulnerabilitiesComments
 
 
 class BitbakeHandler:
     def __init__(self):
         self.db_bitbake_projects = DBBitbakeProjects()
+        self.db_bitbake_components = DBBitbakeComponents()
+        self.db_bitbake_vulnerabilities = DBBitbakeVulnerabilities()
+        self.db_bitbake_snapshots = DBBitbakeSnapshots()
+        self.db_bitbake_licenses = DBBitbakeLicenses()
+        self.db_bitbake_components_comments = DBBitbakeComponentsComments()
+        self.db_bitbake_vulnerabilities_comments = DBBitbakeVulnerabilitiesComments()
 
     def add_project(self, project_name, description=None):
         self.db_bitbake_projects.add_bitbake_project(project_name, description)
         return True
 
     def add_license(self, component_id, license_name, recipe_name):
-        add_bitbake_license(component_id, license_name, recipe_name)
+        self.db_bitbake_licenses.add_bitbake_license(component_id, license_name, recipe_name)
         return True
 
     def delete_project(self, project_id):
@@ -27,7 +32,7 @@ class BitbakeHandler:
         return True
 
     def delete_license(self, license_id):
-        delete_bitbake_license(license_id)
+        self.db_bitbake_licenses.delete_bitbake_license(license_id)
         return True
 
     def change_project(self, project_id, new_project_name, description=None):
@@ -39,42 +44,42 @@ class BitbakeHandler:
         return self.db_bitbake_projects.get_bitbake_projects()
 
     def get_components(self, project_id, layer):
-        components = get_bitbake_components(project_id, layer)
+        components = self.db_bitbake_components.get_bitbake_components(project_id, layer)
         for component in components:
-            licenses = get_bitbake_component_licenses(component['id'])
+            licenses = self.db_bitbake_licenses.get_bitbake_component_licenses(component['id'])
             component['licenses'] = licenses
         return components
 
     def add_comment_for_component(self, user_id, component_id, comment):
         now = datetime.now()
         formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
-        add_bitbake_component_comment(
+        self.db_bitbake_components_comments.add_bitbake_component_comment(
             user_id, component_id, formatted_time, comment)
         return True
 
     def add_comment_for_vulnerability(self, user_id, vuln_id, comment):
         now = datetime.now()
         formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
-        add_bitbake_vulnerability_comment(
+        self.db_bitbake_vulnerabilities_comments.add_bitbake_vulnerability_comment(
             user_id, vuln_id, formatted_time, comment)
         return True
 
     def get_comments_for_component(self, component_id):
-        return (get_bitbake_comments_for_component(component_id))
+        return (self.db_bitbake_components_comments.get_bitbake_comments_for_component(component_id))
 
     def get_comments_for_vulnerability(self, vuln_id):
-        return (get_bitbake_comments_for_vulnerability(vuln_id))
+        return (self.db_bitbake_vulnerabilities_comments.get_bitbake_comments_for_vulnerability(vuln_id))
 
     def delete_component_comment(self, id):
-        delete_bitbake_component_comment(id)
+        self.db_bitbake_components_comments.delete_bitbake_component_comment(id)
         return True
 
     def delete_vulnerability_comment(self, id):
-        delete_bitbake_vulnerability_comment(id)
+        self.db_bitbake_vulnerabilities_comments.delete_bitbake_vulnerability_comment(id)
         return True
 
     def get_vulnerabilities(self, component_id):
-        vulns = get_bitbake_vulnerabilities_by_component(component_id)
+        vulns = self.db_bitbake_vulnerabilities.get_bitbake_vulnerabilities_by_component(component_id)
         critical_list = []
         high_list = []
         medium_list = []
@@ -248,11 +253,11 @@ class BitbakeHandler:
 
     def save_report_results(self, project_name, report_results):
         try:
-            project = get_bitbake_project(project_name)[0]
+            project = self.db_bitbake_projects.get_bitbake_project(project_name)[0]
         except IndexError:
             raise Exception(f"Don't found project {project_name}")
 
-        existing_components = get_bitbake_project_components(project['id'])
+        existing_components = self.db_bitbake_components.get_bitbake_project_components(project['id'])
 
         components_to_add = []
         for layer in report_results['layers']:
@@ -265,9 +270,9 @@ class BitbakeHandler:
                     components_to_add.append(
                         [project['id'], component, report_results['layers'][layer][component]['version'], layer])
         if components_to_add:
-            add_bitbake_components(components_to_add)
+            self.db_bitbake_components.add_bitbake_components(components_to_add)
 
-        existing_components = get_bitbake_project_components(project['id'])
+        existing_components = self.db_bitbake_components.get_bitbake_project_components(project['id'])
 
         report_components_list = {}
         for layer in report_results['layers']:
@@ -278,7 +283,7 @@ class BitbakeHandler:
         for existing_component in existing_components:
             for report_component in report_components_list:
                 if report_component == existing_component['name'] and report_components_list[report_component]['version'] == existing_component['version']:
-                    existing_vulnerabilities = get_bitbake_vulnerabilities_by_component(
+                    existing_vulnerabilities = self.db_bitbake_vulnerabilities.get_bitbake_vulnerabilities_by_component(
                         existing_component['id'])
                     for report_vuln in report_components_list[report_component]['cves']:
                         add = True
@@ -287,27 +292,28 @@ class BitbakeHandler:
                                 add = False
                         if add:
                             vulnerabilities_to_add.append([existing_component['id'],
-                                                           report_vuln,
-                                                           report_components_list[report_component][
-                                                               'cves'][report_vuln]['cve_status'],
-                                                           report_components_list[report_component][
-                                                               'cves'][report_vuln]['cve_summary'],
-                                                           report_components_list[report_component]['cves'][report_vuln]['cvss_v2'],
-                                                           report_components_list[report_component]['cves'][report_vuln]['cvss_v3'],
-                                                           report_components_list[report_component][
-                                                               'cves'][report_vuln]['severity'],
-                                                           report_components_list[report_component]['cves'][report_vuln]['vector'],
-                                                           report_components_list[report_component][
-                                                               'cves'][report_vuln]['more_information'],
-                                                           ])
+                                                            report_vuln,
+                                                            report_components_list[report_component][
+                                                                'cves'][report_vuln]['cve_status'],
+                                                            report_components_list[report_component][
+                                                                'cves'][report_vuln]['cve_summary'],
+                                                            report_components_list[report_component]['cves'][report_vuln]['cvss_v2'],
+                                                            report_components_list[report_component]['cves'][report_vuln]['cvss_v3'],
+                                                            report_components_list[report_component]['cves'][report_vuln][
+                                                                'severity'],
+                                                            report_components_list[report_component]['cves'][report_vuln][
+                                                                'vector'],
+                                                            report_components_list[report_component]['cves'][report_vuln][
+                                                                'more_information'],
+                                                            ])
         if vulnerabilities_to_add:
-            add_bitbake_vulnerabilities(vulnerabilities_to_add)
+            self.db_bitbake_vulnerabilities.add_bitbake_vulnerabilities(vulnerabilities_to_add)
 
         # создание снапшота
         try:
             now = datetime.now()
             datetime_str = now.strftime("%d.%m.%Y %H:%M")
-            existing_components = get_bitbake_project_components(project['id'])
+            existing_components = self.db_bitbake_components.get_bitbake_project_components(project['id'])
             existing_components_name_id_dict = {
                 component['name']: component['id'] for component in existing_components}
             components_ids_snapshot = []
@@ -316,13 +322,14 @@ class BitbakeHandler:
                     existing_components_name_id_dict[component])
             components_ids_snapshot_str = ', '.join(
                 map(str, components_ids_snapshot))
-            add_bitbake_snapshot(
+            self.db_bitbake_snapshots.add_bitbake_snapshot(
                 project['id'], datetime_str, components_ids_snapshot_str)
         except Exception as exc:
             raise Exception(f"Error when create snapshot: {exc}")
         return True
 
     def parse_licenses(self, license_file):
+
         """
         Парсит bitbake отчёт формата license.manifest, возвращает объект:
         [{package_name: .., package_version: .., recipe_name: .., licenses: ['license1', 'license2', ..]}, ..]
@@ -373,7 +380,7 @@ class BitbakeHandler:
         return parsed_result
 
     def update_licenses(self, parsed_licenses):
-        components = get_bitbake_components_with_licenses()
+        components = self.db_bitbake_components.get_bitbake_components_with_licenses()
         licenses_to_add = []
         for component in components:
             for note in parsed_licenses:
@@ -385,11 +392,11 @@ class BitbakeHandler:
                             licenses_to_add.append(
                                 {'component_id': component['id'], 'license': license, 'recipe_name': note['recipe_name']})
         for license in licenses_to_add:
-            add_bitbake_license(
+            self.db_bitbake_licenses.add_bitbake_license(
                 license['component_id'], license['license'], license['recipe_name'])
 
     def get_project_snapshots(self, project_id):
-        snapshots = get_bitbake_project_snapshots(project_id)
+        snapshots = self.db_bitbake_snapshots.get_bitbake_project_snapshots(project_id)
 
         for snapshot in snapshots:
             if not snapshot['components']:
@@ -400,11 +407,11 @@ class BitbakeHandler:
                 map(int, snapshot['components'].split(', ')))
             snapshot['components'] = []
             for id in component_ids_list:
-                component = get_bitbake_component(id)
+                component = self.db_bitbake_components.get_bitbake_component(id)
                 snapshot['components'].append(component[0])
         snapshots.reverse()
         return snapshots
 
     def delete_snapshot(self, snapshot_id):
-        delete_bitbake_snapshot(snapshot_id)
+        self.db_bitbake_snapshots.delete_bitbake_snapshot(snapshot_id)
         return True

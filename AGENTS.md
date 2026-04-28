@@ -9,7 +9,12 @@ VulnScanC is a security scanning application consisting of a Python (Flask) back
 - `docker/`: Dockerfiles and Nginx configuration.
 
 ## Core Workflow Rules
-- **Do not interact with directories and files included in .gitignore.**
+- **Do not interact with directories and files included in .gitignore**
+- **Re-read file before each edit after failure**
+- **Make smaller edits**
+- **Avoid large exact-match replacements**
+- **If edit fails, use surrounding unique anchors**
+- **Normalize line endings**
 
 ## Architecture Overview
 The project uses a layered architecture to decouple business logic from external dependencies.

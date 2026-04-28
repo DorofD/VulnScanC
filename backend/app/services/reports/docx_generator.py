@@ -7,8 +7,8 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import parse_xml
 from docx.oxml.ns import nsdecls
 
-from app.repository.queries.snapshots import get_all_snapshot_data
-from app.repository.queries.bitbake_snapshots import get_all_bitbake_snapshot_data
+from app.pg_repository.queries.snapshots import DBSnapshots
+from app.pg_repository.queries.bitbake_snapshots import DBBitbakeSnapshots
 from app.services.svacer.api import Svacer
 from app.services.dependency_track.api import DT
 from app.services.bitbake.bitbake_handler import BitbakeHandler
@@ -24,9 +24,11 @@ class DOCX_GENERATOR:
                            r'<w:insideH w:val="single" w:sz="4" w:space="0" w:color="000000"/>'
                            r'<w:insideV w:val="single" w:sz="4" w:space="0" w:color="000000"/>'
                            r'</w:tblBorders>' % nsdecls('w'))
+        self.db_snapshots = DBSnapshots()
+        self.db_bitbake_snapshots = DBBitbakeSnapshots()
 
     def create_osv_report(self, snapshot_id: int, severities_string: str):
-        snapshot_data = get_all_snapshot_data(snapshot_id)
+        snapshot_data = self.db_snapshots.get_all_snapshot_data(snapshot_id)
         project_name = snapshot_data['project_name']
         datetime = snapshot_data['datetime']
 
@@ -222,7 +224,7 @@ class DOCX_GENERATOR:
         return {'project_name': project_name, 'datetime': datetime, 'report': doc_io}
 
     def create_bdu_report(self, snapshot_id: int, severities_string: str):
-        snapshot_data = get_all_snapshot_data(snapshot_id)
+        snapshot_data = self.db_snapshots.get_all_snapshot_data(snapshot_id)
         project_name = snapshot_data['project_name']
         datetime = snapshot_data['datetime']
 
@@ -618,7 +620,7 @@ class DOCX_GENERATOR:
         return {'report_name': report_name, 'report': doc_io}
 
     def create_bitbake_report(self, snapshot_id: int, layers_string: str, severities_string: str):
-        snapshot_data = get_all_bitbake_snapshot_data(snapshot_id)
+        snapshot_data = self.db_bitbake_snapshots.get_all_bitbake_snapshot_data(snapshot_id)
         project_name = snapshot_data['project_name']
         datetime = snapshot_data['datetime']
 

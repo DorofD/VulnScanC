@@ -125,3 +125,6 @@ def search_all_matches(root_directory: str):
                 note_to_add = i
         result.append(note_to_add)
     return result
+
+
+print(search_all_matches('/home/user/test_analyze/test_analyze_project/'))
