@@ -430,18 +430,3 @@ class OsvSearcher:
         )
 
         return result
-
-
-# "/home/user/test_analyze/test_analyze_project/BaseTools/Source/C/BrotliCompress"
-searcher = OsvSearcher()
-# matches = searcher.search_all_matches(
-#     "/home/user/test_analyze/test_analyze_project/")
-hasher = Hasher()
-for i in hasher.scan('/home/user/test_analyze/test_analyze_project/')[1]:
-    print(i)
-# print(matches)
-# for item in matches:
-#     print(item["repository"])
-#     print(item["directory"])
-#     print(item["match"].get("score"))
-#     print()

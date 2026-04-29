@@ -5,8 +5,8 @@ import requests
 from datetime import datetime
 
 
-from app.services.dependencies.matches_osv_finder import search_all_matches
-from app.services.vulnerabilities.vuln_osv_finder import search_vulnerabilities
+from app.services.dependencies.searcher import Searcher
+from app.services.vulnerabilities.vuln_finder import VulnFinder
 from app.services.results.result_handler import handle_vulns, handle_matches
 
 
@@ -67,7 +67,8 @@ check_argument_rules()
 
 
 try:
-    matches = search_all_matches(args.path)
+    searcher = Searcher()
+    matches = searcher.search_all_matches(args.path)
 except:
     url = f'http://{args.server_address}/search_data'
     json_to_send = {'status': 'fail',
@@ -85,7 +86,8 @@ except:
               response.status_code, response.text)
     sys.exit(1)
 
-vulns = search_vulnerabilities(matches)
+vuln_finder = VulnFinder()
+vulns = vuln_finder.search_vulnerabilities(matches)
 
 
 current_datetime = datetime.now()

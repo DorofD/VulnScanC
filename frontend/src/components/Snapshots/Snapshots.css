@@ -31,25 +31,9 @@ div.snapshotModal {
     height: 780px;
 }
 
-div.bitbakeSnapshotModal {
-    padding: 5px;
-    width: 600px;
-    height: 880px;
-}
-
 div.snapshotModalInfo {
     margin: 5px 5px 12px 5px;
     height: 440px;
-    overflow: auto;
-    word-break: break-word;
-    padding: 10px 20px 10px 10px;
-    border: solid 3px var(--border-color);
-    border-radius: 10px;
-}
-
-div.bitbakeSnapshotModalInfo {
-    margin: 5px 5px 12px 5px;
-    height: 390px;
     overflow: auto;
     word-break: break-word;
     padding: 10px 20px 10px 10px;
@@ -65,16 +49,6 @@ div.snapshotReport {
     overflow: auto;
     word-break: break-word;
     height: 260px;
-}
-
-div.bitbakeSnapshotReport {
-    border: solid 3px var(--border-color);
-    border-radius: 10px;
-    padding: 10px;
-    margin: 5px;
-    overflow: auto;
-    word-break: break-word;
-    height: 400px;
 }
 
 div.snapshotModalNote {
@@ -182,10 +156,4 @@ img.filterLogo {
     border-radius: 10px;
 }
 
-div.projectTypeButtons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    padding-top: 15px;
-}
+
