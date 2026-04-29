@@ -30,14 +30,14 @@ For a detailed overview of the architecture, see the documentation in the [docs/
 
 ### Component Structure
 - Components should be placed in a directory named after the component: `src/components/ComponentName/`.
+- For complex components, use sub-directories for sub-components (e.g., `src/components/Components/SubComponents/`).
 - Include `ComponentName.jsx` and `ComponentName.css` in the directory.
-- For complex components, use sub-directories for sub-components.
 
 ### State and Data
-- **Global State**: Use the `src/contexts/` and `src/hooks/` for global state (Auth, Theme, Notifications, etc.).
+- **Global State**: Use the `src/contexts/` and `src/hooks/` for global state.
+- **Notifications**: Use `useTimedMessagesContext` from `src/hooks/useTimedMessagesContext.js`. Use the `addMessage(message, type, duration)` function for all notifications. **Do not** use the deprecated `NotificationData` system.
 - **API Calls**: Use the `src/services/` layer. **Do not** use `fetch` directly in components. Use `authFetch.js` for authenticated requests.
 
 ### Styling
 - Use component-specific CSS files.
 - Use the `src/color_themes/` for global theme management.
-

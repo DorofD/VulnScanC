@@ -2,22 +2,20 @@
 
 ## Endpoints
 
-### GET /components
-Returns a list of components for a project.
+### `GET /components`
+Retrieves a list of components for a specific project.
 
 - **Auth**: Required.
 - **Query Params**:
-  - `project_id` (required): Project ID
+  - `project_id` (required): The ID of the project.
 
----
-
-### POST /components
+### `POST /components`
 Changes the status of a component.
 
 - **Auth**: Required.
-- **Request Body**:
-  - `component_id` (required): Component ID
-  - `new_status` (required): New status
+- **Request Body** (JSON):
+  - `component_id` (required): The ID of the component.
+  - `new_status` (required): The new status to apply.
 
 **Success Response**
 - Code: 200 OK

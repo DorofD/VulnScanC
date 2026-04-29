@@ -11,7 +11,9 @@ Returns a summary of Llama nodes.
 Sends a chat completion request.
 
 - **Auth**: Required.
-- **Request Body**: `{"messages": [...], "use_rag": boolean}`
+- **Request Body** (JSON):
+  - `messages` (required): List of message objects (role and content).
+  - `use_rag` (optional): boolean.
 
 ### `GET /ai/llama_nodes`
 Retrieves all Llama nodes.
@@ -23,10 +25,11 @@ Manages Llama nodes.
 
 - **Auth**: Required (Admin role).
 - **Actions**:
-  - `add`: `{"action": "add", "values": {...}}`
-  - `change`: `{"action": "change", "node_type": "...", "id": ..., "fields_to_change": {...}}`
-  - `delete`: `{"action": "delete", "node_type": "...", "id": ...}`
-  - `set_active`: `{"action": "set_active", "node_type": "...", "node_uuid": "..."}`
+  - `add`: `{"action": "add", "values": {"model_type": "chat" | "embedding", ...}}`
+  - `change`: `{"action": "change", "node_type": "chat" | "embedding", "id": ..., "fields_to_change": {...}}`
+    - *Note*: If `model_type` is changed in `fields_to_change`, the node is moved between tables.
+  - `delete`: `{"action": "delete", "node_type": "chat" | "embedding", "id": ...}`
+  - `set_active`: `{"action": "set_active", "node_type": "chat" | "embedding", "node_uuid": "..."}`
 
 ### `GET /ai/llama_chat_nodes`
 Retrieves chat-specific Llama nodes.
@@ -59,7 +62,9 @@ Retrieves RAG documents.
 Manages RAG documents.
 
 - **Auth**: Required (Admin role).
+- **Content-Type**: `multipart/form-data` (for `add`) or `application/json` (for `change`/`delete`).
 - **Actions**:
-  - `add`: Requires `file` upload (multipart/form-data).
+  - `add`: Requires `file` (PDF) and optionally `description` in `values` or form fields.
   - `change`: `{"action": "change", "id": ..., "fields_to_change": {...}}`
   - `delete`: `{"action": "delete", "id": ...}`
+

@@ -1,6 +1,4 @@
-# Projects API Reference
-
-This document describes the API endpoints for managing projects.
+# Projects API
 
 ## Endpoints
 
@@ -9,20 +7,11 @@ This document describes the API endpoints for managing projects.
 
 Returns a list of all projects available in the system.
 
-**Response Body**
-```json
-[
-  {
-    "id": 1,
-    "name": "Example Project",
-    "description": "A description of the project"
-  },
-  ...
-]
-```
+- **Auth**: Required.
 
 **Success Response**
 - Code: 200 OK
+- **Response Body**: Array of project objects.
 
 ---
 
@@ -31,7 +20,9 @@ Returns a list of all projects available in the system.
 
 Creates, updates, or deletes a project.
 
-**Request Body**
+- **Auth**: Required.
+
+**Request Body** (JSON):
 
 Create:
 ```json
@@ -62,4 +53,4 @@ Delete:
 
 **Success Response**
 - Code: 200 OK
-- Response Body: `{"success": true}`
+- **Response Body**: `{"success": true}`

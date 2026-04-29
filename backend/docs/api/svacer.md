@@ -2,10 +2,15 @@
 
 ## Endpoints
 
-### GET /svacer
-Works with Svacer data.
+### `GET /svacer`
+Retrieves Svacer-related data.
 
 - **Auth**: Required.
-- **Query Params**:
-  - `action=get_projects` — returns a list of Svacer projects
-  - `action=get_snapshots&project_id=...&branch_id=...` — returns snapshots for a project
+
+**Query Params**:
+- `action=get_projects`: Returns a list of Svacer projects.
+- `action=get_snapshots`: Returns snapshots for a specific project and branch. Requires `project_id` and `branch_id`.
+
+**Success Response**
+- Code: 200 OK
+- **Response Body**: Array of project or snapshot objects.

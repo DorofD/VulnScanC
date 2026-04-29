@@ -13,13 +13,28 @@ The backend follows a layered architecture to decouple business logic from exter
 
 ### Layers
 - **`routes/`**: Thin controllers (Blueprints) that handle incoming HTTP requests.
-- **`services/`**: Core business logic and orchestration.
-- **`adapters/`**: Decouples external APIs (LLMs, etc.) from logic.
+  - `base_routes.py`: Handles core entities like Projects, Components, Vulnerabilities, Comments, and Binary management.
+  - `ai.py`: Manages AI nodes and RAG documents.
+  - `login.py`: Handles authentication and token refresh.
+  - `users.py`, `logs.py`, etc.
+- **`services/`**: Core business logic and orchestration. This layer is subdivided into:
+  - `api_services/`: Orchestration for specific API modules (e.g., `projects`, `components`, `vulnerabilities`, `binary`, `component_comments`).
+  - `ai_services/`: AI-driven logic, RAG, and LLM management.
+  - `sec_dev_scanner/`: Specialized security scanning logic.
+  - `dependencies/`: SBOM and dependency analysis.
+  - `notifications/`: Communication services (e.g., Mail).
+- **`adapters/`**: Decouples external APIs (LLMs, PDF extraction, chunking, etc.) from logic.
 - **`pg_repository/`**: Low-level PostgreSQL interaction via `psycopg2`.
 - **`repository/`**: Higher-level data access logic.
 - **`domain/`**: Core entity definitions.
 
 **Dependency Flow**: `Routes` $\rightarrow$ `Services` $\rightarrow$ `Adapters`/`Repositories` $\rightarrow$ `Database/External APIs`.
+
+## AI & RAG Capabilities
+The backend supports AI-driven analysis through:
+- **LLM Integration**: Support for various Llama-based models via `adapters/llama_api.py`.
+- **RAG (Retrieval-Augmented Generation)**: Ability to ingest documents (PDFs), chunk them, and store them for context-aware AI chat.
+- **Node Management**: Dynamic management of chat, embedding, and general Llama nodes.
 
 ## Documentation
 

@@ -6,14 +6,50 @@
 Retrieves a list of users.
 
 - **Auth**: Required (Admin role).
-- **Success Response**: `200 OK` with list of users.
+
+**Success Response**
+- Code: 200 OK
+- **Response Body**: Array of user objects.
+
+---
 
 ### `POST /users`
 Performs user management actions.
 
 - **Auth**: Required (Admin role).
-- **Actions**:
-  - `add`: `{"action": "add", "login": "...", "auth_type": "...", "role": "...", "password": "..."}`
-  - `change`: `{"action": "change", "id": ..., "fields_to_change": {...}}`
-  - `delete`: `{"action": "delete", "id": ...}`
-- **Success Response**: `200 OK` with `{"success": true}`.
+
+**Request Body** (JSON):
+
+Add:
+```json
+{
+  "action": "add",
+  "login": "...",
+  "auth_type": "...",
+  "role": "...",
+  "password": "..."
+}
+```
+
+Update:
+```json
+{
+  "action": "change",
+  "id": 1,
+  "fields_to_change": {
+    "role": "..."
+  }
+}
+```
+
+Delete:
+```json
+{
+  "action": "delete",
+  "id": 1
+}
+```
+
+**Success Response**
+- Code: 200 OK
+- **Response Body**: `{"success": true}`

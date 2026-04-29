@@ -8,7 +8,7 @@ import traceback
 from datetime import timedelta
 from dotenv import load_dotenv
 
-from app.repository.db_model import create_db as create_sqlite
+# from app.repository.db_model import create_db as create_sqlite
 from app.pg_repository.db_model import create_db
 # from app.services.api_services.users import add_user_db, get_users
 from app.services.users import add_user, get_users
@@ -84,7 +84,7 @@ def create_app():
     app.register_blueprint(ai_bp)
     # print(app.url_map)
     create_db()
-    create_sqlite()
+    # create_sqlite()
     users = get_users()
     if not users:
         add_user('admin', 'local', 'admin', 'admin')

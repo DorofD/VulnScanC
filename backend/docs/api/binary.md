@@ -2,29 +2,25 @@
 
 ## Endpoints
 
-### GET /binary
-Works with the executable module.
+### `GET /binary`
+Retrieves information or the executable module.
 
 - **Auth**: Not required.
 - **Query Params**:
-  - `action=get_info` — returns information about the binary module
-  - `action=get_file` — downloads the executable module (`/binary/executable_module`)
+  - `action=get_info`: Returns information about the binary module.
+  - `action=get_file`: Downloads the executable module.
 
 **Error Response (get_file)**
-- Code: 404 Not Found — if executable module file is not found
+- Code: 404 Not Found — if the executable module file is not found.
 
 ---
 
-### POST /binary
+### `POST /binary`
 Builds the executable module.
 
 - **Auth**: Not required.
-- **Request Body**:
-  ```json
-  {
-    "action": "build_binary"
-  }
-  ```
+- **Request Body** (JSON):
+  - `action` (required): `"build_binary"`
 
 **Success Response**
 - Code: 200 OK
