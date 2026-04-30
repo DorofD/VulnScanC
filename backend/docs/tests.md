@@ -9,19 +9,19 @@ All tests are executed using `unittest` within the project's virtual environment
 ### Running All Tests
 To run all tests in the project:
 ```bash
-cd backend && PYTHONPATH=. ./venv/bin/python3 -m unittest discover tests
+PYTHONPATH=. ./venv/bin/python3 -m unittest discover tests
 ```
 
 ### Running Specific Tests
 To run a specific test file:
 ```bash
-cd backend && PYTHONPATH=. ./venv/bin/python3 tests/test_bdu_fstec.py
+PYTHONPATH=. ./venv/bin/python3 tests/test_bdu_fstec.py
 ```
 
 ## Test Coverage
 
 ### BDU Service (`FSTEC`)
-The BDU service is covered by tests in `backend/tests/test_bdu_fstec.py`.
+The BDU service is covered by tests in `tests/test_bdu_fstec.py`.
 
 **Covered Scenarios:**
 - **`update_bdu`**:
@@ -29,12 +29,12 @@ The BDU service is covered by tests in `backend/tests/test_bdu_fstec.py`.
   - Error handling for failed downloads (e.g., 404).
   - Error handling for missing XML files within the ZIP archive.
 - **`find_vulns_by_cve_id`**:
-  - Successful parsing of XML and matching of CVE identifiers.
-  - Handling of cases where no CVE matches are found.
+  - Successful parsing of XML and matching of CVE identifiers (`test_find_vulns_by_cve_id_success`).
+  - Handling of cases where no CVE matches are found (`test_find_vulns_by_cve_id_no_match`).
 - **`update_vulns`**:
   - Verification that new vulnerabilities are correctly identified and passed to the repository for insertion.
 
 ## Test Structure
 
-- **`backend/tests/`**: Contains all unit and integration tests.
+- **`tests/`**: Contains all unit and integration tests.
 - **Mocking**: We heavily use `unittest.mock` to isolate the business logic from external dependencies like `requests`, `os`, `zipfile`, and the database.

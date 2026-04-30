@@ -35,7 +35,7 @@ For a detailed overview of the architecture, see the documentation in the [docs/
 
 ### State and Data
 - **Global State**: Use the `src/contexts/` and `src/hooks/` for global state.
-- **Notifications**: Use `useTimedMessagesContext` from `src/hooks/useTimedMessagesContext.js`. Use the `addMessage(message, type, duration)` function for all notifications. **Do not** use the deprecated `NotificationData` system.
+- **Notifications**: Use `useTimedMessagesContext` from `src/hooks/useTimedMessagesContext.js`. Use the `addMessage(text, style, duration)` function for all notifications. **Do not** use the deprecated `NotificationData` system.
 - **API Calls**: Use the `src/services/` layer. **Do not** use `fetch` directly in components. Use `authFetch.js` for authenticated requests.
 
 ### Styling

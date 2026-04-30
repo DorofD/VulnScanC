@@ -24,5 +24,5 @@ The project uses a layered architecture to decouple business logic from external
 
 ## Deep Dive Documentation
 For detailed instructions on specific parts of the project, refer to the following:
-- [Backend Documentation (backend/AGENTS.md)](backend/AGENTS.md)
-- [Frontend Documentation (frontend/AGENTS.md)](frontend/AGENTS.md)
+- [Backend Documentation (backend/AGENTS.md)](./backend/AGENTS.md)
+- [Frontend Documentation (frontend/AGENTS.md)](./frontend/AGENTS.md)

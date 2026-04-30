@@ -18,7 +18,7 @@
 ### Error Handling
 - Use the `useTimedMessagesContext` to provide temporary feedback to the user.
 - Use the `addMessage` function from the `useTimedMessagesContext` hook.
-- The `addMessage` function accepts three arguments: `message` (string), `type` ('success', 'error', 'warning', 'info'), and `duration` (number in milliseconds).
+- The `addMessage` function accepts three arguments: `text` (string), `style` ('success', 'error', 'warning', 'info'), and `duration` (number in milliseconds).
 - Example: `addMessage('Operation successful', 'success', 3000)`
 - Example: `addMessage('Error: ' + err.message, 'error', 5000)`
 - This method is preferred over `NotificationContext` as it automatically handles message expiration.

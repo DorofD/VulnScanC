@@ -13,6 +13,6 @@ The BDU service handles the integration with the FSTEC BDU (БДУ ФСТЭК).
 For detailed API endpoint descriptions, see the [BDU API](./api/bdu.md).
 
 ## Testing
-- **Unit tests**: Located in `backend/tests/test_bdu_fstec.py`.
+- **Unit tests**: Located in `../tests/test_bdu_fstec.py`.
 For more information on the testing strategy, see [Testing Documentation](./tests.md).
 
