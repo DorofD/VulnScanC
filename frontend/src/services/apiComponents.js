@@ -20,15 +20,3 @@ export async function apiChangeComponentStatus(id, status) {
     })
     return response
 }
-
-export async function apiAddProject(name) {
-    const response = await authFetch(`${process.env.BACKEND_URL}/projects`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            action: 'add',
-            name: name,
-        })
-    })
-    return response
-}

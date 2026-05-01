@@ -17,7 +17,13 @@ class SearchDataService:
 
     def save_search_data(self, data: dict):
         """
-        Принимает json в формате {"project_name": ...,"datetime": 13_08_2024_17_00,  "dependencies": ..., "vulnerabilities": ...}
+        Принимает json в формате 
+                {'status': 'ok',
+                'pipeline_id': args.pipeline_id,
+                'project_name': args.project_name,
+                'datetime': formatted_datetime,
+                'dependencies': matches,
+                'vulnerabilities': vulns}
         """
         try:
             projects = self.db_projects.get_projects()

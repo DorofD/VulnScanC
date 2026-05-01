@@ -1,6 +1,7 @@
 from psycopg2 import sql
 from app.pg_repository.queries.base_query import execute_query
 
+
 class DBComponents():
     def __init__(self):
         pass
@@ -21,7 +22,11 @@ class DBComponents():
             RETURNING *
         """
         params = (project_id, path, type, address, tag, version, score)
-        return execute_query(query, params=params, fetch="one")
+        try:
+            return execute_query(query, params=params, fetch="one")
+        except Exception:
+            print(f"Error adding component: {params}")
+            raise
 
     def get_component(self, component_id: int):
         query = "SELECT * FROM components WHERE id = %s"

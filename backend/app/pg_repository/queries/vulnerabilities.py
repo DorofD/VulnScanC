@@ -1,5 +1,6 @@
 from app.pg_repository.queries.base_query import execute_query
 
+
 class DBVulnerabilities():
     def __init__(self):
         pass
@@ -24,7 +25,7 @@ class DBVulnerabilities():
         """ Возвращает количество уязвимостей в компоненте """
         query = "SELECT COUNT(*) as count FROM vulnerabilities WHERE component_id = %s"
         result = execute_query(query, params=(component_id,), fetch="one")
-        return result[0]['count'] if result and result[0] else 0
+        return result['count']
 
     def add_vulnerabilities(self, data_list: list):
         """
@@ -32,4 +33,5 @@ class DBVulnerabilities():
         """
         query = "INSERT INTO vulnerabilities (component_id, osv_id, full_data) VALUES (%s, %s, %s)"
         for item in data_list:
-            execute_query(query, params=(item['component_id'], item['osv_id'], item['full_data']))
+            execute_query(query, params=(
+                item['component_id'], item['osv_id'], item['full_data']))

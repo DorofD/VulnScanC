@@ -134,7 +134,7 @@ def create_db():
                     tag TEXT,
                     version TEXT,
                     score DOUBLE PRECISION,
-                    status INTEGER NOT NULL
+                    status TEXT
                 );
                 """)
 

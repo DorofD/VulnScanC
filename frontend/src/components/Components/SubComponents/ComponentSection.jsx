@@ -23,6 +23,7 @@ const ComponentSection = ({
     onDeleteLicense,
     onAddLicense,
     onSelectStatus,
+    onChangeComponentStatus,
     newComponentStatus,
     setNewComponentStatus,
     newLicense,
@@ -143,7 +144,7 @@ const ComponentSection = ({
                                 <option value="confirmed">confirmed</option>
                                 <option value="denied">denied</option>
                             </select>
-                            <Button style={"projectAccept"} onClick={() => onOpenAcceptModal(onSelectStatus)}> Изменить </Button>
+                            <Button style={"projectAccept"} onClick={() => onOpenAcceptModal(onChangeComponentStatus)}> Изменить </Button>
                             <Button style={"projectClose"} onClick={onCloseChangeModal}> Закрыть </Button>
                         </div>
                     </div>

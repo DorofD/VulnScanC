@@ -33,18 +33,10 @@ export default function Components() {
         setPickedComponent, 
         filterComponents, 
         setFilterComponents, 
-        onComponentClick,
-        onCheckLicenses,
-        onSelectStatus,
         newComponentStatus,
         setNewComponentStatus,
-        newLicense,
-        setNewLicense,
-        onAddLicense,
-        onDeleteLicense,
-        getProjectComponents,
-        getComponentComments
-    } = useComponents();
+        getProjectComponents
+    } = useComponents(pickedProject, setLoaderActive);
 
     const { 
         componentVulnerabilities, 
@@ -67,18 +59,19 @@ export default function Components() {
         componentComments, 
         componentComment, 
         setComponentComment, 
-        onAddComponentComment, 
-        onDeleteComponentComment, 
-        onPickedComment, 
         pickedComment,
-        userName: commentUserName
-    } = useComments(userId);
+        setPickedComment,
+        addComponentComment: onAddComponentComment, 
+        deleteComponentComment: onDeleteComponentComment, 
+        getComponentComments
+    } = useComments(pickedComponent?.id, userId);
 
     const [loaderActive, setLoaderActive] = React.useState(false);
     const [isChangeModalOpen, setIsChangeModalOpen] = React.useState(false);
     const [isAcceptModalOpen, setIsAcceptModalOpen] = React.useState(false);
     const [isVulnerabilityModalOpen, setIsVulnerabilityModalOpen] = React.useState(false);
     const [actionFunction, setActionFunction] = React.useState(null);
+    const [newLicense, setNewLicense] = React.useState({ component_id: '', key: '', name: '', spdx_id: '', url: '' });
 
     React.useEffect(() => {
         getProjects();
@@ -109,6 +102,88 @@ export default function Components() {
 
     const handleSelectStatus = (event) => {
         setNewComponentStatus(event.target.value);
+    };
+
+    const handleChangeComponentStatus = async () => {
+        if (newComponentStatus === '') {
+            addMessage('Выберете новый статус', 'error', 3000);
+            return;
+        }
+        try {
+            const { apiChangeComponentStatus } = await import('../../services/apiComponents');
+            const response = await apiChangeComponentStatus(pickedComponent.id, newComponentStatus);
+            if (response.status === 200) {
+                await getProjectComponents(pickedProject.id);
+                setNewComponentStatus('');
+                addMessage('Статус изменен', 'success', 3000);
+            } else {
+                addMessage('Не удалось изменить статус', 'error', 3000);
+                setNewComponentStatus('');
+            }
+        } catch (error) {
+            addMessage(`Проблема с бекендом: ${error.message || error}`, 'error', 5000);
+            setNewComponentStatus('');
+        }
+    };
+
+    const handleCheckLicenses = async () => {
+        if (!pickedProject.id) return;
+        addMessage('Выполняется поиск лицензий', 'success', 3000);
+        setLoaderActive(true);
+
+        try {
+            const { apiCheckLicenses } = await import('../../services/apiLicenses');
+            const response = await apiCheckLicenses(pickedProject.id);
+            if (response.status === 200) {
+                setLoaderActive(false);
+                await getProjectComponents(pickedProject.id);
+                addMessage('Поиск завершен', 'success', 3000);
+            } else {
+                setLoaderActive(false);
+                addMessage('Не удалось выполнить поиск лицензий', 'error', 3000);
+            }
+        } catch (error) {
+            setLoaderActive(false);
+            addMessage(`Проблема с бекендом: ${error.message || error}`, 'error', 5000);
+        }
+    };
+
+    const handleAddLicense = async () => {
+        if (!pickedComponent.id) return;
+        try {
+            const { apiAddLicense } = await import('../../services/apiLicenses');
+            const response = await apiAddLicense(
+                pickedComponent.id,
+                newLicense.key,
+                newLicense.name,
+                newLicense.spdx_id,
+                newLicense.url
+            );
+            if (response.status === 200) {
+                setNewLicense({ component_id: '', key: '', name: '', spdx_id: '', url: '' });
+                await getProjectComponents(pickedProject.id);
+                addMessage('Лицензия добавлена', 'success', 3000);
+            } else {
+                addMessage('Не удалось добавить лицензию', 'error', 3000);
+            }
+        } catch (error) {
+            addMessage(`Проблема с бекендом: ${error.message || error}`, 'error', 5000);
+        }
+    };
+
+    const handleDeleteLicense = async (licenseId) => {
+        try {
+            const { apiDeleteLicense } = await import('../../services/apiLicenses');
+            const response = await apiDeleteLicense(licenseId);
+            if (response.status === 200) {
+                await getProjectComponents(pickedProject.id);
+                addMessage('Лицензия удалена', 'success', 3000);
+            } else {
+                addMessage('Не удалось удалить лицензию', 'error', 3000);
+            }
+        } catch (error) {
+            addMessage(`Проблема с бекендом: ${error.message || error}`, 'error', 5000);
+        }
     };
 
     return (
@@ -149,12 +224,13 @@ export default function Components() {
                     getComponentComments(comp.id);
                     setIsChangeModalOpen(true);
                 }}
-                onCheckLicenses={onCheckLicenses}
+                onCheckLicenses={handleCheckLicenses}
                 onCloseChangeModal={closeChangeModal}
                 onOpenAcceptModal={openAcceptModalWithAction}
                 onCloseAcceptModal={closeAcceptModal}
-                onDeleteLicense={onDeleteLicense}
-                onAddLicense={onAddLicense}
+                onDeleteLicense={handleDeleteLicense}
+                onAddLicense={handleAddLicense}
+                onChangeComponentStatus={handleChangeComponentStatus}
                 onSelectStatus={handleSelectStatus}
                 newComponentStatus={newComponentStatus}
                 setNewComponentStatus={setNewComponentStatus}
@@ -165,9 +241,8 @@ export default function Components() {
                 setComponentComment={setComponentComment}
                 onAddComponentComment={onAddComponentComment}
                 onDeleteComponentComment={onDeleteComponentComment}
-                onPickedComment={onPickedComment}
                 pickedComment={pickedComment}
-                userName={userName}
+                onPickedComment={setPickedComment}
                 showComponentVulnerabilities={showComponentVulnerabilities}
                 showComponentVulnerabilitiesBdu={showComponentVulnerabilitiesBdu}
                 setShowedVunls={setShowedVunls}
@@ -178,16 +253,16 @@ export default function Components() {
                 closeAcceptModal={closeAcceptModal}
                 closeVulnerabilityModal={closeVulnerabilityModal}
                 actionFunction={actionFunction}
-                pickedProjectName={pickedProject.name}
-                pickedComponentPath={pickedComponent.path}
-                pickedComponentType={pickedComponent.type}
-                pickedComponentAddress={pickedComponent.address}
-                pickedComponentTag={pickedComponent.tag}
-                pickedComponentVersion={pickedComponent.version}
-                pickedComponentScore={pickedComponent.score}
-                pickedComponentStatus={pickedComponent.status}
-                pickedComponentLicenses={pickedComponent.licenses}
-                pickedComponentId={pickedComponent.id}
+                pickedProjectName={pickedProject?.name || ''}
+                pickedComponentPath={pickedComponent?.path || ''}
+                pickedComponentType={pickedComponent?.type || ''}
+                pickedComponentAddress={pickedComponent?.address || ''}
+                pickedComponentTag={pickedComponent?.tag || ''}
+                pickedComponentVersion={pickedComponent?.version || ''}
+                pickedComponentScore={pickedComponent?.score || ''}
+                pickedComponentStatus={pickedComponent?.status || ''}
+                pickedComponentLicenses={pickedComponent?.licenses || []}
+                pickedComponentId={pickedComponent?.id || ''}
             />
 
             <VulnerabilitySection 

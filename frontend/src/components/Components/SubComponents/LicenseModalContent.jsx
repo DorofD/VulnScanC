@@ -15,7 +15,7 @@ const LicenseModalContent = ({
         <div className="changeModalComponents">
             <div className="changeModalComponentsParams">
                 <p>Лицензии:</p>
-                {pickedComponentLicenses && pickedComponentLicenses.length > 0 ? (
+                {(pickedComponentLicenses && pickedComponentLicenses.length) && (
                     <ul className="license">
                         {pickedComponentLicenses.map((license) => (
                             <li className="license" key={license.id}>
@@ -27,7 +27,7 @@ const LicenseModalContent = ({
                             </li>
                         ))}
                     </ul>
-                ) : (
+                ) || (
                     <> Лицензий не найдено</>
                 )}
                 <p>Добавить лицензию</p>
