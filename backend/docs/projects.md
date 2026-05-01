@@ -12,7 +12,7 @@ Projects allow users to:
 ## Architecture
 The module follows the standard layered architecture:
 
-- **Routes**: `../app/routes/base_routes.py` handles the HTTP interface for project management.
+- **Routes**: `../app/routes/projects.py` handles the HTTP interface for project management.
 - **Services**: `../app/services/api_services/projects.py` contains the orchestration logic for project operations.
 - **Repository**: `../app/pg_repository/queries/projects.py` manages direct SQL interactions with the `projects` table.
 - **Domain/Database**: The `projects` table in PostgreSQL stores the `id`, `name`, and `description`.

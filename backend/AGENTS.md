@@ -13,7 +13,6 @@ The backend follows a layered architecture to decouple business logic from exter
 
 ### Layers
 - **`routes/`**: Thin controllers (Blueprints) that handle incoming HTTP requests.
-  - `base_routes.py`: Handles core entities like Projects, Components, Vulnerabilities, Comments, and Binary management.
   - `ai.py`: Manages AI nodes and RAG documents.
   - `login.py`: Handles authentication and token refresh.
   - `bdu.py`: BDU (FSTEC) integration routes.

@@ -55,7 +55,6 @@ def create_app():
     app.logger.addHandler(handler)
     app.logger.setLevel(logging.INFO)
 
-    from app.routes.base_routes import main as main_blueprint
     from app.routes.login import login_bp
     from app.routes.users import users_bp
     from app.routes.logs import logs_bp
@@ -68,8 +67,13 @@ def create_app():
     from app.routes.licenses import licenses_bp
     from app.routes.snapshots import snapshots_bp
     from app.routes.ai import ai_bp
+    from app.routes.binary import binary_bp
+    from app.routes.projects import projects_bp
+    from app.routes.components import components_bp
+    from app.routes.vulnerabilities import vulnerabilities_bp
+    from app.routes.comments import comments_bp
+    from app.routes.search_data import search_data_bp
 
-    app.register_blueprint(main_blueprint)
     app.register_blueprint(login_bp)
     app.register_blueprint(users_bp)
     app.register_blueprint(logs_bp)
@@ -82,6 +86,12 @@ def create_app():
     app.register_blueprint(licenses_bp)
     app.register_blueprint(snapshots_bp)
     app.register_blueprint(ai_bp)
+    app.register_blueprint(binary_bp)
+    app.register_blueprint(projects_bp)
+    app.register_blueprint(components_bp)
+    app.register_blueprint(vulnerabilities_bp)
+    app.register_blueprint(comments_bp)
+    app.register_blueprint(search_data_bp)
     # print(app.url_map)
     create_db()
     # create_sqlite()
