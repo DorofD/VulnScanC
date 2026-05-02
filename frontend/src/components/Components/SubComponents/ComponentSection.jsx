@@ -1,8 +1,7 @@
 import React from "react";
-import Button from "../../../components/Button/Button";
+import Filter from "../../Filter/Filter";
 import ComponentCard from "../ComponentCard/ComponentCard";
 import Modal from "../../../components/Modal/Modal";
-import AcceptModal from "../../../components/AcceptModal/AcceptModal";
 import LicenseModalContent from "./LicenseModalContent";
 import CommentModalContent from "./CommentModalContent";
 
@@ -18,8 +17,6 @@ const ComponentSection = ({
     onCloseChangeModal,
     isChangeModalOpen,
     onOpenAcceptModal,
-    isAcceptModalOpen,
-    onCloseAcceptModal,
     onDeleteLicense,
     onAddLicense,
     onSelectStatus,
@@ -41,9 +38,7 @@ const ComponentSection = ({
     setShowedVunls,
     onOpenVulnerabilityModal,
     closeChangeModal,
-    closeAcceptModal,
     closeVulnerabilityModal,
-    actionFunction,
     pickedProjectName,
     pickedComponentPath,
     pickedComponentType,
@@ -66,31 +61,17 @@ const ComponentSection = ({
         <div className="componentsComponents">
             <p>Компоненты</p>
 
-            <div>
-                <img src="" alt="" className="filterLogo" /> {/* filterLogo was not imported in original but used */}
-                <input 
-                    type="text" 
-                    className="componentFilter" 
-                    placeholder="Название" 
-                    onChange={e => setFilterComponents({ ...filterComponents, address: e.target.value })} 
-                    value={filterComponents.address} 
-                />
-                <input 
-                    type="text" 
-                    className="componentFilter" 
-                    placeholder="Статус" 
-                    onChange={e => setFilterComponents({ ...filterComponents, status: e.target.value })} 
-                    value={filterComponents.status} 
-                />
-                <button onClick={() => setFilterComponents({ address: '', status: '' })} className="clearFilter">Очистить</button>
-            </div>
+            <Filter onClick={() => setFilterComponents({ address: '', status: '' })}>
+                <input type="text" className="filter" placeholder="Название" onChange={e => setFilterComponents({ ...filterComponents, address: e.target.value })} value={filterComponents.address} />
+                <input type="text" className="filter" placeholder="Статус" onChange={e => setFilterComponents({ ...filterComponents, status: e.target.value })} value={filterComponents.status} />
+            </Filter>
 
             {pickedProject.id === '' && <p> Выберете проект</p>}
             {pickedProject.id !== '' && loadingComponents === 'loading' && <p> Loading components...</p>}
             {loadingComponents === 'error' && <p> бекенд отвалился</p>}
             {loadingComponents === 'loaded' && (
                 <>
-                    <Button style={"componentVulnerabilities"} onClick={onCheckLicenses}> Проверить лицензии </Button>
+                    <button onClick={onCheckLicenses}> Проверить лицензии </button>
 
                     {components.length === 0 && loadingComponents === 'loaded' && <p> Компоненты не найдены</p>}
                     {filteredComponents.map(component => (
@@ -111,66 +92,60 @@ const ComponentSection = ({
 
 <Modal isOpen={isChangeModalOpen} onClose={onCloseChangeModal}>
                 <div className="changeModalComponents">
-                    <div className="changeModalComponentsParams">
-                        <p>Проект: {pickedProjectName}</p>
-                        <p>Путь в проекте: {pickedComponentPath}</p>
-                        <p>Тип: {pickedComponentType}</p>
-                        <p>Адрес: {pickedComponentAddress}</p>
-                        <p>Тег: {pickedComponentTag}</p>
-                        <p>Версия: {pickedComponentVersion}</p>
-                        <p>Score: {pickedComponentScore}</p>
-                        <p>Статус: {pickedComponentStatus}</p>
-                        
-                        <LicenseModalContent 
-                            pickedComponentLicenses={pickedComponentLicenses}
-                            onOpenAcceptModal={onOpenAcceptModal}
-                            onDeleteLicense={onDeleteLicense}
-                            newLicense={newLicense}
-                            setNewLicense={setNewLicense}
-                            onAddLicense={onAddLicense}
+                    <div className="changeModalComponentsLeft">
+                        <div className="changeModalComponentsParams">
+                            <p>Проект: {pickedProjectName}</p>
+                            <p>Путь в проекте: {pickedComponentPath}</p>
+                            <p>Тип: {pickedComponentType}</p>
+                            <p>Адрес: {pickedComponentAddress}</p>
+                            <p>Тег: {pickedComponentTag}</p>
+                            <p>Версия: {pickedComponentVersion}</p>
+                            <p>Score: {pickedComponentScore}</p>
+                            <p>Статус: {pickedComponentStatus}</p>
+                            
+                            <LicenseModalContent 
+                                pickedComponentLicenses={pickedComponentLicenses}
+                                onOpenAcceptModal={onOpenAcceptModal}
+                                onDeleteLicense={onDeleteLicense}
+                                newLicense={newLicense}
+                                setNewLicense={setNewLicense}
+                                onAddLicense={onAddLicense}
+                                pickedComponentId={pickedComponentId}
+                            />
+                        </div>
+                        <div className="changeModalComponentsFooter">
+                            <div className="changeModalComponentVulnerabilitiesButton">
+                                <button onClick={() => { setShowedVunls('osv'); showComponentVulnerabilities(); }}> Показать уязвимости CVE </button>
+                            </div>
+                            <div className="changeModalComponentVulnerabilitiesButton">
+                                <button onClick={() => { setShowedVunls('bdu'); showComponentVulnerabilitiesBdu(); }}> Показать уязвимости БДУ </button>
+                            </div>
+                            <div className="changeModalProjectsButtons">
+                                <select className="componentSelect" name="" id="" onChange={onSelectStatus}>
+                                    <option value="" disabled selected hidden>Изменить статус</option>
+                                    <option value="none">none</option>
+                                    <option value="confirmed">confirmed</option>
+                                    <option value="denied">denied</option>
+                                </select>
+                                <button onClick={() => onOpenAcceptModal(onChangeComponentStatus)}> Изменить </button>
+                                <button onClick={onCloseChangeModal}> Закрыть </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="changeModalComponentsRight">
+                        <CommentModalContent 
+                            componentComments={componentComments}
+                            userName={userName}
+                            pickedComment={pickedComment}
+                            onPickedComment={onPickedComment}
+                            onDeleteComponentComment={onDeleteComponentComment}
+                            componentComment={componentComment}
+                            setComponentComment={setComponentComment}
+                            onAddComponentComment={onAddComponentComment}
                             pickedComponentId={pickedComponentId}
                         />
-
-                        <div className="changeModalComponentVulnerabilitiesButton">
-                            <Button style={"componentVulnerabilities"} onClick={() => { setShowedVunls('osv'); showComponentVulnerabilities(); }}> Показать уязвимости CVE </Button>
-                        </div>
-                        <div className="changeModalComponentVulnerabilitiesButton">
-                            <Button style={"componentVulnerabilities"} onClick={() => { setShowedVunls('bdu'); showComponentVulnerabilitiesBdu(); }}> Показать уязвимости БДУ </Button>
-                        </div>
-                        <div className="changeModalProjectsButtons">
-                            <select className="componentSelect" name="" id="" onChange={onSelectStatus}>
-                                <option value="" disabled selected hidden>Изменить статус</option>
-                                <option value="none">none</option>
-                                <option value="confirmed">confirmed</option>
-                                <option value="denied">denied</option>
-                            </select>
-                            <Button style={"projectAccept"} onClick={() => onOpenAcceptModal(onChangeComponentStatus)}> Изменить </Button>
-                            <Button style={"projectClose"} onClick={onCloseChangeModal}> Закрыть </Button>
-                        </div>
                     </div>
-                    
-                    <CommentModalContent 
-                        componentComments={componentComments}
-                        userName={userName}
-                        pickedComment={pickedComment}
-                        onPickedComment={onPickedComment}
-                        onDeleteComponentComment={onDeleteComponentComment}
-                        componentComment={componentComment}
-                        setComponentComment={setComponentComment}
-                        onAddComponentComment={onAddComponentComment}
-                        pickedComponentId={pickedComponentId}
-                    />
                 </div>
-
-                <AcceptModal isOpen={isAcceptModalOpen} onClose={onCloseAcceptModal}>
-                    <div className="acceptModalProjects">
-                        <div className="acceptModalProjectsText">Вы уверены?</div>
-                        <div className="acceptModalProjectsButtons">
-                            <Button style={"projectAccept"} onClick={() => { actionFunction(); onCloseAcceptModal(); }}> Да </Button>
-                            <Button style={"projectReject"} onClick={onCloseAcceptModal}> Нет </Button>
-                        </div>
-                    </div>
-                </AcceptModal>
             </Modal>
 
             {/* AcceptModal is already handled above inside the Modal for some reason in original code, 

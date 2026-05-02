@@ -4,12 +4,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  opacity: 70%;
+  opacity: 0.7;
   background-color: var(--main-background-color);
   z-index: 2000;
 }
 
-div.acceptModal {
+.modalAccept {
   box-sizing: border-box;
   border: solid 4px var(--border-picked-color);
   border-radius: 20px;
@@ -19,8 +19,11 @@ div.acceptModal {
   transform: translate(-50%, -50%);
   background-color: var(--main-background-color);
   z-index: 2001;
-  width: auto;
+  width: 400px;
+  max-width: 90vw;
+  max-height: 85vh;
   height: auto;
+  overflow: auto;
 }
 
 div.acceptModalButtons {

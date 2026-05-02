@@ -1,0 +1,64 @@
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.134:5001
+Press CTRL+C to quit
+Traceback (most recent call last):
+  File "/home/user/VulnScanC/backend/app/services/search_data/search_data.py", line 87, in save_search_data
+    self.db_vulnerabilities.add_vulnerabilities(vulns_to_add)
+  File "/home/user/VulnScanC/backend/app/pg_repository/queries/vulnerabilities.py", line 37, in add_vulnerabilities
+    item['component_id'], item['osv_id'], item['full_data']))
+TypeError: tuple indices must be integers or slices, not str
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/.local/lib/python3.10/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/.local/lib/python3.10/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/VulnScanC/backend/app/routes/search_data.py", line 13, in search_data
+    SearchDataService().save_search_data(data)
+  File "/home/user/VulnScanC/backend/app/services/search_data/search_data.py", line 89, in save_search_data
+    raise Exception(f"Error when adding vulnerabilities: {exc}")
+Exception: Error when adding vulnerabilities: tuple indices must be integers or slices, not str
+192.168.1.134 - - [02/May/2026 04:40:52] "POST /search_data HTTP/1.1" 500 -
+192.168.1.2 - - [02/May/2026 05:40:32] "OPTIONS /projects HTTP/1.1" 200 -
+192.168.1.2 - - [02/May/2026 05:40:32] "GET /projects HTTP/1.1" 422 -
+192.168.1.2 - - [02/May/2026 05:40:32] "POST /refresh HTTP/1.1" 401 -
+192.168.1.2 - - [02/May/2026 05:40:37] "OPTIONS /login HTTP/1.1" 200 -
+Traceback (most recent call last):
+  File "/home/user/.local/lib/python3.10/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/.local/lib/python3.10/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/VulnScanC/backend/app/routes/login.py", line 13, in login
+    secure_cookie = os.environ['REFRESH_TOKEN_COOKIE_SECURE']
+  File "/usr/lib/python3.10/os.py", line 680, in __getitem__
+    raise KeyError(key) from None
+KeyError: 'REFRESH_TOKEN_COOKIE_SECURE'
+192.168.1.2 - - [02/May/2026 05:40:37] "POST /login HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/home/user/.local/lib/python3.10/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/.local/lib/python3.10/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/VulnScanC/backend/app/routes/login.py", line 13, in login
+    secure_cookie = os.environ['REFRESH_TOKEN_COOKIE_SECURE']
+  File "/usr/lib/python3.10/os.py", line 680, in __getitem__
+    raise KeyError(key) from None
+KeyError: 'REFRESH_TOKEN_COOKIE_SECURE'
+192.168.1.2 - - [02/May/2026 05:40:39] "POST /login HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/home/user/.local/lib/python3.10/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/.local/lib/python3.10/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/VulnScanC/backend/app/routes/login.py", line 13, in login
+    secure_cookie = os.environ['REFRESH_TOKEN_COOKIE_SECURE']
+  File "/usr/lib/python3.10/os.py", line 680, in __getitem__
+    raise KeyError(key) from None
+KeyError: 'REFRESH_TOKEN_COOKIE_SECURE'
+192.168.1.2 - - [02/May/2026 05:40:41] "POST /login HTTP/1.1" 500 -

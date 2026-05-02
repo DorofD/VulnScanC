@@ -280,7 +280,7 @@ export default function Users() {
 
             <AcceptModal isOpen={isAcceptModalOpen} onClose={closeAcceptModal}>
                 <div className="acceptModal">
-                    <div className="acceptModalText">
+                    <div className="acceptModal">
                         {additionalText && <>
                             {additionalText.map(note =>
                                 <p>{note}</p>

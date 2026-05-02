@@ -12,11 +12,13 @@ import VulnerabilitySection from "./SubComponents/VulnerabilitySection";
 import Loader from "../Loader/Loader";
 import Modal from "../Modal/Modal";
 import AcceptModal from "../AcceptModal/AcceptModal";
-import Button from "../Button/Button";
+import "./Components.css";
 
 export default function Components() {
     const { userName, userId } = useAuthContext();
     const { messages, addMessage } = useTimedMessagesContext();
+
+    const [loaderActive, setLoaderActive] = React.useState(false);
 
     const { 
         projects, 
@@ -65,12 +67,10 @@ export default function Components() {
         deleteComponentComment: onDeleteComponentComment, 
         getComponentComments
     } = useComments(pickedComponent?.id, userId);
-
-    const [loaderActive, setLoaderActive] = React.useState(false);
     const [isChangeModalOpen, setIsChangeModalOpen] = React.useState(false);
     const [isAcceptModalOpen, setIsAcceptModalOpen] = React.useState(false);
     const [isVulnerabilityModalOpen, setIsVulnerabilityModalOpen] = React.useState(false);
-    const [actionFunction, setActionFunction] = React.useState(null);
+    const actionRef = React.useRef(null);
     const [newLicense, setNewLicense] = React.useState({ component_id: '', key: '', name: '', spdx_id: '', url: '' });
 
     React.useEffect(() => {
@@ -78,7 +78,7 @@ export default function Components() {
     }, []);
 
     const openAcceptModalWithAction = (action) => {
-        setActionFunction(() => action);
+        actionRef.current = action;
         setIsAcceptModalOpen(true);
     };
 
@@ -252,7 +252,6 @@ export default function Components() {
                 closeChangeModal={closeChangeModal}
                 closeAcceptModal={closeAcceptModal}
                 closeVulnerabilityModal={closeVulnerabilityModal}
-                actionFunction={actionFunction}
                 pickedProjectName={pickedProject?.name || ''}
                 pickedComponentPath={pickedComponent?.path || ''}
                 pickedComponentType={pickedComponent?.type || ''}
@@ -283,12 +282,10 @@ export default function Components() {
             />
 
             <AcceptModal isOpen={isAcceptModalOpen} onClose={closeAcceptModal}>
-                <div className="acceptModalProjects">
-                    <div className="acceptModalProjectsText">Вы уверены?</div>
-                    <div className="acceptModalProjectsButtons">
-                        <Button style={"projectAccept"} onClick={() => { actionFunction(); closeAcceptModal(); }}> Да </Button>
-                        <Button style={"projectReject"} onClick={closeAcceptModal}> Нет </Button>
-                    </div>
+                <div className="acceptModalText">Вы уверены?</div>
+                <div className="acceptModalButtons">
+                    <button className={"positive"} onClick={async () => { await actionRef.current?.(); closeAcceptModal(); }}> Да </button>
+                    <button className={"critical"} onClick={closeAcceptModal}> Нет </button>
                 </div>
             </AcceptModal>
 

@@ -82,7 +82,8 @@ class SearchDataService:
                     for vuln in note['vulnerabilities']:
                         if vuln['id'] not in osv_vuln_ids:
                             vulns_to_add.append(
-                                (components_path_id_dict[note['directory']], vuln['id'], str(vuln)))
+                                {'component_id': components_path_id_dict[note['directory']], 'osv_id': vuln['id'], 'full_data': str(vuln)})
+
             if vulns_to_add:
                 self.db_vulnerabilities.add_vulnerabilities(vulns_to_add)
         except Exception as exc:

@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { apiGetComponentVulnerabilities } from "../services/apiVulnerabilities";
 import { apiGetBduComponentVulns } from "../services/apiBduFstec";
-import { useNotificationContext } from "../hooks/useNotificationContext";
+import { useTimedMessagesContext } from "../hooks/useTimedMessagesContext";
 
 export function useVulnerabilities(pickedComponentId) {
     const [componentVulnerabilities, setComponentVulnerabilities] = useState([]);
     const [showedVunls, setShowedVunls] = useState(null); // 'osv' | 'bdu' | null
     const [filterVulnerabilities, setFilterVulnerabilities] = useState({ osv_id: '' });
     const [filterVulnerabilitiesBdu, setFilterVulnerabilitiesBdu] = useState({ bdu_id: '' });
-    const { notificationData, toggleNotificationFunc } = useNotificationContext();
+    const [pickedVulnerability, setPickedVulnerability] = useState(null);
+    const { addMessage } = useTimedMessagesContext();
 
     async function showComponentVulnerabilities() {
         try {
@@ -16,8 +17,7 @@ export function useVulnerabilities(pickedComponentId) {
             setComponentVulnerabilities(vulnerabilities);
         } catch (err) {
             setComponentVulnerabilities([]);
-            notificationData({ message: `Проблема с бекендом: ${err}`, type: 'error' });
-            toggleNotificationFunc();
+            addMessage(`Проблема с бекендом: ${err}`, 'error', 5000);
         }
     }
 
@@ -27,9 +27,16 @@ export function useVulnerabilities(pickedComponentId) {
             setComponentVulnerabilities(vulnerabilities);
         } catch (err) {
             setComponentVulnerabilities([]);
-            notificationData({ message: `Проблема с бекендом: ${err}`, type: 'error' });
-            toggleNotificationFunc();
+            addMessage(`Проблема с бекендом: ${err}`, 'error', 5000);
         }
+    }
+
+    function onOpenVulnerabilityModal() {
+        // placeholder - modal open handled by parent
+    }
+
+    function closeVulnerabilityModal() {
+        setPickedVulnerability(null);
     }
 
     const filteredVulnerabilities = componentVulnerabilities.filter(item => {
@@ -50,6 +57,8 @@ export function useVulnerabilities(pickedComponentId) {
         componentVulnerabilities,
         showedVunls,
         setShowedVunls,
+        pickedVulnerability,
+        setPickedVulnerability,
         filterVulnerabilities,
         setFilterVulnerabilities,
         filterVulnerabilitiesBdu,
@@ -57,6 +66,8 @@ export function useVulnerabilities(pickedComponentId) {
         filteredVulnerabilities,
         showComponentVulnerabilities,
         showComponentVulnerabilitiesBdu,
+        onOpenVulnerabilityModal,
+        closeVulnerabilityModal,
         setComponentVulnerabilities
     };
 }

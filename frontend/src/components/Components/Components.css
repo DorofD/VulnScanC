@@ -20,49 +20,88 @@ div.componentsVulnerabilities {
 }
 
 textarea.mainProjects {
-    font-family: Arial;
-    font-size: 18px;
     width: 95%;
     height: 70%;
     resize: none;
     padding: 5px;
     margin-bottom: 10px;
-    border: solid 4px #afafaf;
-    border-radius: 10px;
-    color: black;
+    border: solid 4px var(--border-color);
 }
 
 div.changeModalComponents {
-    padding: 5px;
-    width: 600px;
-    height: 730px;
+    padding: 10px;
+    width: 90vw;
+    max-width: 1200px;
+    height: 85vh;
+    max-height: 800px;
+    display: flex;
+    gap: 12px;
+    overflow: auto;
 }
 
+div.changeModalComponentsLeft {
+    display: flex;
+    flex-direction: column;
+    flex: 7;
+    min-width: 0;
+    gap: 12px;
+}
 
 div.changeModalComponentsParams {
-    margin-bottom: 10px;
-    height: 560px;
-    overflow: auto;
+    flex: 1;
+    overflow-y: auto;
     word-break: break-word;
-    margin: 5px;
-    margin-bottom: 12px;
-    padding: 10px;
-    padding-right: 20px;
-    border: solid 3px #afafaf;
+    padding: 12px;
+    padding-right: 16px;
+    border: solid 3px (var(--border-color));
     border-radius: 10px;
+    line-height: 1.5;
 }
 
-div.changeModalProjectsButtons {
+div.changeModalComponentsParams p {
+    padding: 4px 0;
+}
+
+div.changeModalComponentsFooter {
+    flex-shrink: 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    border: solid 2px var(--border-color);
 }
 
 div.changeModalComponentVulnerabilitiesButton {
     display: flex;
     justify-content: center;
+}
+
+div.changeModalProjectsButtons {
+    display: flex;
+    gap: 8px;
     align-items: center;
-    margin-bottom: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+div.changeModalProjectsButtons select {
+    flex: 0 0 auto;
+    min-width: 160px;
+}
+
+div.changeModalProjectsButtons {
+    padding: 8px 16px;
+    border-radius: 8px; 
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+div.changeModalComponentsRight {
+    display: flex;
+    flex-direction: column;
+    flex: 3;
+    min-width: 0;
 }
 
 div.acceptModalProjects {
@@ -79,21 +118,8 @@ div.acceptModalProjectsName {
     margin-bottom: 10px;
 }
 
-div.acceptModalProjectsButtons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-div.acceptModalProjectsButtons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 div.acceptModalProjectsText {
-    font-family: Arial;
-    font-size: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -117,26 +143,24 @@ div.vulnerabilityModalInfo {
     margin-bottom: 12px;
     padding: 10px;
     padding-right: 20px;
-    border: solid 3px #afafaf;
+    border: solid 3px var(--border-color);
     border-radius: 10px;
 }
 
 .componentSelect {
     user-select: none;
-    font-family: Arial;
-    font-size: 16px;
-    width: 180px;
-    padding: 8px;
-    border: solid 3px #afafaf;
-    border-radius: 10px;
+    padding: 8px 10px;
+    border: solid 2px var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 .componentSelect:focus {
-    border: solid 3px #646464;
+    border: solid 3px var(--border-color);
 }
 
 .componentSelect:hover {
-    border: solid 3px #646464;
+    border: solid 3px var(--border-color);
     cursor: pointer;
 }
 
@@ -150,105 +174,94 @@ img.filterLogo {
 }
 
 .componentFilter {
-    font-family: Arial;
-    font-size: large;
     width: 150px;
     padding: 4px;
     margin-left: 10px;
     margin-bottom: 15px;
-    border: solid 3px #afafaf;
+    border: solid 3px var(--border-color);
     border-radius: 10px;
 }
 
 .vulnerabilityFilter {
-    font-family: Arial;
-    font-size: large;
     width: 300px;
     padding: 4px;
     margin-left: 10px;
     margin-bottom: 15px;
-    border: solid 3px #afafaf;
+    border: solid 3px var(--border-color);
     border-radius: 10px;
 }
 
 
 ul.license {
     list-style: none;
-    padding: 10px;
+    padding: 8px;
+    margin: 8px 0;
 }
 
 li.license {
-    padding-left: 10px;
-    border: solid 3px #e9e9e9;
-    border-radius: 10px;
+    padding: 10px;
+    border: solid 2px var(var(--border-color));
+    border-radius: 8px;
+    margin-bottom: 8px;
+    line-height: 1.4;
 }
 
-textarea.license {
-    font-family: Arial;
-    font-size: 20px;
-    width: 90%;
-    height: 30px;
-    resize: none;
-    border: solid 3px #afafaf;
-    border-radius: 10px;
-
+li.license p {
+    margin: 3px 0;
 }
 
-textarea.license:focus {
-    border: solid 3px #646464;
-}
-
-textarea.license:disabled {
-    background-color: #f1f1f1;
-}
 
 div.changeModalComments {
-    padding: 4px;
-    width: 700px;
-    height: 705px;
+    padding: 8px;
+    flex: 1;
+    min-height: 0;
+    border: solid 2px var(var(--border-color));
     border-radius: 10px;
-    margin-top: 10px;
-    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 div.comments {
-    margin-bottom: 10px;
-    height: 570px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     word-break: break-word;
-    margin: 5px;
-    margin-bottom: 12px;
-    padding: 10px;
-    padding-right: 20px;
-    border: solid 3px #afafaf;
-    border-radius: 10px;
+    padding: 8px;
+    border: solid 2px var(var(--border-color));
+    border-radius: 8px;
+    flex: 1;
 }
 
 
 textarea.comments {
-    font-family: Arial;
-    font-size: 18px;
-    width: 90%;
-    height: 60px;
-    resize: none;
-    border: solid 3px #afafaf;
-    border-radius: 10px;
-    margin: 5px;
+    width: 100%;
+    min-height: 60px;
+    max-height: 100px;
+    resize: vertical;
+    border: solid 2px var(--border-color);
+    border-radius: 8px;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-top: 8px;
 }
 
 div.sendLogo {
-    display: inline;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 6px;
 }
 
 
 img.sendLogo {
-    margin: 5px;
-    margin-bottom: 75px;
-    width: 35px;
+    width: 30px;
     vertical-align: middle;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
 }
 
 img.sendLogo:hover {
-    width: 40px;
-    cursor: pointer;
+    width: 35px;
+    opacity: 1;
 }

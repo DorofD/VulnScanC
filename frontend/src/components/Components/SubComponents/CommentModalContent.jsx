@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "../../../components/Button/Button";
 import CommentCard from "../../../components/Components/CommentCard/CommentCard";
 
 const CommentModalContent = ({
@@ -31,7 +30,7 @@ const CommentModalContent = ({
             </div>
             <textarea className="comments" id={pickedComponentId} placeholder='Комментарий' value={componentComment.comment} onChange={e => setComponentComment({ ...componentComment, comment: e.target.value })}></textarea>
             <div className="sendLogo">
-                <img src="" alt="" className="sendLogo" onClick={onAddComponentComment} />
+                <button className="sendLogo" onClick={onAddComponentComment}>Отправить</button>
             </div>
         </div>
     );

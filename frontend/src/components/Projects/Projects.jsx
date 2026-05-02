@@ -164,14 +164,14 @@ export default function Projects() {
                             </div>
                             <div className="formButtons">
                                 {viewMode === 'add' ? (
-                                    <button className="formButton primary" onClick={addProject}>Добавить</button>
+                                    <button onClick={addProject}>Добавить</button>
                                 ) : (
                                     <>
-                                        <button className="formButton primary" onClick={() => openAcceptModalWithAction(changeProject)}>Изменить</button>
-                                        <button className="formButton critical" onClick={() => openAcceptModalWithAction(deleteProject)}>Удалить</button>
+                                        <button onClick={() => openAcceptModalWithAction(changeProject)}>Изменить</button>
+                                        <button className="critical" onClick={() => openAcceptModalWithAction(deleteProject)}>Удалить</button>
                                     </>
                                 )}
-                                <button className="formButton" onClick={resetPickedProject}>Отмена</button>
+                                <button  onClick={resetPickedProject}>Отмена</button>
                             </div>
                         </div>
                     ) : viewMode === 'details' ? (

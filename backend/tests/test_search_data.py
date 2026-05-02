@@ -72,7 +72,8 @@ class TestSearchDataService(unittest.TestCase):
         mock_db_projects_instance.get_projects.assert_called_once()
 
         # existing components were fetched
-        mock_db_components_instance.get_project_components.assert_called_once_with(1)
+        mock_db_components_instance.get_project_components.assert_called_once_with(
+            1)
 
         # new components were added (those not in existing paths)
         add_component_calls = mock_db_components_instance.add_component.call_args_list

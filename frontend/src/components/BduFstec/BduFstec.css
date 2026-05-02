@@ -181,21 +181,3 @@ li.license {
     border-radius: 10px;
 }
 
-textarea.license {
-    font-family: Arial;
-    font-size: 20px;
-    width: 90%;
-    height: 30px;
-    resize: none;
-    border: solid 3px #afafaf;
-    border-radius: 10px;
-
-}
-
-textarea.license:focus {
-    border: solid 3px #646464;
-}
-
-textarea.license:disabled {
-    background-color: #f1f1f1;
-}
