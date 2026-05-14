@@ -14,15 +14,21 @@ class TestSearchDataService(unittest.TestCase):
 
         self.test_data = {
             'status': 'ok',
-            'pipeline_id': 1234,
             'project_name': 'bibos',
             'datetime': '13_08_2024_17_00',
             'dependencies': deps_data,
             'vulnerabilities': vulns_data
         }
 
-    def test_send_data_to_server(self):
-        server_address = '192.168.1.134:5001'
+    @patch('requests.post')
+    def test_send_data_to_server(self, mock_post):
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "message": "Data processed successfully"}
+        mock_post.return_value = mock_response
+
+        server_address = '172.31.215.243:5001'
         url = f'http://{server_address}/search_data'
         headers = {"Content-Type": "application/json"}
         response = requests.post(url, headers=headers, json=self.test_data)

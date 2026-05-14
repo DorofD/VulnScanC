@@ -12,10 +12,10 @@ def search_data():
         if data['status'] == 'ok':
             SearchDataService().save_search_data(data)
             current_app.logger.info(
-                f"Data received from Executable Module, the processing was successful! Project: {data['project_name']} Time: {data['datetime']} Pipline ID: {data['pipeline_id']}")
+                f"Data received from Executable Module, the processing was successful! Project: {data['project_name']} Time: {data['datetime']}")
         elif data['status'] == 'fail':
             current_app.logger.error(
-                f"Executable Module could not collect the data for project: {data['project_name']}. More details in pipeline: {data['pipeline_id']}")
+                f"Executable Module could not collect the data for project: {data['project_name']}")
         response = {
             "message": "Data processed successfully"
         }

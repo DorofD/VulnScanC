@@ -101,11 +101,11 @@ class TestFSTEC(unittest.TestCase):
         result = self.fstec.find_vulns_by_cve_id(cve_list, 'common')
         self.assertEqual(len(result), 0)
 
-    @patch('app.services.fstec.bdu_fstec.get_vulnerabilities_ids')
-    @patch('app.services.fstec.bdu_fstec.get_bdu_vulnerabilities')
-    @patch('app.services.fstec.bdu_fstec.add_bdu_vulnerabilities')
     @patch('app.services.fstec.bdu_fstec.FSTEC.find_vulns_by_cve_id')
-    def test_update_vulns_adds_new_vulns(self, mock_find, mock_add, mock_get_existing, mock_get_ids):
+    @patch('app.pg_repository.queries.bdu_vulnerabilities.DDBDUVulnerabilities.add_bdu_vulnerabilities')
+    @patch('app.pg_repository.queries.bdu_vulnerabilities.DDBDUVulnerabilities.get_bdu_vulnerabilities')
+    @patch('app.pg_repository.queries.vulnerabilities.DBVulnerabilities.get_vulnerabilities_ids')
+    def test_update_vulns_adds_new_vulns(self, mock_get_ids, mock_get_existing, mock_add, mock_find):
         mock_get_ids.return_value = [{'osv_id': 'CVE-1', 'component_id': 1}]
         mock_find.return_value = [{
             'component_id': 1, 'component_type': 'common', 'bdu_id': 'B1',

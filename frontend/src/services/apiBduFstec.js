@@ -8,8 +8,8 @@ export async function apiGetBduInfo() {
     return projects
 }
 
-export async function apiGetBduComponentVulns(component_id, component_type) {
-    const response = await authFetch(`${process.env.BACKEND_URL}/bdu?action=get_component_vulns&component_id=${component_id}&component_type=${component_type}`, {
+export async function apiGetBduComponentVulns(component_id) {
+    const response = await authFetch(`${process.env.BACKEND_URL}/bdu?action=get_component_vulns&component_id=${component_id}`, {
         method: 'GET',
     })
     const projects = await response.json()

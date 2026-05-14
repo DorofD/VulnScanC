@@ -22,9 +22,6 @@ chmod +x exec_module
 ip адрес и порт сервера VulnScanC, которому нужно отправить результаты  
 Пример ввода: -sa='127.0.0.1:5000'
 
-*-pi, --pipeline_id*  
-ID пайплайна в GitLab  
-Пример ввода: -pi=$CI_PIPELINE_ID
 
 *-om, --output_mode*  
 Режим вывода данных: console, file, json. По умолчанию используется console  

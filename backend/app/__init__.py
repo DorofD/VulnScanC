@@ -73,6 +73,7 @@ def create_app():
     from app.routes.vulnerabilities import vulnerabilities_bp
     from app.routes.comments import comments_bp
     from app.routes.search_data import search_data_bp
+    from app.routes.save_hashes import save_hashes_bp
 
     app.register_blueprint(login_bp)
     app.register_blueprint(users_bp)
@@ -92,6 +93,7 @@ def create_app():
     app.register_blueprint(vulnerabilities_bp)
     app.register_blueprint(comments_bp)
     app.register_blueprint(search_data_bp)
+    app.register_blueprint(save_hashes_bp)
     # print(app.url_map)
     create_db()
     # create_sqlite()

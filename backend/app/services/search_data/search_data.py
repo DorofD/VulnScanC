@@ -19,7 +19,6 @@ class SearchDataService:
         """
         Принимает json в формате 
                 {'status': 'ok',
-                'pipeline_id': args.pipeline_id,
                 'project_name': args.project_name,
                 'datetime': formatted_datetime,
                 'dependencies': matches,

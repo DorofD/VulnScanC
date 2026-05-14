@@ -33,8 +33,8 @@ const ComponentSection = ({
     onPickedComment,
     pickedComment,
     userName,
-    showComponentVulnerabilities,
-    showComponentVulnerabilitiesBdu,
+    onShowComponentVulnerabilities,
+    onShowComponentVulnerabilitiesBdu,
     setShowedVunls,
     onOpenVulnerabilityModal,
     closeChangeModal,
@@ -115,10 +115,10 @@ const ComponentSection = ({
                         </div>
                         <div className="changeModalComponentsFooter">
                             <div className="changeModalComponentVulnerabilitiesButton">
-                                <button onClick={() => { setShowedVunls('osv'); showComponentVulnerabilities(); }}> Показать уязвимости CVE </button>
+                                <button onClick={() => { setShowedVunls('osv'); onShowComponentVulnerabilities(pickedComponent.id); }}> Показать уязвимости CVE </button>
                             </div>
                             <div className="changeModalComponentVulnerabilitiesButton">
-                                <button onClick={() => { setShowedVunls('bdu'); showComponentVulnerabilitiesBdu(); }}> Показать уязвимости БДУ </button>
+                                <button onClick={() => { setShowedVunls('bdu'); onShowComponentVulnerabilitiesBdu(pickedComponent.id); }}> Показать уязвимости БДУ </button>
                             </div>
                             <div className="changeModalProjectsButtons">
                                 <select className="componentSelect" name="" id="" onChange={onSelectStatus}>

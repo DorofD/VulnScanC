@@ -14,7 +14,7 @@ analyze:
   script:
       - wget http://$VSC_ADDRES/binary?action=get_file -O exec_module
       - chmod +x exec_module
-      - ./exec_module --project_name=some_project_name --server_address='$VSC_ADDRES' --pipline_id=$CI_PIPELINE_ID
+      - ./exec_module --project_name=some_project_name --server_address='$VSC_ADDRES' 
   timeout: 2h
   tags:
       - certification

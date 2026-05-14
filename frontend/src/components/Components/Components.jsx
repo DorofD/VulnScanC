@@ -55,7 +55,7 @@ export default function Components() {
         showComponentVulnerabilitiesBdu,
         onOpenVulnerabilityModal,
         closeVulnerabilityModal
-    } = useVulnerabilities();
+    } = useVulnerabilities(pickedComponent.id);
 
     const { 
         componentComments, 
@@ -243,8 +243,8 @@ export default function Components() {
                 onDeleteComponentComment={onDeleteComponentComment}
                 pickedComment={pickedComment}
                 onPickedComment={setPickedComment}
-                showComponentVulnerabilities={showComponentVulnerabilities}
-                showComponentVulnerabilitiesBdu={showComponentVulnerabilitiesBdu}
+                onShowComponentVulnerabilities={showComponentVulnerabilities}
+                onShowComponentVulnerabilitiesBdu={showComponentVulnerabilitiesBdu}
                 setShowedVunls={setShowedVunls}
                 onOpenVulnerabilityModal={onOpenVulnerabilityModal}
                 isChangeModalOpen={isChangeModalOpen}

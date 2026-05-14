@@ -2,12 +2,10 @@ import sys
 import argparse
 import json
 import requests
+import os
 from datetime import datetime
 
-
-from app.services.dependencies.searcher import Searcher
-from app.services.vulnerabilities.vuln_finder import VulnFinder
-from app.services.results.result_handler import handle_vulns, handle_matches
+from app.adapters.hasher import Hasher
 
 
 class CustomHelpFormatter(argparse.HelpFormatter):
@@ -60,11 +58,31 @@ def check_argument_rules():
 check_argument_rules()
 
 
+def collect_hashes(root_directory: str) -> list:
+    extensions = (".hpp", ".h", ".hh", ".cc", ".c", ".cpp")
+    hasher = Hasher()
+
+    all_directories = []
+    for dirpath, dirnames, filenames in os.walk(root_directory):
+        all_directories.append(dirpath)
+
+    hashes = []
+    for directory in all_directories:
+        data = hasher.hash_directory(directory, extensions)
+        if not data['file_hashes']:
+            continue
+        hashes.append({
+            'directory': directory,
+            'file_hashes': data['file_hashes']
+        })
+
+    return hashes
+
+
 try:
-    searcher = Searcher()
-    matches = searcher.search_all_matches(args.path)
-except:
-    url = f'http://{args.server_address}/search_data'
+    hashes = collect_hashes(args.path)
+except Exception as exc:
+    url = f'http://{args.server_address}/save_hashes'
     json_to_send = {'status': 'fail',
                     'project_name': args.project_name}
     headers = {
@@ -79,37 +97,24 @@ except:
               response.status_code, response.text)
     sys.exit(1)
 
-vuln_finder = VulnFinder()
-vulns = vuln_finder.search_vulnerabilities(matches)
-
-
 current_datetime = datetime.now()
 formatted_datetime = current_datetime.strftime('%d_%m_%Y_%H_%M')
 
 if 'json' in args.output_mode:
-    with open(f'{args.project_name}_dependencies_{formatted_datetime}.json', 'w') as file:
-        json.dump(matches, file, indent=4)
-    with open(f'{args.project_name}_vulnerabilities_{formatted_datetime}.json', 'w') as file:
-        json.dump(vulns, file, indent=4)
+    with open(f'{args.project_name}_hashes_{formatted_datetime}.json', 'w') as file:
+        json.dump(hashes, file, indent=4, ensure_ascii=False)
 
 if 'console' in args.output_mode:
-    handle_matches(matches, output_mode='console')
-    handle_vulns(vulns, output_mode='console')
+    print(f"Collected hashes for {len(hashes)} directories")
 
-if 'file' in args.output_mode:
-    handle_matches(matches, output_mode='file',
-                   output_file=f'{args.project_name}_dependencies_{formatted_datetime}.txt')
-    handle_vulns(vulns, output_mode='file',
-                 output_file=f'{args.project_name}_vulnerabilities_{formatted_datetime}.txt')
-
-
-url = f'http://{args.server_address}/search_data'
-# Отправить json в формате {"project_name": ...,"datetime": 13_08_2024_17_00,  "dependencies": ..., "vulnerabilities": ...}
-json_to_send = {'status': 'ok',
-                'project_name': args.project_name,
-                'datetime': formatted_datetime,
-                'dependencies': matches,
-                'vulnerabilities': vulns}
+url = f'http://{args.server_address}/save_hashes'
+json_to_send = {
+    'status': 'ok',
+    'project_name': args.project_name,
+    'datetime': formatted_datetime,
+    'hashes': hashes,
+    'process': True
+}
 headers = {
     "Content-Type": "application/json"
 }

@@ -13,8 +13,7 @@ Receives data from the executable module.
   {
     "status": "ok",
     "project_name": "...",
-    "datetime": "...",
-    "pipeline_id": "..."
+    "datetime": "..."
   }
   ```
 
@@ -22,8 +21,7 @@ Receives data from the executable module.
   ```json
   {
     "status": "fail",
-    "project_name": "...",
-    "pipeline_id": "..."
+    "project_name": "..."
   }
   ```
 
